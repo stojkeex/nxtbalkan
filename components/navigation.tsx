@@ -22,11 +22,24 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const pathname = usePathname()
+  const [scrollPosition, setScrollPosition] = useState(0)
 
-  // Add this function for animated hamburger toggle
   const toggleMobileMenu = () => {
     if (isAnimating) return
     setIsAnimating(true)
+    
+    if (!isOpen) {
+      setScrollPosition(window.scrollY)
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${window.scrollY}px`
+      document.body.style.width = '100%'
+    } else {
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, scrollPosition)
+    }
+
     setIsOpen(!isOpen)
     setTimeout(() => setIsAnimating(false), 300)
   }
@@ -39,35 +52,29 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsOpen(false)
+    // Reset body styles on route change
+    document.body.style.position = ''
+    document.body.style.top = ''
+    document.body.style.width = ''
   }, [pathname])
 
-  // Lock body scroll when mobile menu is open
+  // Cleanup on unmount
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-    
-    // Cleanup function
     return () => {
-      document.body.style.overflow = 'auto'
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
     }
-  }, [isOpen])
+  }, [])
 
   const handleLinkClick = () => {
     setIsOpen(false)
-    // Small delay to ensure navigation happens before scroll
-    setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      })
-    }, 100)
+    document.body.style.position = ''
+    document.body.style.top = ''
+    document.body.style.width = ''
+    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100)
   }
 
   return (
@@ -82,7 +89,6 @@ export function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
             <Link href="/" className="flex items-center space-x-2" onClick={handleLinkClick}>
               <motion.img
                 src="/images/nxt-balkan-logo.png"
@@ -93,7 +99,6 @@ export function Navigation() {
               />
             </Link>
 
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
                 <Link
@@ -115,7 +120,6 @@ export function Navigation() {
               ))}
             </div>
 
-            {/* Animated Mobile Menu Button */}
             <Button
               variant="ghost"
               size="sm"
@@ -128,26 +132,23 @@ export function Navigation() {
                   animate={{
                     rotate: isOpen ? 45 : 0,
                     y: isOpen ? 0 : -6,
-                    opacity: isOpen ? 1 : 1,
                   }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  transition={{ duration: 0.3 }}
                 />
                 <motion.span
                   className="absolute w-6 h-0.5 bg-white rounded-full"
                   animate={{
                     opacity: isOpen ? 0 : 1,
-                    x: isOpen ? -10 : 0,
                   }}
-                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  transition={{ duration: 0.2 }}
                 />
                 <motion.span
                   className="absolute w-6 h-0.5 bg-white rounded-full"
                   animate={{
                     rotate: isOpen ? -45 : 0,
                     y: isOpen ? 0 : 6,
-                    opacity: isOpen ? 1 : 1,
                   }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  transition={{ duration: 0.3 }}
                 />
               </div>
             </Button>
@@ -155,7 +156,6 @@ export function Navigation() {
         </div>
       </motion.nav>
 
-      {/* Enhanced Mobile Navigation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -168,117 +168,57 @@ export function Navigation() {
               background: "rgba(0, 0, 0, 0.95)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
+              touchAction: "none" // Prepreči scroll na mobilnih
             }}
           >
-            {/* Background Pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.05),transparent_50%)]" />
-
-            <div className="flex flex-col items-center justify-center h-full space-y-6 px-8 relative z-10">
-              {/* Logo in mobile menu */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ delay: 0.1, duration: 0.4 }}
-                className="mb-8"
-              >
-                <img src="/images/nxt-balkan-logo.png" alt="NXT Balkan" className="h-16 w-auto" />
-              </motion.div>
-
-              {navItems.map((item, index) => (
+            <div className="absolute inset-0 overflow-y-auto">
+              <div className="flex min-h-full flex-col items-center justify-center space-y-6 px-8 py-20 relative z-10">
                 <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 50, scale: 0.8 }}
-                  transition={{
-                    delay: 0.1 + index * 0.08,
-                    duration: 0.5,
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 15,
-                  }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
+                  className="mb-8"
                 >
-                  <Link
-                    href={item.href}
-                    className={`flex items-center space-x-4 text-2xl font-bold transition-all duration-300 group relative ${
-                      pathname === item.href ? "text-white" : "text-gray-300 hover:text-white"
-                    }`}
-                    onClick={handleLinkClick}
+                  <img src="/images/nxt-balkan-logo.png" alt="NXT Balkan" className="h-16 w-auto" />
+                </motion.div>
+
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: 0.1 + index * 0.08,
+                      duration: 0.3,
+                      type: "spring",
+                      stiffness: 100
+                    }}
+                    className="w-full text-center"
                   >
-                    <motion.div
-                      className="relative"
-                      whileHover={{ scale: 1.2, rotate: 10 }}
-                      transition={{ duration: 0.2 }}
+                    <Link
+                      href={item.href}
+                      className={`inline-flex items-center space-x-4 text-2xl font-bold py-2 px-4 rounded-lg ${
+                        pathname === item.href 
+                          ? "bg-white/10 text-white" 
+                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                      }`}
+                      onClick={handleLinkClick}
                     >
-                      <item.icon className="h-7 w-7" />
-                      {pathname === item.href && (
-                        <motion.div
-                          layoutId="activeMobileTab"
-                          className="absolute -inset-2 bg-white/10 rounded-full border border-white/20"
-                          transition={{ duration: 0.3 }}
-                        />
-                      )}
-                    </motion.div>
-                    <span className="relative">
-                      {item.name}
-                      {pathname === item.href && (
-                        <motion.div
-                          layoutId="activeMobileUnderline"
-                          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-white"
-                          transition={{ duration: 0.3 }}
-                        />
-                      )}
-                    </span>
-                  </Link>
-                </motion.div>
-              ))}
+                      <item.icon className="h-6 w-6" />
+                      <span>{item.name}</span>
+                    </Link>
+                  </motion.div>
+                ))}
 
-              {/* Mobile Menu Footer */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ delay: 0.8, duration: 0.4 }}
-                className="absolute bottom-8 text-center"
-              >
-                <p className="text-gray-400 text-sm mb-2">NXT Balkan - Revolutionizing Music</p>
-                <div className="flex items-center justify-center space-x-4">
-                  <motion.div
-                    className="w-2 h-2 bg-white/40 rounded-full"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                  />
-                  <motion.div
-                    className="w-2 h-2 bg-white/40 rounded-full"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, delay: 0.5 }}
-                  />
-                  <motion.div
-                    className="w-2 h-2 bg-white/40 rounded-full"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, delay: 1 }}
-                  />
-                </div>
-              </motion.div>
-
-              {/* Swipe indicator for mobile */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 1, duration: 0.4 }}
-                className="absolute top-8 right-8 text-gray-400"
-              >
                 <motion.div
-                  animate={{ x: [0, 10, 0] }}
-                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                  className="text-xs"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="mt-12 text-center text-gray-400 text-sm"
                 >
-                  Swipe to close →
+                  <p>NXT Balkan - Revolutionizing Music</p>
                 </motion.div>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         )}
