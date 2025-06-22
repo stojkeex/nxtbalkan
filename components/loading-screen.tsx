@@ -32,7 +32,7 @@ export function LoadingScreen() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-4"
+          className="w-16 h-16 border-4 gradient-text-neon border-t-transparent rounded-full mx-auto mb-4"
         />
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
