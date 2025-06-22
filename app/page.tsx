@@ -42,9 +42,9 @@ export default function HomePage() {
             transition={{ duration: 1, delay: 0.4 }}
             className="text-6xl md:text-8xl font-bold mb-6 tracking-tight text-white"
           >
-            REVOLUTIONIZING
+            FUTURE
             <br />
-            BALKAN MUSIC
+            BALKAN
           </motion.h1>
 
           <motion.p
