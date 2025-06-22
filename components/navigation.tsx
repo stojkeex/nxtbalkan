@@ -44,6 +44,20 @@ export function Navigation() {
     setIsOpen(false)
   }, [pathname])
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+    
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isOpen])
+
   const handleLinkClick = () => {
     setIsOpen(false)
     // Small delay to ensure navigation happens before scroll
