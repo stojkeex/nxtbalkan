@@ -44,7 +44,7 @@ export default function ArtistsPage() {
             transition={{ duration: 1 }}
             className="text-center mb-20"
           >
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text">OUR ARTISTS</h1>
+            <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text-neon">OUR ARTISTS</h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Discover the incredible talent that defines the future of Balkan music. Each artist brings their unique
               voice to our diverse musical family.
