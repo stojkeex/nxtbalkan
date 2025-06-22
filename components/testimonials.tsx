@@ -6,23 +6,23 @@ import { Star, Quote } from "lucide-react"
 export function Testimonials() {
   const testimonials = [
     {
-      name: "Marija Petrović",
+      name: "K. Kruljac",
       role: "Recording Artist",
       content:
         "NXT Balkan transformed my career completely. Their production quality is unmatched, and their team truly understands the essence of Balkan music while bringing it to the global stage.",
       rating: 5,
-      image: "/placeholder.svg?height=80&width=80",
+      image: "https://cdn.discordapp.com/attachments/1329893059147862109/1385981578987180123/A9FBD321-D568-43E0-9F30-7BCB18DC45FA.jpg?ex=68595cee&is=68580b6e&hm=00582afbbb08803452c0bdc34f6dcf4ffab1e58383e2ff4eb6ef8f9015500ad8&",
     },
     {
-      name: "Stefan Jovanović",
+      name: "M. Stojanović",
       role: "Music Producer",
       content:
         "Working with NXT Balkan has been incredible. They have the perfect blend of traditional knowledge and modern innovation. My tracks have never sounded better.",
       rating: 5,
-      image: "/placeholder.svg?height=80&width=80",
+      image: "https://cdn.discordapp.com/attachments/1329893059147862109/1385981143601385623/image.jpg?ex=68595c86&is=68580b06&hm=7545e41655eaa2927a8f2c84b1f56a6ef4d7fa90b003c4dc7ecf1fd9f5b5e00f&",
     },
     {
-      name: "Ana Nikolić",
+      name: "R. Kavčič",
       role: "Singer-Songwriter",
       content:
         "The team at NXT Balkan doesn't just produce music – they create experiences. Their attention to detail and passion for Balkan culture is evident in every project.",
