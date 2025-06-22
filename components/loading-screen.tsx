@@ -28,12 +28,19 @@ export function LoadingScreen() {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
     >
-      <div className="text-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          className="w-16 h-16 border-4 border-blue-300 border-t-transparent rounded-full mx-auto mb-4"
-        />
+     <div className="text-center">
+  <motion.div
+    animate={{ rotate: 360 }}
+    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+    className="w-16 h-16 rounded-full mx-auto mb-4 
+               bg-[conic-gradient(#00ffff,_#ff00ff,_#ffff00)]
+               p-[2px] 
+               animate-spin
+               "
+  >
+    <div className="bg-white w-full h-full rounded-full"></div>
+  </motion.div>
+</div>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
