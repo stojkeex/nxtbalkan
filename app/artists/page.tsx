@@ -93,7 +93,7 @@ export default function ArtistsPage() {
           </motion.div>
 
           {/* Mobile Banner Ad */}
-          <div className="mb-16">
+          <div className="mb-16 lg:hidden flex justify-center">
             <MobileBannerAd />
           </div>
 
@@ -120,12 +120,12 @@ export default function ArtistsPage() {
             ))}
           </motion.div>
 
-          <div className="grid lg:grid-cols-4 gap-8">
+          <div className="flex flex-col lg:grid lg:grid-cols-4 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Artists Grid */}
               <section className="mb-32">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
                   {artists.map((artist, index) => (
                     <motion.div
                       key={index}
@@ -133,9 +133,9 @@ export default function ArtistsPage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.8, delay: index * 0.1 }}
                       viewport={{ once: true }}
-                      className="group"
+                      className="group w-full max-w-md"
                     >
-                      <div className="bg-white/5 rounded-2xl border border-white/20 overflow-hidden hover:border-white/40 transition-all duration-300 glow-border">
+                      <div className="bg-white/5 rounded-2xl border border-white/20 overflow-hidden hover:border-white/40 transition-all duration-300 glow-border h-full">
                         {/* Artist Image */}
                         <div className="relative overflow-hidden">
                           <img
@@ -222,7 +222,7 @@ export default function ArtistsPage() {
               </section>
 
               {/* Banner Ad */}
-              <div className="mb-16">
+              <div className="mb-16 flex justify-center">
                 <BannerAd />
               </div>
 
@@ -234,7 +234,7 @@ export default function ArtistsPage() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="bg-white/5 p-16 rounded-2xl border border-white/20 glow-border">
+                <div className="bg-white/5 p-8 md:p-16 rounded-2xl border border-white/20 glow-border">
                   <h2 className="text-4xl md:text-5xl font-bold mb-8 gradient-text-alt">Want to Join Our Roster?</h2>
                   <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
                     We're always looking for exceptional talent to join the NXT Balkan family. If you have what it
