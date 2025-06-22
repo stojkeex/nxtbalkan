@@ -61,8 +61,8 @@ export function LiveSupportSystem() {
   const supportAgents: SupportAgent[] = [
     {
       id: 1,
-      name: "Marija Petrović",
-      avatar: "/placeholder.svg?height=40&width=40",
+      name: "M. Stojanović",
+      avatar: "https://cdn.discordapp.com/attachments/1329893059147862109/1385981143601385623/image.jpg?ex=68595c86&is=68580b06&hm=7545e41655eaa2927a8f2c84b1f56a6ef4d7fa90b003c4dc7ecf1fd9f5b5e00f&",
       status: "online",
       role: "Senior Support Specialist",
       rating: 4.9,
@@ -70,8 +70,8 @@ export function LiveSupportSystem() {
     },
     {
       id: 2,
-      name: "Stefan Jovanović",
-      avatar: "/placeholder.svg?height=40&width=40",
+      name: "K. Kruljac",
+      avatar: "https://cdn.discordapp.com/attachments/1329893059147862109/1385981578987180123/A9FBD321-D568-43E0-9F30-7BCB18DC45FA.jpg?ex=68595cee&is=68580b6e&hm=00582afbbb08803452c0bdc34f6dcf4ffab1e58383e2ff4eb6ef8f9015500ad8&",
       status: "online",
       role: "Technical Support",
       rating: 4.8,
@@ -79,7 +79,7 @@ export function LiveSupportSystem() {
     },
     {
       id: 3,
-      name: "Ana Nikolić",
+      name: "R. Kavčič",
       avatar: "/placeholder.svg?height=40&width=40",
       status: "away",
       role: "Artist Relations",
