@@ -97,97 +97,40 @@ body {
   overflow-x: hidden;
 }
 
-/* Optimized Gradient Text Effects */
-.gradient-text {
-  position: relative;
-  display: inline-block;
-  color: transparent;
-  background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.gradient-text-alt {
-  position: relative;
-  display: inline-block;
-  color: transparent;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
+/* Fixed Gradient Text Effects */
+.gradient-text,
+.gradient-text-alt,
 .gradient-text-neon {
   position: relative;
   display: inline-block;
   color: transparent;
-  background: linear-gradient(90deg, #00ffff, #ff00ff, #ffff00);
-  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: 700;
   letter-spacing: -0.02em;
+  animation: gradient-flow 8s ease infinite;
+  background-size: 200% 200%;
+  will-change: background-position;
+}
+
+.gradient-text {
+  background-image: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+}
+
+.gradient-text-alt {
+  background-image: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+}
+
+.gradient-text-neon {
+  background-image: linear-gradient(90deg, #00ffff, #ff00ff, #ffff00);
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* Desktop Enhancements */
-@media (min-width: 769px) {
-  .gradient-text {
-    background: linear-gradient(
-      90deg,
-      #ff6b6b,
-      #4ecdc4,
-      #45b7d1,
-      #96ceb4,
-      #ffeaa7,
-      #dda0dd,
-      #ff9ff3,
-      #54a0ff,
-      #5f27cd,
-      #00d2d3,
-      #ff9f43,
-      #ff6b6b
-    );
-    background-size: 400% 100%;
-    animation: gradient-flow 8s ease-in-out infinite;
-  }
-
-  .gradient-text-alt {
-    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe, #43e97b, #38f9d7, #667eea);
-    background-size: 300% 100%;
-    animation: gradient-flow-alt 6s ease-in-out infinite;
-  }
-
-  .gradient-text-neon {
-    background: linear-gradient(90deg, #00ffff, #ff00ff, #ffff00, #00ff00, #ff0080, #8000ff, #00ffff);
-    background-size: 300% 100%;
-    animation: gradient-flow-neon 4s linear infinite;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-  }
-
-  @keyframes gradient-flow {
-    0% { background-position: 0% 50%; }
-    25% { background-position: 100% 50%; }
-    50% { background-position: 200% 50%; }
-    75% { background-position: 300% 50%; }
-    100% { background-position: 400% 50%; }
-  }
-
-  @keyframes gradient-flow-alt {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 200% 50%; }
-  }
-
-  @keyframes gradient-flow-neon {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
-  }
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Professional Card Effects */
@@ -235,21 +178,13 @@ body {
   .gradient-text,
   .gradient-text-alt,
   .gradient-text-neon {
-    animation: none;
-    background-position: 0% 50%;
+    animation: gradient-flow-mobile 6s ease infinite;
   }
   
-  .gradient-text-neon {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
-  }
-  
-  .hover-card:hover,
-  .animated-button:hover {
-    transform: none;
-  }
-  
-  .professional-card {
-    backdrop-filter: blur(5px);
+  @keyframes gradient-flow-mobile {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 }
 
