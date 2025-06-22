@@ -5,8 +5,15 @@ import { motion } from "framer-motion"
 
 export function ScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) return
+
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight
       const progress = (window.scrollY / totalHeight) * 100
@@ -15,7 +22,11 @@ export function ScrollProgress() {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [isMounted])
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <motion.div

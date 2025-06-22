@@ -49,6 +49,7 @@ interface SupportAgent {
 
 export function LiveSupportSystem() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const [currentView, setCurrentView] = useState<"main" | "chat" | "faq" | "contact" | "agents">("main")
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState("")
@@ -140,6 +141,10 @@ export function LiveSupportSystem() {
   ]
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
     }
@@ -147,6 +152,8 @@ export function LiveSupportSystem() {
 
   // Lock body scroll when panel is open
   useEffect(() => {
+    if (!isMounted) return
+
     if (isOpen) {
       document.body.style.overflow = "hidden"
       document.documentElement.style.overflow = "hidden"
@@ -159,7 +166,7 @@ export function LiveSupportSystem() {
       document.body.style.overflow = "unset"
       document.documentElement.style.overflow = "unset"
     }
-  }, [isOpen])
+  }, [isOpen, isMounted])
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return
@@ -259,7 +266,7 @@ export function LiveSupportSystem() {
         </div>
 
         {/* Mobile-specific quick help text */}
-        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-xl border border-white/10">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-white/5 rounded-xl border border-white/10">
           <h3 className="text-xs sm:text-sm font-semibold text-white mb-2">💡 Quick Tips</h3>
           <p className="text-xs text-gray-300 leading-relaxed">
             Tap "Start Chat" for instant help, browse our FAQ for quick answers, or use the contact form for detailed
@@ -312,7 +319,7 @@ export function LiveSupportSystem() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 p-3 sm:p-4 lg:p-6 bg-gradient-to-r from-green-600/20 to-blue-600/20 rounded-xl lg:rounded-2xl border border-white/10"
+          className="grid grid-cols-3 gap-2 sm:gap-3 lg:gap-4 p-3 sm:p-4 lg:p-6 bg-white/5 rounded-xl lg:rounded-2xl border border-white/10"
         >
           <div className="text-center">
             <div className="text-base sm:text-lg lg:text-2xl font-bold text-white">24/7</div>
@@ -780,6 +787,10 @@ export function LiveSupportSystem() {
       </div>
     </motion.div>
   )
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <>

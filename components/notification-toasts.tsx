@@ -12,6 +12,7 @@ interface Toast {
 
 export function NotificationToasts() {
   const [toasts, setToasts] = useState<Toast[]>([])
+  const [isMounted, setIsMounted] = useState(false)
 
   const messages = [
     { emoji: "🎧", message: 'Check out the new Devito album – "Nema Spavanja"' },
@@ -26,6 +27,12 @@ export function NotificationToasts() {
   ]
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) return
+
     const showRandomToast = () => {
       const randomMessage = messages[Math.floor(Math.random() * messages.length)]
       const newToast: Toast = {
@@ -57,10 +64,14 @@ export function NotificationToasts() {
       clearTimeout(initialTimer)
       clearInterval(interval)
     }
-  }, [])
+  }, [isMounted])
 
   const removeToast = (id: number) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id))
+  }
+
+  if (!isMounted) {
+    return null
   }
 
   return (
