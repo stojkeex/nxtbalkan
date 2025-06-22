@@ -98,7 +98,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Animated Gradient Text Effects */
+/* Mobile-optimized Animated Gradient Text Effects */
 .gradient-text {
   background: linear-gradient(
     90deg,
@@ -122,23 +122,48 @@ body {
   animation: gradient-flow 8s ease-in-out infinite;
   font-weight: 700;
   letter-spacing: -0.02em;
+
+  /* Mobile fallback */
+  @supports not (background-clip: text) {
+    background: none;
+    color: white;
+    -webkit-text-fill-color: white;
+  }
 }
 
-@keyframes gradient-flow {
-  0% {
-    background-position: 0% 50%;
+/* Mobile-specific gradient text fixes */
+@media (max-width: 768px) {
+  .gradient-text,
+  .gradient-text-alt,
+  .gradient-text-neon {
+    /* Simplified gradient for mobile performance */
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+    background-size: 200% 100%;
+    animation-duration: 4s;
+
+    /* Ensure text is always visible on mobile */
+    color: white;
+    -webkit-text-fill-color: transparent;
+
+    /* Fallback for problematic devices */
+    @supports not (-webkit-background-clip: text) {
+      background: none !important;
+      color: white !important;
+      -webkit-text-fill-color: white !important;
+      animation: none !important;
+    }
   }
-  25% {
-    background-position: 100% 50%;
-  }
-  50% {
-    background-position: 200% 50%;
-  }
-  75% {
-    background-position: 300% 50%;
-  }
-  100% {
-    background-position: 400% 50%;
+
+  /* Force white text on very small screens */
+  @media (max-width: 480px) {
+    .gradient-text,
+    .gradient-text-alt,
+    .gradient-text-neon {
+      background: none !important;
+      color: white !important;
+      -webkit-text-fill-color: white !important;
+      animation: none !important;
+    }
   }
 }
 
@@ -547,5 +572,56 @@ body {
   .writing-mode-vertical {
     transform: rotate(-90deg);
     white-space: nowrap;
+  }
+}
+
+/* Body scroll lock for mobile menu */
+.scroll-lock {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.scroll-lock-ios {
+  position: fixed !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Reduce animations on mobile for performance */
+@media (max-width: 768px) {
+  .animate-float,
+  .pulse-glow,
+  .magnetic-button:hover {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* Disable expensive hover effects on mobile */
+  .hover-card:hover,
+  .hover-lift:hover,
+  .animated-button:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
