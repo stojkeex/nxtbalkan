@@ -98,8 +98,11 @@ body {
   overflow-x: hidden;
 }
 
-/* Animated Gradient Text Effects */
+/* Fixed Gradient Text Effects */
 .gradient-text {
+  position: relative;
+  display: inline-block;
+  color: transparent;
   background: linear-gradient(
     90deg,
     #ff6b6b,
@@ -116,9 +119,8 @@ body {
     #ff6b6b
   );
   background-size: 400% 100%;
-  background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
   animation: gradient-flow 8s ease-in-out infinite;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -144,11 +146,13 @@ body {
 
 /* Alternative gradient for variety */
 .gradient-text-alt {
+  position: relative;
+  display: inline-block;
+  color: transparent;
   background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe, #43e97b, #38f9d7, #667eea);
   background-size: 300% 100%;
-  background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
   animation: gradient-flow-alt 6s ease-in-out infinite;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -168,11 +172,13 @@ body {
 
 /* Neon gradient for special headings */
 .gradient-text-neon {
+  position: relative;
+  display: inline-block;
+  color: transparent;
   background: linear-gradient(90deg, #00ffff, #ff00ff, #ffff00, #00ff00, #ff0080, #8000ff, #00ffff);
   background-size: 300% 100%;
-  background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
   animation: gradient-flow-neon 4s linear infinite;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -437,6 +443,15 @@ body {
   .hover-lift:hover {
     transform: translateY(-2px);
   }
+
+  /* Simplified gradients for mobile */
+  .gradient-text,
+  .gradient-text-alt,
+  .gradient-text-neon {
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+    background-size: 200% 100%;
+    animation-duration: 4s;
+  }
 }
 
 /* Icon animations */
@@ -522,18 +537,6 @@ body {
 .ripple-button:active::after {
   width: 300px;
   height: 300px;
-}
-
-/* Responsive gradient text */
-@media (max-width: 768px) {
-  .gradient-text,
-  .gradient-text-alt,
-  .gradient-text-neon {
-    /* Fallback for mobile if gradients cause performance issues */
-    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
-    background-size: 200% 100%;
-    animation-duration: 4s;
-  }
 }
 
 /* Vertical text for support button */
