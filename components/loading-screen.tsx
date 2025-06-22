@@ -31,7 +31,7 @@ export function LoadingScreen() {
       <div className="text-center">
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+          transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
           className="w-16 h-16 rounded-full mx-auto mb-4 relative"
         >
           <div 
