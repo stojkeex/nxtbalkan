@@ -6,7 +6,6 @@ import { ArrowRight, Music, Users, Zap } from "lucide-react"
 import Link from "next/link"
 import { InteractiveBackground } from "@/components/interactive-background"
 import { AnimatedBackground } from "@/components/animated-background"
-import { ScrollProgress } from "@/components/scroll-progress"
 import { Card3D } from "@/components/3d-card"
 import { Testimonials } from "@/components/testimonials"
 import { BannerAd, NativeAd, MobileBannerAd } from "@/components/ad-placeholder"
@@ -14,7 +13,6 @@ import { BannerAd, NativeAd, MobileBannerAd } from "@/components/ad-placeholder"
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      <ScrollProgress />
       <AnimatedBackground />
       <InteractiveBackground />
 
@@ -89,9 +87,7 @@ export default function HomePage() {
             </Link>
           </motion.div>
         </div>
-
-        {/* Enhanced Scroll Indicator */}
-       
+      </section>
 
       {/* Mobile Banner Ad */}
       <div className="px-4 py-6 md:hidden">
