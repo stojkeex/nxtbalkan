@@ -14,15 +14,15 @@ export function Testimonials() {
       image: "https://cdn.discordapp.com/attachments/1329893059147862109/1385981578987180123/A9FBD321-D568-43E0-9F30-7BCB18DC45FA.jpg?ex=68595cee&is=68580b6e&hm=00582afbbb08803452c0bdc34f6dcf4ffab1e58383e2ff4eb6ef8f9015500ad8&",
     },
     {
-      name: "M. Stojanović",
-      role: "Music Producer",
+      name: "C. Stojke",
+      role: "Singer",
       content:
         "Working with NXT Balkan has been incredible. They have the perfect blend of traditional knowledge and modern innovation. My tracks have never sounded better.",
       rating: 5,
-      image: "https://cdn.discordapp.com/attachments/1329893059147862109/1385981143601385623/image.jpg?ex=68595c86&is=68580b06&hm=7545e41655eaa2927a8f2c84b1f56a6ef4d7fa90b003c4dc7ecf1fd9f5b5e00f&",
+      image: "https://cdn.discordapp.com/attachments/1329893059147862109/1381014903229251738/IMG_20250606_191918_297.webp?ex=6859179a&is=6857c61a&hm=0da4fe127cbb09e5ba1768d56fac4e0aa5a29c98ef73ae188610c60c69a6be5c&",
     },
     {
-      name: "R. Kavčič",
+      name: "M. Stefanović",
       role: "Singer-Songwriter",
       content:
         "The team at NXT Balkan doesn't just produce music – they create experiences. Their attention to detail and passion for Balkan culture is evident in every project.",
@@ -30,11 +30,11 @@ export function Testimonials() {
       image: "/placeholder.svg?height=80&width=80",
     },
     {
-      name: "Miloš Stojanović",
-      role: "Band Leader",
+      name: "S. Stojanović",
+      role: "Songwriter",
       content:
         "From recording to promotion, NXT Balkan handled everything professionally. Our album reached audiences we never thought possible. Highly recommended!",
-      rating: 5,
+      rating: 4,
       image: "/placeholder.svg?height=80&width=80",
     },
   ]
