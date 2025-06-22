@@ -16,7 +16,7 @@ export default function ArtistsPage() {
         "Blending traditional Serbian melodies with contemporary production, Milica has captured hearts across the Balkans.",
       image: "https://cdn.discordapp.com/attachments/1329893059147862109/1381014903229251738/IMG_20250606_191918_297.webp?ex=6859179a&is=6857c61a&hm=0da4fe127cbb09e5ba1768d56fac4e0aa5a29c98ef73ae188610c60c69a6be5c&",
       stats: { streams: "Not Yet", followers: "3.5K", releases: "1" },
-      social: { instagram: "@crni_stojke", youtube: "CrniStojke" },
+      social: { instagram: "https://www.instagram.com/crni_stojke?igsh=cmpyemU1cDd5djVz&utm_source=qr", youtube: "CrniStojke" },
     },
   ]
 
