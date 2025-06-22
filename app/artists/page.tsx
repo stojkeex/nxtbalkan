@@ -10,54 +10,13 @@ import { BannerAd, SidebarAd, MobileBannerAd } from "@/components/ad-placeholder
 export default function ArtistsPage() {
   const artists = [
     {
-      name: "Milica Todorović",
+      name: "Crni Stojke",
       genre: "Modern Folk",
       description:
         "Blending traditional Serbian melodies with contemporary production, Milica has captured hearts across the Balkans.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: { streams: "2.5M", followers: "150K", releases: "12" },
-      social: { instagram: "@milica_music", youtube: "MilicaOfficial" },
-    },
-    {
-      name: "Balkan Beats Collective",
-      genre: "Electronic Fusion",
-      description: "Revolutionary electronic group mixing traditional Balkan instruments with modern EDM beats.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: { streams: "5.2M", followers: "300K", releases: "8" },
-      social: { instagram: "@balkanbeats", youtube: "BalkanBeatsOfficial" },
-    },
-    {
-      name: "Aleksandar Petrović",
-      genre: "Contemporary Pop",
-      description: "Rising star bringing fresh energy to Balkan pop music with his powerful vocals and modern sound.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: { streams: "1.8M", followers: "95K", releases: "15" },
-      social: { instagram: "@aleks_music", youtube: "AleksandarOfficial" },
-    },
-    {
-      name: "Gypsy Soul",
-      genre: "Traditional Fusion",
-      description: "Authentic Roma music meets contemporary arrangements in this passionate and energetic ensemble.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: { streams: "3.1M", followers: "200K", releases: "10" },
-      social: { instagram: "@gypsysoul", youtube: "GypsySoulMusic" },
-    },
-    {
-      name: "Nevena Božović",
-      genre: "Indie Folk",
-      description:
-        "Ethereal voice and poetic lyrics define this emerging artist who represents the new wave of Balkan music.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: { streams: "900K", followers: "65K", releases: "7" },
-      social: { instagram: "@nevena_music", youtube: "NevenaOfficial" },
-    },
-    {
-      name: "Urban Balkan",
-      genre: "Hip-Hop Fusion",
-      description: "Pioneering the fusion of Balkan traditional music with modern hip-hop and rap elements.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: { streams: "4.3M", followers: "250K", releases: "20" },
-      social: { instagram: "@urbanbalkan", youtube: "UrbanBalkanOfficial" },
+      image: "https://cdn.discordapp.com/attachments/1329893059147862109/1381014903229251738/IMG_20250606_191918_297.webp?ex=6859179a&is=6857c61a&hm=0da4fe127cbb09e5ba1768d56fac4e0aa5a29c98ef73ae188610c60c69a6be5c&",
+      stats: { streams: "Not Yet", followers: "3.5K", releases: "1" },
+      social: { instagram: "@crni_stojke", youtube: "CrniStojke" },
     },
   ]
 
