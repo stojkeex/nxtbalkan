@@ -33,18 +33,18 @@ export default function AboutPage() {
 
   const team = [
     {
-      name: "Marko Petrović",
+      name: "M. Stojanović",
       role: "Founder & CEO",
       bio: "Visionary leader with 15+ years in the music industry, passionate about bridging traditional and modern sounds.",
     },
     {
-      name: "Ana Nikolić",
-      role: "Head of A&R",
+      name: "K. Kruljac",
+      role: "CEO",
       bio: "Talent scout extraordinaire with an ear for discovering the next big Balkan stars.",
     },
     {
       name: "Stefan Jovanović",
-      role: "Chief Producer",
+      role: "Owner",
       bio: "Award-winning producer who has worked with top artists across the Balkans and beyond.",
     },
   ]
