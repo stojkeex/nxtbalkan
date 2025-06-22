@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export function ScrollProgress() {
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const [isMounted, setIsMounted] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
-    if (!isMounted) return
+    if (!isMounted) return;
 
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = (window.scrollY / totalHeight) * 100
-      setScrollProgress(progress)
-    }
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [isMounted])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMounted]);
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   return (
@@ -36,7 +36,12 @@ export function ScrollProgress() {
       style={{ transformOrigin: "0%" }}
       transition={{ duration: 0.1 }}
     >
-      <div className="h-full bg-white" />
+      <motion.div 
+        className="h-full w-full"
+        style={{
+          background: "linear-gradient(90deg, #00ffff, #ff00ff, #ffff00)",
+        }}
+      />
     </motion.div>
-  )
+  );
 }
