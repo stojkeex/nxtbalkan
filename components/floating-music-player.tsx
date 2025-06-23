@@ -36,7 +36,7 @@ const sampleTracks: Track[] = [
     album: "Neon Nights",
     duration: "3:42",
     cover: "/music/covers/midnight-dreams.jpg",
-    audioUrl: "/music/voulters.mp3",
+    audioUrl: "/music/vultures.mp3",
   },
   {
     id: 2,
