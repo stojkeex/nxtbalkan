@@ -113,11 +113,11 @@ export default function RootLayout({
           <div id="protection-overlay" className="fixed inset-0 pointer-events-none z-[99999] select-none" />
           
           {/* Content */}
-          <LoadingScreen />
           <CustomCursor />
           <ScrollToTop />
           <Navigation />
           <main>{children}</main>
+          <LoadingScreen />
           <PremiumOffer />
           <NotificationToasts />
           <LiveSupportSystem />
