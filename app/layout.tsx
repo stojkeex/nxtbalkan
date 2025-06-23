@@ -11,7 +11,7 @@ import { LiveSupportSystem } from "@/components/live-support-system"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import Script from "next/script"
 import Head from "next/head"
-import MusicPlayer from '@/components/MusicPlayer'
+
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -117,7 +117,6 @@ export default function RootLayout({
           <CustomCursor />
           <ScrollToTop />
           <Navigation />
-          <MusicPlayer />
           <main>{children}</main>
           <NotificationToasts />
           <LiveSupportSystem />
