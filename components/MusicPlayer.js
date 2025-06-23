@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
-import { Volume2, VolumeX, X } from 'lucide-react'
+import { Volume2, VolumeX, X, Move } from 'lucide-react'
 
 const tracks = [
   { name: "Vultures", path: "/music/vultures.mp3" },
@@ -15,8 +15,53 @@ export default function MusicPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [position, setPosition] = useState({ x: 20, y: 20 })
+  const [isDragging, setIsDragging] = useState(false)
   const audioRef = useRef(null)
   const menuRef = useRef(null)
+  const playerRef = useRef(null)
+
+  // Handle dragging
+  const startDrag = (e) => {
+    e.stopPropagation()
+    setIsDragging(true)
+    document.body.style.userSelect = 'none' // Prevent text selection during drag
+  }
+
+  const handleDrag = (e) => {
+    if (!isDragging) return
+    
+    const clientX = e.clientX || e.touches?.[0]?.clientX
+    const clientY = e.clientY || e.touches?.[0]?.clientY
+    
+    if (clientX && clientY) {
+      setPosition({
+        x: clientX - (playerRef.current?.offsetWidth / 2 || 0),
+        y: clientY - (playerRef.current?.offsetHeight / 2 || 0)
+      })
+    }
+  }
+
+  const stopDrag = () => {
+    setIsDragging(false)
+    document.body.style.userSelect = ''
+  }
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleDrag)
+      document.addEventListener('touchmove', handleDrag, { passive: false })
+      document.addEventListener('mouseup', stopDrag)
+      document.addEventListener('touchend', stopDrag)
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleDrag)
+      document.removeEventListener('touchmove', handleDrag)
+      document.removeEventListener('mouseup', stopDrag)
+      document.removeEventListener('touchend', stopDrag)
+    }
+  }, [isDragging])
 
   // Handle clicks outside menu
   useEffect(() => {
@@ -34,7 +79,7 @@ export default function MusicPlayer() {
     }
   }, [])
 
-  // Initialize audio and handle first interaction
+  // Initialize audio
   useEffect(() => {
     const handleFirstInteraction = () => {
       if (audioRef.current && !isPlaying) {
@@ -63,14 +108,12 @@ export default function MusicPlayer() {
     }
   }, [currentTrackIndex, isPlaying])
 
-  // Toggle mute/unmute
   const toggleMute = () => {
     if (audioRef.current) {
       const newMutedState = !audioRef.current.muted
       audioRef.current.muted = newMutedState
       setIsMuted(newMutedState)
       
-      // Try to play if not already playing
       if (!isPlaying && !newMutedState) {
         audioRef.current.play()
           .then(() => setIsPlaying(true))
@@ -95,7 +138,16 @@ export default function MusicPlayer() {
   if (isHidden) return null
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+    <div 
+      ref={playerRef}
+      className="fixed z-50 flex flex-col items-end gap-2 select-none"
+      style={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        cursor: isDragging ? 'grabbing' : 'pointer',
+        touchAction: isDragging ? 'none' : 'auto'
+      }}
+    >
       {showMenu && (
         <div 
           ref={menuRef}
@@ -147,20 +199,31 @@ export default function MusicPlayer() {
         </div>
       )}
 
-      <button
-        onClick={toggleMenu}
-        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative touch-manipulation active:scale-95"
-        aria-label={showMenu ? "Close settings" : "Open settings"}
-      >
-        {isMuted ? (
-          <VolumeX className="h-6 w-6 text-white" />
-        ) : (
-          <Volume2 className="h-6 w-6 text-white" />
-        )}
-        {!isMuted && isPlaying && (
-          <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3 animate-pulse"></div>
-        )}
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          onMouseDown={startDrag}
+          onTouchStart={startDrag}
+          className="p-2 rounded-full bg-black/50 hover:bg-white/20 transition-all"
+          aria-label="Drag player"
+        >
+          <Move className="h-4 w-4 text-white" />
+        </button>
+        
+        <button
+          onClick={toggleMenu}
+          className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all active:scale-95"
+          aria-label={showMenu ? "Close settings" : "Open settings"}
+        >
+          {isMuted ? (
+            <VolumeX className="h-6 w-6 text-white" />
+          ) : (
+            <Volume2 className="h-6 w-6 text-white" />
+          )}
+          {!isMuted && isPlaying && (
+            <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3 animate-pulse"></div>
+          )}
+        </button>
+      </div>
 
       <audio
         ref={audioRef}
