@@ -100,17 +100,17 @@ export default function HomePage() {
             {[
               {
                 icon: Music,
-                title: "Music Production",
+                title: "Production",
                 description: "State-of-the-art studio facilities and expert producers crafting the perfect sound.",
               },
               {
                 icon: Users,
-                title: "Artist Management",
+                title: "Management",
                 description: "Comprehensive career development, branding, and strategic planning for our artists.",
               },
               {
                 icon: Zap,
-                title: "Music Promotion",
+                title: "Promotion",
                 description: "Digital marketing mastery across Spotify, YouTube, TikTok, and beyond.",
               },
             ].map((service, index) => (
