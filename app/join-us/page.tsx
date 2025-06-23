@@ -79,7 +79,7 @@ export default function JoinUsPage() {
             transition={{ duration: 1 }}
             className="text-center mb-20"
           >
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text">JOIN THE REVOLUTION</h1>
+            <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text-neon">JOIN THE REVOLUTION</h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Ready to take your music to the next level? Join the NXT Balkan family and let's create the future of
               music together.
