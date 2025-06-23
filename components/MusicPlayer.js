@@ -1,4 +1,3 @@
-// components/MusicPlayer.js
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
@@ -6,20 +5,37 @@ import { Volume2, VolumeX } from 'lucide-react'
 
 export default function MusicPlayer() {
   const [isMuted, setIsMuted] = useState(true)
+  const [hasInteracted, setHasInteracted] = useState(false)
   const audioRef = useRef(null)
 
   useEffect(() => {
-    // Auto-play with muted start (browser requirements)
-    if (audioRef.current) {
-      audioRef.current.volume = 0.5
-      audioRef.current.muted = isMuted
+    // Poskusimo predvajati ob prvem uporabnikovem interakciju
+    const handleFirstInteraction = () => {
+      if (audioRef.current && !hasInteracted) {
+        audioRef.current.volume = 0.5
+        audioRef.current.muted = false
+        audioRef.current.play().catch(e => console.error("Play failed:", e))
+        setHasInteracted(true)
+      }
     }
-  }, [])
+
+    document.addEventListener('click', handleFirstInteraction, { once: true })
+    
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction)
+    }
+  }, [hasInteracted])
 
   const toggleMute = () => {
     if (audioRef.current) {
-      audioRef.current.muted = !isMuted
-      setIsMuted(!isMuted)
+      audioRef.current.muted = !audioRef.current.muted
+      setIsMuted(audioRef.current.muted)
+      
+      // Če še ni bilo interakcije, poskusimo predvajati
+      if (!hasInteracted) {
+        audioRef.current.play().catch(e => console.error("Play failed:", e))
+        setHasInteracted(true)
+      }
     }
   }
 
@@ -28,8 +44,7 @@ export default function MusicPlayer() {
       <audio 
         ref={audioRef} 
         loop
-        autoPlay
-        src="/music/vultures.mp3" // Change to your music file path
+        src="/music/vultures.mp3" // Preverite, da je pot do datoteke pravilna
       />
       
       <button
