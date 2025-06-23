@@ -148,74 +148,75 @@ export default function ServicesPage() {
       <div className="pt-32 pb-20 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
-<motion.div
-  initial={{ opacity: 0, y: 50 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  className="text-center mb-20"
->
-  <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text">OUR SERVICES</h1>
-  <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-    From studio to stage, we provide comprehensive solutions for every aspect of your musical journey.
-  </p>
-</motion.div>
-
-{/* Pricing Packages Section */}
-<motion.section
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  viewport={{ once: true }}
-  className="mb-32"
->
-  <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text-neon">Our Packages</h2>
-  <div className="grid md:grid-cols-3 gap-8">
-    {pricingPackages.map((pkg, index) => (
-      <motion.div
-        key={index}
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
-        viewport={{ once: true }}
-        className={`relative ${pkg.featured ? "scale-105 z-10" : ""}`}
-      >
-        {pkg.featured && (
-          <div className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur-md opacity-30 z-0"></div>
-        )}
-        <div className={`professional-card p-8 rounded-xl h-full relative z-10 ${pkg.featured ? "border-2 border-white/20 glow-border" : "border border-white/10"}`}>
-          <div className="mb-6">
-            <h3 className={`text-2xl font-bold mb-2 ${pkg.featured ? "gradient-text-neon" : "text-white"}`}>{pkg.title}</h3>
-            <p className="text-gray-400 mb-4">{pkg.description}</p>
-            <div className="text-4xl font-bold gradient-text">{pkg.price}</div>
-          </div>
-
-          <ul className="space-y-3 mb-6">
-            {pkg.features.map((feature, featureIndex) => (
-              <li key={featureIndex} className="flex items-start">
-                {feature.included ? (
-                  <Check className="h-5 w-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
-                ) : (
-                  <X className="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" />
-                )}
-                <span className={feature.included ? "text-gray-100" : "text-gray-500"}>{feature.name}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="text-sm text-gray-400 mt-auto">
-            <p>Delivery time: <span className="text-white">{pkg.delivery}</span></p>
-          </div>
-
-          <Button
-            className={`w-full mt-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600`}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-center mb-20"
           >
-            Get Started
-          </Button>
-        </div>
-      </motion.div>
-    ))}
-  </div>
-</motion.section>
+            <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text">OUR SERVICES</h1>
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              From studio to stage, we provide comprehensive solutions for every aspect of your musical journey.
+            </p>
+          </motion.div>
+
+          {/* Pricing Packages Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+            className="mb-32"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text-neon">Our Packages</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {pricingPackages.map((pkg, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className={`relative ${pkg.featured ? "scale-105 z-10" : ""}`}
+                >
+                  {pkg.featured && (
+                    <div className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur-md opacity-30 z-0"></div>
+                  )}
+                  <div className={`professional-card p-8 rounded-xl h-full relative z-10 ${pkg.featured ? "border-2 border-white/20 glow-border" : "border border-white/10"}`}>
+                    <div className="mb-6">
+                      <h3 className={`text-2xl font-bold mb-2 ${pkg.featured ? "gradient-text-neon" : "text-white"}`}>{pkg.title}</h3>
+                      <p className="text-gray-400 mb-4">{pkg.description}</p>
+                      <div className="text-4xl font-bold gradient-text">{pkg.price}</div>
+                    </div>
+
+                    <ul className="space-y-3 mb-6">
+                      {pkg.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start">
+                          {feature.included ? (
+                            <Check className="h-5 w-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
+                          ) : (
+                            <X className="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" />
+                          )}
+                          <span className={feature.included ? "text-gray-100" : "text-gray-500"}>{feature.name}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="text-sm text-gray-400 mt-auto">
+                      <p>Delivery time: <span className="text-white">{pkg.delivery}</span></p>
+                    </div>
+
+                    <Button
+                      className="w-full mt-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                    >
+                      Get Started
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
+
           {/* Services Grid */}
           <section className="mb-32">
             <div className="grid lg:grid-cols-2 gap-12">
@@ -254,38 +255,38 @@ export default function ServicesPage() {
           </section>
 
           {/* Process Section */}
-<motion.section
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  viewport={{ once: true }}
-  className="mb-32"
->
-  <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text-alt">Our Process</h2>
-  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-    {process.map((step, index) => (
-      <motion.div
-        key={index}
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: index * 0.2 }}
-        viewport={{ once: true }}
-        className="text-center group"
-      >
-        <div className="relative mb-6">
-          <div className="w-20 h-20 mx-auto bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
-            <step.icon className="h-8 w-8" />
-          </div>
-          <div className="absolute -top-2 -right-2 w-8 h-8 bg-white text-black rounded-full flex items-center justify-center text-sm font-bold">
-            {step.step}
-          </div>
-        </div>
-        <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-        <p className="text-gray-300 text-sm leading-relaxed">{step.description}</p>
-      </motion.div>
-    ))}
-  </div>
-</motion.section>
+          <motion.section
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+            className="mb-32"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text-alt">Our Process</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {process.map((step, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  className="text-center group"
+                >
+                  <div className="relative mb-6">
+                    <div className="w-20 h-20 mx-auto bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                      <step.icon className="h-8 w-8" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-white text-black rounded-full flex items-center justify-center text-sm font-bold">
+                      {step.step}
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">{step.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
 
           {/* CTA Section */}
           <motion.section
