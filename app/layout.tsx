@@ -11,7 +11,7 @@ import { LiveSupportSystem } from "@/components/live-support-system"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import Script from "next/script"
 import Head from "next/head"
-
+import { PremiumOffer } from '@/components/PremiumOffer';
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -118,6 +118,7 @@ export default function RootLayout({
           <ScrollToTop />
           <Navigation />
           <main>{children}</main>
+          <PremiumOffer />
           <NotificationToasts />
           <LiveSupportSystem />
         </ThemeProvider>
