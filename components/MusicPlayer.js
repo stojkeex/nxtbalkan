@@ -32,6 +32,7 @@ export default function MusicPlayer() {
     }
   }, [])
 
+  // Orbit animation
   useEffect(() => {
     if (isMenuOpen) {
       const animateOrbit = () => {
@@ -56,10 +57,8 @@ export default function MusicPlayer() {
 
   const handleDrag = (e) => {
     if (!isDragging) return
-
     const clientX = e.clientX || e.touches?.[0]?.clientX
     const clientY = e.clientY || e.touches?.[0]?.clientY
-
     if (clientX && clientY) {
       setPosition({
         x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
@@ -71,7 +70,6 @@ export default function MusicPlayer() {
   const stopDrag = () => {
     setIsDragging(false)
     document.body.style.userSelect = ''
-    setIsMenuOpen(false)
   }
 
   useEffect(() => {
@@ -111,50 +109,39 @@ export default function MusicPlayer() {
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = tracks[currentTrackIndex].path
-      if (isPlaying) {
-        audioRef.current.play()
-      }
+      if (isPlaying) audioRef.current.play()
     }
   }, [currentTrackIndex, isPlaying])
 
   const toggleMute = () => {
     if (audioRef.current) {
-      const newMutedState = !audioRef.current.muted
-      audioRef.current.muted = newMutedState
-      setIsMuted(newMutedState)
+      const newMuted = !audioRef.current.muted
+      audioRef.current.muted = newMuted
+      setIsMuted(newMuted)
 
-      if (!isPlaying && !newMutedState) {
-        audioRef.current.play()
-          .then(() => setIsPlaying(true))
-          .catch(e => console.log("Playback failed:", e))
+      if (!isPlaying && !newMuted) {
+        audioRef.current.play().then(() => setIsPlaying(true))
       }
     }
   }
 
   const nextTrack = () => {
     setCurrentTrackIndex((prev) => (prev + 1) % tracks.length)
-    setIsMenuOpen(false)
   }
 
   const prevTrack = () => {
     setCurrentTrackIndex((prev) => (prev - 1 + tracks.length) % tracks.length)
-    setIsMenuOpen(false)
   }
-
-  const toggleMenu = (e) => {
-    e.stopPropagation()
-    setIsMenuOpen(!isMenuOpen)
-  }
-
-  if (isHidden) return null
 
   const orbitRadius = 70
   const menuButtons = [
-    { icon: <ChevronLeft className="h-5 w-5 text-white" />, action: prevTrack, label: "Previous track" },
-    { icon: <Move className="h-5 w-5 text-white" />, action: startDrag, label: "Move player" },
-    { icon: <X className="h-5 w-5 text-white" />, action: () => setIsHidden(true), label: "Hide player" },
-    { icon: <ChevronRight className="h-5 w-5 text-white" />, action: nextTrack, label: "Next track" }
+    { icon: <ChevronLeft className="h-5 w-5 text-white" />, action: prevTrack, label: "Previous" },
+    { icon: <Move className="h-5 w-5 text-white" />, action: startDrag, label: "Move" },
+    { icon: <X className="h-5 w-5 text-white" />, action: () => setIsHidden(true), label: "Hide" },
+    { icon: <ChevronRight className="h-5 w-5 text-white" />, action: nextTrack, label: "Next" }
   ]
+
+  if (isHidden) return null
 
   return (
     <div
@@ -169,39 +156,28 @@ export default function MusicPlayer() {
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {menuButtons.map((button, index) => {
-              const anglePerButton = 360 / menuButtons.length
-              const totalAngle = orbitAngle + index * anglePerButton
-              const radians = (totalAngle * Math.PI) / 180
-              const x = orbitRadius * Math.cos(radians)
-              const y = orbitRadius * Math.sin(radians)
+            {menuButtons.map((btn, i) => {
+              const angle = (orbitAngle + i * (360 / menuButtons.length)) * (Math.PI / 180)
+              const x = orbitRadius * Math.cos(angle)
+              const y = orbitRadius * Math.sin(angle)
 
               return (
                 <motion.button
-                  key={index}
-                  initial={{ scale: 0, x: 0, y: 0, opacity: 0 }}
-                  animate={{
-                    scale: 1,
-                    x: x,
-                    y: y,
-                    opacity: 1
-                  }}
+                  key={i}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, x, y, opacity: 1 }}
                   exit={{ scale: 0, x: 0, y: 0, opacity: 0 }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 20
-                  }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   onClick={(e) => {
                     e.stopPropagation()
-                    button.action()
+                    btn.action(e)
                   }}
-                  onMouseDown={button.label === "Move player" ? button.action : undefined}
-                  onTouchStart={button.label === "Move player" ? button.action : undefined}
-                  className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
-                  aria-label={button.label}
+                  onMouseDown={btn.label === "Move" ? btn.action : undefined}
+                  onTouchStart={btn.label === "Move" ? btn.action : undefined}
+                  className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all shadow-lg"
+                  aria-label={btn.label}
                 >
-                  {button.icon}
+                  {btn.icon}
                 </motion.button>
               )
             })}
@@ -209,26 +185,23 @@ export default function MusicPlayer() {
         )}
       </AnimatePresence>
 
+      {/* Main toggle/menu/mute button */}
       <motion.button
         onClick={(e) => {
-          toggleMute()
-          toggleMenu(e)
+          e.stopPropagation()
+          setIsMenuOpen(prev => !prev)
         }}
         whileTap={{ scale: 0.9 }}
         className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg z-10"
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         animate={{ rotate: isMenuOpen ? 180 : 0 }}
         transition={{ type: 'spring', stiffness: 300 }}
+        aria-label="Toggle menu"
       >
-        {isMuted ? (
-          <VolumeX className="h-6 w-6 text-white" />
-        ) : (
-          <Volume2 className="h-6 w-6 text-white" />
-        )}
+        {isMuted ? <VolumeX className="h-6 w-6 text-white" /> : <Volume2 className="h-6 w-6 text-white" />}
         {!isMuted && isPlaying && (
           <motion.div
             className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3"
-                        animate={{ opacity: [0.5, 1, 0.5] }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />
         )}
@@ -244,4 +217,3 @@ export default function MusicPlayer() {
     </div>
   )
 }
-         
