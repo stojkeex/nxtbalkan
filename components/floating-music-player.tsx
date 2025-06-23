@@ -35,8 +35,8 @@ const sampleTracks: Track[] = [
     artist: "Luna Eclipse",
     album: "Neon Nights",
     duration: "3:42",
-    cover: "/placeholder.svg?height=300&width=300",
-    src: "music/vultures.mp3",
+    cover: "/music/covers/midnight-dreams.jpg",
+    audioUrl: "/music/voulters.mp3",
   },
   {
     id: 2,
@@ -44,8 +44,8 @@ const sampleTracks: Track[] = [
     artist: "Cyber Wave",
     album: "Digital Horizon",
     duration: "4:15",
-    cover: "/placeholder.svg?height=300&width=300",
-    src: "",
+    cover: "/music/covers/electric-pulse.jpg",
+    audioUrl: "/music/electric-pulse.mp3",
   },
   {
     id: 3,
@@ -53,8 +53,8 @@ const sampleTracks: Track[] = [
     artist: "Cosmic Drift",
     album: "Beyond Stars",
     duration: "5:28",
-    cover: "/placeholder.svg?height=300&width=300",
-    src: "",
+    cover: "/music/covers/stellar-journey.jpg",
+    audioUrl: "/music/stellar-journey.mp3",
   },
 ]
 
