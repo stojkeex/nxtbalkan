@@ -160,62 +160,62 @@ export default function ServicesPage() {
             </p>
           </motion.div>
 
-          {/* Pricing Packages Section */}
-          <motion.section
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="mb-32"
+         {/* Pricing Packages Section */}
+<motion.section
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1 }}
+  viewport={{ once: true }}
+  className="mb-32"
+>
+  <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text-neon">Our Packages</h2>
+  <div className="grid md:grid-cols-3 gap-8">
+    {pricingPackages.map((pkg, index) => (
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        viewport={{ once: true }}
+        className={`relative ${pkg.featured ? "scale-105 z-10" : ""}`}
+      >
+        {pkg.featured && (
+          <div className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur-md opacity-30 z-0"></div>
+        )}
+        <div className={`professional-card p-8 rounded-xl h-full relative z-10 ${pkg.featured ? "border-2 border-white/20 glow-border" : "border border-white/10"}`}>
+          <div className="mb-6">
+            <h3 className={`text-2xl font-bold mb-2 ${pkg.featured ? "gradient-text-neon" : "text-white"}`}>{pkg.title}</h3>
+            <div className="text-4xl font-bold mb-2 gradient-text">{pkg.price}</div>
+            <p className="text-gray-400">{pkg.description}</p>
+          </div>
+
+          <ul className="space-y-3 mb-6">
+            {pkg.features.map((feature, featureIndex) => (
+              <li key={featureIndex} className="flex items-start">
+                {feature.included ? (
+                  <Check className="h-5 w-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
+                ) : (
+                  <X className="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" />
+                )}
+                <span className={feature.included ? "text-gray-100" : "text-gray-500"}>{feature.name}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="text-sm text-gray-400 mt-auto">
+            <p>Delivery time: <span className="text-white">{pkg.delivery}</span></p>
+          </div>
+
+          <Button
+            className={`w-full mt-6 ${pkg.featured ? "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600" : "bg-white/10 hover:bg-white/20"}`}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text-neon">Our Packages</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {pricingPackages.map((pkg, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className={`relative ${pkg.featured ? "scale-105 z-10" : ""}`}
-                >
-                  {pkg.featured && (
-                    <div className="absolute -top-3 -left-3 -right-3 -bottom-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl blur-md opacity-30 z-0"></div>
-                  )}
-                  <div className={`professional-card p-8 rounded-xl h-full relative z-10 ${pkg.featured ? "border-2 border-white/20 glow-border" : "border border-white/10"}`}>
-                    <div className="mb-6">
-                      <h3 className={`text-2xl font-bold mb-2 ${pkg.featured ? "gradient-text-neon" : "text-white"}`}>{pkg.title}</h3>
-                      <div className="text-4xl font-bold mb-2 gradient-text">{pkg.price}</div>
-                      <p className="text-gray-400">{pkg.description}</p>
-                    </div>
-
-                    <ul className="space-y-3 mb-6">
-                      {pkg.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start">
-                          {feature.included ? (
-                            <Check className="h-5 w-5 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
-                          ) : (
-                            <X className="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" />
-                          )}
-                          <span className={feature.included ? "text-gray-100" : "text-gray-500"}>{feature.name}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="text-sm text-gray-400 mt-auto">
-                      <p>Delivery time: <span className="text-white">{pkg.delivery}</span></p>
-                    </div>
-
-                    <Button
-                      className={`w-full mt-6 ${pkg.featured ? "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600" : "bg-white/10 hover:bg-white/20"}`}
-                    >
-                      Get Started
-                    </Button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.section>
+            Get Started
+          </Button>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+</motion.section>
 
           {/* Services Grid */}
           <section className="mb-32">
