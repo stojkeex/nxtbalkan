@@ -19,30 +19,15 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4">
         <div className="text-center z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.2, type: "spring", stiffness: 100 }}
-            className="mb-8"
-          >
-            <motion.img
-              src="/images/nxt-balkan-logo.png"
-              alt="NXT Balkan"
-              className="w-64 h-auto mx-auto mb-8 hover-target"
-              whileHover={{ scale: 1.05, rotate: [0, -2, 2, 0] }}
-              transition={{ duration: 0.5 }}
-            />
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
             className="text-6xl md:text-8xl font-bold mb-6 tracking-tight gradient-text-neon"
           >
-            BALKAN
+            NXT
             <br />
-            FUTURE
+            BALKAN
           </motion.h1>
 
           <motion.p
