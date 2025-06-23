@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Volume2, VolumeX, X, Move, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -27,13 +27,12 @@ export default function MusicPlayer() {
       x: window.innerWidth - 100,
       y: window.innerHeight - 180
     })
-
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
   }, [])
 
-  // Optimizirana animacija za mobilne naprave in računalnik
+  // Vrtenje gumba brez spreminjanja oddaljenosti
   useEffect(() => {
     const animateOrbit = () => {
       if (isMenuOpen) {
@@ -44,53 +43,14 @@ export default function MusicPlayer() {
 
     if (isMenuOpen) {
       animationRef.current = requestAnimationFrame(animateOrbit)
+    } else {
+      cancelAnimationFrame(animationRef.current)
     }
 
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
   }, [isMenuOpen])
-
-  // Start dragging funkcionalnost
-  const startDrag = (e) => {
-    e.stopPropagation()
-    setIsDragging(true)
-    document.body.style.userSelect = 'none'
-  }
-
-  // Debouncing za premikanje
-  const handleDrag = useCallback((e) => {
-    if (!isDragging) return
-    const clientX = e.clientX || e.touches?.[0]?.clientX
-    const clientY = e.clientY || e.touches?.[0]?.clientY
-    if (clientX && clientY) {
-      setPosition({
-        x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
-        y: Math.max(80, Math.min(window.innerHeight - 80, clientY - 24))
-      })
-    }
-  }, [isDragging])
-
-  const stopDrag = () => {
-    setIsDragging(false)
-    document.body.style.userSelect = ''
-  }
-
-  useEffect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleDrag)
-      document.addEventListener('touchmove', handleDrag, { passive: false })
-      document.addEventListener('mouseup', stopDrag)
-      document.addEventListener('touchend', stopDrag)
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleDrag)
-      document.removeEventListener('touchmove', handleDrag)
-      document.removeEventListener('mouseup', stopDrag)
-      document.removeEventListener('touchend', stopDrag)
-    }
-  }, [isDragging, handleDrag])
 
   // Začetno nalaganje audio datotek
   useEffect(() => {
@@ -149,6 +109,12 @@ export default function MusicPlayer() {
 
   if (isHidden) return null
 
+  // Glavni gumb brez animacije
+  const handleToggleMenu = (e) => {
+    e.stopPropagation()
+    setIsMenuOpen(prev => !prev)
+  }
+
   return (
     <div
       className="fixed z-50 select-none"
@@ -193,10 +159,7 @@ export default function MusicPlayer() {
 
       {/* Glavni gumb brez animacije */}
       <motion.button
-        onClick={(e) => {
-          e.stopPropagation()
-          setIsMenuOpen(prev => !prev)
-        }}
+        onClick={handleToggleMenu}
         className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg z-10"
         aria-label="Toggle menu"
       >
