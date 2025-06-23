@@ -18,6 +18,12 @@ export default function MusicPlayer() {
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [menuPositions, setMenuPositions] = useState({
+    left: { x: -60, y: 0 },
+    top: { x: 0, y: -60 },
+    bottom: { x: 0, y: 60 },
+    right: { x: 60, y: 0 }
+  })
   const audioRef = useRef(null)
   const playerRef = useRef(null)
 
@@ -25,9 +31,43 @@ export default function MusicPlayer() {
   useEffect(() => {
     setPosition({
       x: window.innerWidth - 100,
-      y: window.innerHeight - 100
+      y: window.innerHeight - 150 // Start slightly higher
     })
   }, [])
+
+  // Adjust menu positions when opening or moving
+  useEffect(() => {
+    if (isMenuOpen && playerRef.current) {
+      const playerRect = playerRef.current.getBoundingClientRect()
+      const buttonRadius = 60 // Distance from center
+      const buttonSize = 44 // Button width/height
+      const padding = 20 // Extra space from screen edge
+      
+      const newPositions = { ...menuPositions }
+
+      // Check left side
+      if (playerRect.left + playerRect.width/2 - buttonRadius - buttonSize < padding) {
+        newPositions.left.x = -40 // Bring closer if near edge
+      }
+
+      // Check right side
+      if (playerRect.left + playerRect.width/2 + buttonRadius + buttonSize > window.innerWidth - padding) {
+        newPositions.right.x = 40 // Bring closer if near edge
+      }
+
+      // Check top side
+      if (playerRect.top + playerRect.height/2 - buttonRadius - buttonSize < padding) {
+        newPositions.top.y = -40 // Bring closer if near edge
+      }
+
+      // Check bottom side
+      if (playerRect.top + playerRect.height/2 + buttonRadius + buttonSize > window.innerHeight - padding) {
+        newPositions.bottom.y = 40 // Bring closer if near edge
+      }
+
+      setMenuPositions(newPositions)
+    }
+  }, [isMenuOpen, position])
 
   // Handle dragging
   const startDrag = (e) => {
@@ -44,8 +84,8 @@ export default function MusicPlayer() {
     
     if (clientX && clientY) {
       setPosition({
-        x: clientX - (playerRef.current?.offsetWidth / 2 || 0),
-        y: clientY - (playerRef.current?.offsetHeight / 2 || 0)
+        x: Math.max(50, Math.min(window.innerWidth - 50, clientX - (playerRef.current?.offsetWidth / 2 || 0)), // Keep within screen bounds
+        y: Math.max(50, Math.min(window.innerHeight - 50, clientY - (playerRef.current?.offsetHeight / 2 || 0)))
       })
     }
   }
@@ -53,7 +93,7 @@ export default function MusicPlayer() {
   const stopDrag = () => {
     setIsDragging(false)
     document.body.style.userSelect = ''
-    setIsMenuOpen(false) // Close menu when dragging stops
+    setIsMenuOpen(false)
   }
 
   useEffect(() => {
@@ -117,10 +157,12 @@ export default function MusicPlayer() {
 
   const nextTrack = () => {
     setCurrentTrackIndex((prev) => (prev + 1) % tracks.length)
+    setIsMenuOpen(false)
   }
 
   const prevTrack = () => {
     setCurrentTrackIndex((prev) => (prev - 1 + tracks.length) % tracks.length)
+    setIsMenuOpen(false)
   }
 
   const toggleMenu = (e) => {
@@ -147,11 +189,11 @@ export default function MusicPlayer() {
             {/* Previous Track Button */}
             <motion.button
               initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: -60, y: 0 }}
+              animate={{ scale: 1, x: menuPositions.left.x, y: menuPositions.left.y }}
               exit={{ scale: 0, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               onClick={prevTrack}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
               aria-label="Previous track"
             >
               <ChevronLeft className="h-5 w-5 text-white" />
@@ -160,12 +202,12 @@ export default function MusicPlayer() {
             {/* Move Button */}
             <motion.button
               initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: 0, y: -60 }}
+              animate={{ scale: 1, x: menuPositions.top.x, y: menuPositions.top.y }}
               exit={{ scale: 0, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
               onMouseDown={startDrag}
               onTouchStart={startDrag}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
               aria-label="Move player"
             >
               <Move className="h-5 w-5 text-white" />
@@ -174,11 +216,11 @@ export default function MusicPlayer() {
             {/* Hide Button */}
             <motion.button
               initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: 0, y: 60 }}
+              animate={{ scale: 1, x: menuPositions.bottom.x, y: menuPositions.bottom.y }}
               exit={{ scale: 0, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.2 }}
               onClick={() => setIsHidden(true)}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
               aria-label="Hide player"
             >
               <X className="h-5 w-5 text-white" />
@@ -187,11 +229,11 @@ export default function MusicPlayer() {
             {/* Next Track Button */}
             <motion.button
               initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: 60, y: 0 }}
+              animate={{ scale: 1, x: menuPositions.right.x, y: menuPositions.right.y }}
               exit={{ scale: 0, x: 0, y: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.3 }}
               onClick={nextTrack}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
               aria-label="Next track"
             >
               <ChevronRight className="h-5 w-5 text-white" />
@@ -203,7 +245,7 @@ export default function MusicPlayer() {
       <motion.button
         onClick={toggleMenu}
         whileTap={{ scale: 0.9 }}
-        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative"
+        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
       >
         {isMuted ? (
