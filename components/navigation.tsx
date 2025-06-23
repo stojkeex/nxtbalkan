@@ -89,15 +89,14 @@ export function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            <Link href="/" className="flex items-center space-x-3" onClick={handleLinkClick}>
+            <Link href="/" className="flex items-center space-x-2" onClick={handleLinkClick}>
               <motion.img
                 src="/nxtbalkancolored2.png"
                 alt="NXT Balkan"
-                className="h-10 w-auto" {/* Increased from h-8 to h-10 */}
+                className="h-8 w-auto"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               />
-              <span className="text-white font-bold text-lg hidden sm:block">NXT BALKAN</span> {/* Added text logo */}
             </Link>
 
             <div className="hidden md:flex items-center space-x-8">
@@ -169,7 +168,7 @@ export function Navigation() {
               background: "rgba(0, 0, 0, 0.95)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              touchAction: "none"
+              touchAction: "none" // Prepreči scroll na mobilnih
             }}
           >
             <div className="absolute inset-0 overflow-y-auto">
@@ -178,10 +177,9 @@ export function Navigation() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.1, duration: 0.4 }}
-                  className="mb-8 flex flex-col items-center"
+                  className="mb-8"
                 >
-                  <img src="/nxtbalkancolored2.png" alt="NXT Balkan" className="h-16 w-auto mb-2" />
-                  <span className="text-white font-bold text-xl">NXT BALKAN</span> {/* Added text in mobile menu */}
+                  <img src="/images/nxt-balkan-logo.png" alt="NXT Balkan" className="h-16 w-auto" />
                 </motion.div>
 
                 {navItems.map((item, index) => (
@@ -227,4 +225,4 @@ export function Navigation() {
       </AnimatePresence>
     </>
   )
-}
+} 
