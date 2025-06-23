@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useRef, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -37,6 +35,7 @@ interface Track {
   duration: string
   cover: string
   audioUrl: string
+  fileObject?: File
 }
 
 interface Playlist {
@@ -53,8 +52,7 @@ const sampleTracks: Track[] = [
     artist: "¥$, Ye, Ty Dolla $ign",
     album: "VULTURES 1",
     duration: "4:24",
-    cover:
-      "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
+    cover: "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
     audioUrl: "/music/vultures.mp3",
   },
   {
@@ -63,8 +61,7 @@ const sampleTracks: Track[] = [
     artist: "¥$, Ye, Ty Dolla $ign",
     album: "VULTURES 1",
     duration: "4:21",
-    cover:
-      "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
+    cover: "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
     audioUrl: "/music/CARNIVAL.mp3",
   },
   {
@@ -73,8 +70,7 @@ const sampleTracks: Track[] = [
     artist: "Kanye West",
     album: "808's and Heartbreak",
     duration: "3:30",
-    cover:
-      "https://lh3.googleusercontent.com/exflW3HncdenT5gT0RFYTF4PfxoC2UIAjC3gdVO9troE_u8bW7g8tqvqas9x_hozALD5wu_rYbm0k1Jk",
+    cover: "https://lh3.googleusercontent.com/exflW3HncdenT5gT0RFYTF4PfxoC2UIAjC3gdVO9troE_u8bW7g8tqvqas9x_hozALD5wu_rYbm0k1Jk",
     audioUrl: "/music/Heartless.mp3",
   },
 ]
@@ -107,7 +103,7 @@ export default function FloatingMusicPlayer() {
   const [volume, setVolume] = useState([75])
   const [isMuted, setIsMuted] = useState(false)
   const [isShuffled, setIsShuffled] = useState(false)
-  const [repeatMode, setRepeatMode] = useState(0) // 0: off, 1: all, 2: one
+  const [repeatMode, setRepeatMode] = useState(0)
   const [shuffledTracks, setShuffledTracks] = useState<Track[]>([])
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0)
   const [playlists, setPlaylists] = useState<Playlist[]>(defaultPlaylists)
@@ -117,124 +113,115 @@ export default function FloatingMusicPlayer() {
   const [selectedPlaylistForAdd, setSelectedPlaylistForAdd] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const [allTracks, setAllTracks] = useState<Track[]>(sampleTracks)
+  const [notification, setNotification] = useState("")
 
   const audioRef = useRef<HTMLAudioElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const tempAudioRef = useRef<HTMLAudioElement>(null)
 
-  // Media Session API for system notifications - Enhanced
-  useEffect(() => {
-    if ("mediaSession" in navigator) {
-      // Set metadata immediately
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: `${currentTrack.title} • NXT Balkan`,
-        artist: currentTrack.artist,
-        album: `NXT Balkan - ${currentTrack.album}`,
-        artwork: [
-          {
-            src: currentTrack.cover,
-            sizes: "96x96",
-            type: "image/jpeg",
-          },
-          {
-            src: currentTrack.cover,
-            sizes: "128x128",
-            type: "image/jpeg",
-          },
-          {
-            src: currentTrack.cover,
-            sizes: "192x192",
-            type: "image/jpeg",
-          },
-          {
-            src: currentTrack.cover,
-            sizes: "256x256",
-            type: "image/jpeg",
-          },
-          {
-            src: currentTrack.cover,
-            sizes: "384x384",
-            type: "image/jpeg",
-          },
-          {
-            src: currentTrack.cover,
-            sizes: "512x512",
-            type: "image/jpeg",
-          },
-        ],
-      })
+  // Handle file uploads with mobile support
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (!files || files.length === 0) return
 
-      // Set action handlers
-      navigator.mediaSession.setActionHandler("play", () => {
-        if (!isPlaying) togglePlay()
-      })
+    const newTracks: Track[] = []
+    let hasValidFiles = false
 
-      navigator.mediaSession.setActionHandler("pause", () => {
-        if (isPlaying) togglePlay()
-      })
-
-      navigator.mediaSession.setActionHandler("previoustrack", () => {
-        previousTrack()
-      })
-
-      navigator.mediaSession.setActionHandler("nexttrack", () => {
-        nextTrack()
-      })
-
-      navigator.mediaSession.setActionHandler("seekbackward", (details) => {
-        const audio = audioRef.current
-        if (audio) {
-          audio.currentTime = Math.max(audio.currentTime - (details.seekOffset || 10), 0)
-        }
-      })
-
-      navigator.mediaSession.setActionHandler("seekforward", (details) => {
-        const audio = audioRef.current
-        if (audio) {
-          audio.currentTime = Math.min(audio.currentTime + (details.seekOffset || 10), audio.duration)
-        }
-      })
-
-      navigator.mediaSession.setActionHandler("seekto", (details) => {
-        const audio = audioRef.current
-        if (audio && details.seekTime) {
-          audio.currentTime = details.seekTime
-        }
-      })
-
-      // Update playback state
-      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused"
-
-      // Force update for mobile browsers
-      if (isPlaying) {
-        setTimeout(() => {
-          navigator.mediaSession.playbackState = "playing"
-        }, 100)
+    for (const file of Array.from(files)) {
+      if (!file.type.startsWith("audio/") && !file.name.toLowerCase().endsWith('.mp3')) {
+        continue
       }
-    }
-  }, [currentTrack, isPlaying])
 
-  // Update position state
-  useEffect(() => {
-    if ("mediaSession" in navigator && "setPositionState" in navigator.mediaSession) {
-      navigator.mediaSession.setPositionState({
-        duration: duration,
-        playbackRate: 1,
-        position: currentTime,
+      hasValidFiles = true
+      let audioUrl = ""
+      let trackDuration = "0:00"
+
+      try {
+        audioUrl = URL.createObjectURL(file)
+        trackDuration = await getAudioDuration(file)
+      } catch (error) {
+        console.log("Using fallback for file:", file.name)
+        audioUrl = ""
+      }
+
+      newTracks.push({
+        id: Date.now() + Math.random(),
+        title: file.name.replace(/\.[^/.]+$/, ""),
+        artist: "Unknown Artist",
+        album: "Local Files",
+        duration: trackDuration,
+        cover: "/placeholder.svg",
+        audioUrl: audioUrl,
+        fileObject: audioUrl ? undefined : file
       })
     }
-  }, [currentTime, duration])
+
+    if (!hasValidFiles) {
+      setNotification("Please select valid MP3 files")
+      setTimeout(() => setNotification(""), 3000)
+      return
+    }
+
+    setAllTracks(prev => [...prev, ...newTracks])
+    setPlaylists(prev => prev.map(playlist => 
+      playlist.name === "All Songs" ? {...playlist, tracks: [...playlist.tracks, ...newTracks]} : playlist
+    ))
+    
+    if (currentPlaylist.name === "All Songs") {
+      setCurrentPlaylist(prev => ({
+        ...prev,
+        tracks: [...prev.tracks, ...newTracks]
+      }))
+    }
+
+    setNotification(`Added ${newTracks.length} track(s)`)
+    setTimeout(() => setNotification(""), 3000)
+    if (event.target) event.target.value = ""
+  }
+
+  const getAudioDuration = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const audio = new Audio()
+      const url = URL.createObjectURL(file)
+
+      audio.addEventListener("loadedmetadata", () => {
+        const duration = audio.duration || 0
+        const minutes = Math.floor(duration / 60)
+        const seconds = Math.floor(duration % 60)
+        resolve(`${minutes}:${seconds.toString().padStart(2, "0")}`)
+        URL.revokeObjectURL(url)
+      })
+
+      audio.addEventListener("error", () => {
+        resolve("0:00")
+        URL.revokeObjectURL(url)
+      })
+
+      audio.src = url
+    })
+  }
 
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
 
+    if (currentTrack.fileObject && !currentTrack.audioUrl) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          audio.src = e.target.result as string
+          if (isPlaying) audio.play().catch(console.error)
+        }
+      }
+      reader.readAsDataURL(currentTrack.fileObject)
+    } else {
+      audio.src = currentTrack.audioUrl
+      if (isPlaying) audio.play().catch(console.error)
+    }
+
     const updateTime = () => setCurrentTime(audio.currentTime)
     const updateDuration = () => setDuration(audio.duration)
-
-    const handleEnded = () => {
-      handleTrackEnd()
-    }
+    const handleEnded = () => handleTrackEnd()
 
     audio.addEventListener("timeupdate", updateTime)
     audio.addEventListener("loadedmetadata", updateDuration)
@@ -245,126 +232,40 @@ export default function FloatingMusicPlayer() {
       audio.removeEventListener("loadedmetadata", updateDuration)
       audio.removeEventListener("ended", handleEnded)
     }
-  }, [currentTrack])
+  }, [currentTrack, isPlaying])
 
-  // Handle what happens when track ends
   const handleTrackEnd = useCallback(() => {
     if (repeatMode === 2) {
-      // Repeat current track
-      const audio = audioRef.current
-      if (audio) {
-        audio.currentTime = 0
-        audio.play()
-        setIsPlaying(true)
-      }
-    } else if (repeatMode === 1) {
-      // Repeat all - go to next track
-      nextTrack()
-    } else if (isShuffled) {
-      // Shuffle mode - go to next track
-      nextTrack()
+      audioRef.current?.play()
     } else {
-      // No repeat - check if we're at the end
-      const currentIndex = currentPlaylist.tracks.findIndex((track) => track.id === currentTrack.id)
-      if (currentIndex < currentPlaylist.tracks.length - 1) {
-        nextTrack()
-      } else {
-        setIsPlaying(false)
-      }
+      nextTrack()
     }
-  }, [repeatMode, isShuffled, currentPlaylist.tracks, currentTrack.id])
-
-  // Auto-load & play the new track (fixes NotSupportedError)
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    // force reload so browser recognises the new source
-    audio.load()
-
-    const handleReady = () => {
-      // play only after the source is ready
-      if (isPlaying) {
-        audio
-          .play()
-          .then(() => setIsPlaying(true))
-          .catch(console.error)
-      }
-    }
-
-    audio.addEventListener("loadeddata", handleReady)
-    return () => audio.removeEventListener("loadeddata", handleReady)
-  }, [currentTrack])
-
-  // Lock body scroll when mobile player is open - FIXED
-  useEffect(() => {
-    if (isOpen && !isMinimized) {
-      // Only lock on mobile
-      const isMobile = window.innerWidth < 768
-      if (isMobile) {
-        // Save current scroll position
-        const scrollY = window.scrollY
-        document.body.style.position = "fixed"
-        document.body.style.top = `-${scrollY}px`
-        document.body.style.width = "100%"
-        document.body.style.overflow = "hidden"
-
-        return () => {
-          // Restore scroll position when cleaning up
-          document.body.style.position = ""
-          document.body.style.top = ""
-          document.body.style.width = ""
-          document.body.style.overflow = ""
-          window.scrollTo(0, scrollY)
-        }
-      }
-    }
-  }, [isOpen, isMinimized])
+  }, [repeatMode])
 
   const togglePlay = () => {
-    const audio = audioRef.current
-    if (!audio) return
-
     if (isPlaying) {
-      audio.pause()
-      setIsPlaying(false)
+      audioRef.current?.pause()
     } else {
-      audio
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(console.error)
+      audioRef.current?.play().catch(console.error)
     }
+    setIsPlaying(!isPlaying)
   }
 
-  const handleProgressChange = (value: number[]) => {
-    const audio = audioRef.current
-    if (!audio) return
+  const nextTrack = useCallback(() => {
+    const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
+    const currentIndex = tracks.findIndex(t => t.id === currentTrack.id)
+    const nextIndex = (currentIndex + 1) % tracks.length
+    setCurrentTrack(tracks[nextIndex])
+    setIsPlaying(true)
+  }, [currentTrack.id, currentPlaylist.tracks, isShuffled, shuffledTracks])
 
-    audio.currentTime = value[0]
-    setCurrentTime(value[0])
-  }
-
-  const handleVolumeChange = (value: number[]) => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    setVolume(value)
-    audio.volume = value[0] / 100
-    setIsMuted(value[0] === 0)
-  }
-
-  const toggleMute = () => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    if (isMuted) {
-      audio.volume = volume[0] / 100
-      setIsMuted(false)
-    } else {
-      audio.volume = 0
-      setIsMuted(true)
-    }
-  }
+  const previousTrack = useCallback(() => {
+    const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
+    const currentIndex = tracks.findIndex(t => t.id === currentTrack.id)
+    const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1
+    setCurrentTrack(tracks[prevIndex])
+    setIsPlaying(true)
+  }, [currentTrack.id, currentPlaylist.tracks, isShuffled, shuffledTracks])
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60)
@@ -372,166 +273,44 @@ export default function FloatingMusicPlayer() {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`
   }
 
-  const toggleShuffle = useCallback(() => {
+  const toggleShuffle = () => {
     if (!isShuffled) {
-      // Turn on shuffle
       const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
       setShuffledTracks(shuffled)
-      const currentIndex = shuffled.findIndex((track) => track.id === currentTrack.id)
-      setCurrentShuffleIndex(currentIndex >= 0 ? currentIndex : 0)
-      setIsShuffled(true)
-    } else {
-      // Turn off shuffle
-      setIsShuffled(false)
-      setShuffledTracks([])
-      setCurrentShuffleIndex(0)
+      setCurrentShuffleIndex(shuffled.findIndex(t => t.id === currentTrack.id))
     }
-  }, [isShuffled, currentPlaylist.tracks, currentTrack.id])
+    setIsShuffled(!isShuffled)
+  }
 
-  const toggleRepeat = useCallback(() => {
+  const toggleRepeat = () => {
     setRepeatMode((prev) => (prev + 1) % 3)
-    // 0: no repeat, 1: repeat all, 2: repeat one
-  }, [])
+  }
 
-  const nextTrack = useCallback(() => {
-    if (isShuffled && shuffledTracks.length > 0) {
-      const nextIndex = (currentShuffleIndex + 1) % shuffledTracks.length
-      setCurrentShuffleIndex(nextIndex)
-      setCurrentTrack(shuffledTracks[nextIndex])
-    } else {
-      const currentIndex = currentPlaylist.tracks.findIndex((track) => track.id === currentTrack.id)
-      const nextIndex = (currentIndex + 1) % currentPlaylist.tracks.length
-
-      // If repeat is off and we're at the end, stop playing
-      if (repeatMode === 0 && currentIndex === currentPlaylist.tracks.length - 1) {
-        setIsPlaying(false)
-        return
-      }
-
-      setCurrentTrack(currentPlaylist.tracks[nextIndex])
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted
+      setIsMuted(!isMuted)
     }
-    setIsPlaying(true)
-  }, [isShuffled, shuffledTracks, currentShuffleIndex, currentPlaylist.tracks, currentTrack.id, repeatMode])
+  }
 
-  const previousTrack = useCallback(() => {
-    if (isShuffled && shuffledTracks.length > 0) {
-      const prevIndex = currentShuffleIndex === 0 ? shuffledTracks.length - 1 : currentShuffleIndex - 1
-      setCurrentShuffleIndex(prevIndex)
-      setCurrentTrack(shuffledTracks[prevIndex])
-    } else {
-      const currentIndex = currentPlaylist.tracks.findIndex((track) => track.id === currentTrack.id)
-      const prevIndex = currentIndex === 0 ? currentPlaylist.tracks.length - 1 : currentIndex - 1
-      setCurrentTrack(currentPlaylist.tracks[prevIndex])
+  const handleProgressChange = (value: number[]) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = value[0]
+      setCurrentTime(value[0])
     }
-    setIsPlaying(true)
-  }, [isShuffled, shuffledTracks, currentShuffleIndex, currentPlaylist.tracks, currentTrack.id])
+  }
+
+  const handleVolumeChange = (value: number[]) => {
+    if (audioRef.current) {
+      setVolume(value)
+      audioRef.current.volume = value[0] / 100
+      setIsMuted(value[0] === 0)
+    }
+  }
 
   const selectTrack = (track: Track) => {
     setCurrentTrack(track)
     setIsPlaying(true)
-
-    // Update shuffle index if shuffled
-    if (isShuffled && shuffledTracks.length > 0) {
-      const shuffleIndex = shuffledTracks.findIndex((t) => t.id === track.id)
-      if (shuffleIndex >= 0) {
-        setCurrentShuffleIndex(shuffleIndex)
-      }
-    }
-  }
-
-  const openPlayer = () => {
-    setIsOpen(true)
-    setIsMinimized(false)
-  }
-
-  const closePlayer = () => {
-    setIsOpen(false)
-    setIsMinimized(false)
-    setShowPlaylistSelector(false)
-    setShowCreatePlaylist(false)
-    setShowAddToPlaylist(false)
-    setShowDesktopPlaylistSelector(false)
-  }
-
-  const minimizePlayer = () => {
-    setIsMinimized(true)
-    setShowPlaylistSelector(false)
-    setShowCreatePlaylist(false)
-    setShowAddToPlaylist(false)
-    setShowDesktopPlaylistSelector(false)
-  }
-
-  // Get audio duration helper function
-  const getAudioDuration = (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      const audio = new Audio()
-      const url = URL.createObjectURL(file)
-
-      audio.addEventListener("loadedmetadata", () => {
-        const duration = audio.duration
-        const minutes = Math.floor(duration / 60)
-        const seconds = Math.floor(duration % 60)
-        const formattedDuration = `${minutes}:${seconds.toString().padStart(2, "0")}`
-        URL.revokeObjectURL(url)
-        resolve(formattedDuration)
-      })
-
-      audio.addEventListener("error", () => {
-        URL.revokeObjectURL(url)
-        resolve("0:00")
-      })
-
-      audio.src = url
-    })
-  }
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
-    if (!files) return
-
-    const newTracks: Track[] = []
-
-    for (const file of Array.from(files)) {
-      if (file.type.startsWith("audio/")) {
-        const url = URL.createObjectURL(file)
-        const duration = await getAudioDuration(file)
-
-        const newTrack: Track = {
-          id: Date.now() + Math.random(),
-          title: file.name.replace(/\.[^/.]+$/, ""),
-          artist: "Unknown Artist",
-          album: "Local Files",
-          duration: duration,
-          cover: "/placeholder.svg?height=300&width=300",
-          audioUrl: url,
-        }
-
-        newTracks.push(newTrack)
-      }
-    }
-
-    // Add to all tracks
-    setAllTracks((prev) => [...prev, ...newTracks])
-
-    // Add to All Songs playlist
-    setPlaylists((prev) =>
-      prev.map((playlist) =>
-        playlist.name === "All Songs" ? { ...playlist, tracks: [...playlist.tracks, ...newTracks] } : playlist,
-      ),
-    )
-
-    // Update current playlist if it's All Songs
-    if (currentPlaylist.name === "All Songs") {
-      setCurrentPlaylist((prev) => ({
-        ...prev,
-        tracks: [...prev.tracks, ...newTracks],
-      }))
-    }
-
-    // Reset file input
-    if (event.target) {
-      event.target.value = ""
-    }
   }
 
   const createNewPlaylist = () => {
@@ -542,12 +321,23 @@ export default function FloatingMusicPlayer() {
         tracks: [],
         isCustom: true,
       }
-      setPlaylists((prev) => [...prev, newPlaylist])
+      setPlaylists(prev => [...prev, newPlaylist])
       setNewPlaylistName("")
       setShowCreatePlaylist(false)
       setShowAddToPlaylist(true)
       setSelectedPlaylistForAdd(newPlaylist.id)
     }
+  }
+
+  const addTrackToPlaylist = (trackId: number, playlistId: number) => {
+    const track = allTracks.find(t => t.id === trackId)
+    if (!track) return
+
+    setPlaylists(prev => prev.map(playlist => 
+      playlist.id === playlistId && !playlist.tracks.some(t => t.id === trackId)
+        ? {...playlist, tracks: [...playlist.tracks, track]}
+        : playlist
+    ))
   }
 
   const selectPlaylist = (playlist: Playlist) => {
@@ -559,91 +349,48 @@ export default function FloatingMusicPlayer() {
     }
   }
 
-  const addTrackToPlaylist = (trackId: number, playlistId: number) => {
-    const track = allTracks.find((t) => t.id === trackId)
-    if (!track) return
-
-    setPlaylists((prev) =>
-      prev.map((playlist) => {
-        if (playlist.id === playlistId) {
-          // Check if track already exists in playlist
-          const trackExists = playlist.tracks.some((t) => t.id === trackId)
-          if (!trackExists) {
-            return { ...playlist, tracks: [...playlist.tracks, track] }
-          }
-        }
-        return playlist
-      }),
-    )
-
-    // Update current playlist if it's the one being modified
-    if (currentPlaylist.id === playlistId) {
-      const trackExists = currentPlaylist.tracks.some((t) => t.id === trackId)
-      if (!trackExists) {
-        setCurrentPlaylist((prev) => ({
-          ...prev,
-          tracks: [...prev.tracks, track],
-        }))
-      }
-    }
-  }
-
-  const filteredTracks = allTracks.filter(
-    (track) =>
-      track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      track.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      track.album.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredTracks = allTracks.filter(track => 
+    track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    track.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    track.album.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const getRepeatIcon = () => {
-    switch (repeatMode) {
-      case 1:
-        return <Repeat className="h-3 w-3 md:h-4 md:w-4" />
-      case 2:
-        return <Repeat1 className="h-3 w-3 md:h-4 md:w-4" />
-      default:
-        return <Repeat className="h-3 w-3 md:h-4 md:w-4" />
-    }
+  const openPlayer = () => {
+    setIsOpen(true)
+    setIsMinimized(false)
   }
 
-  const getRepeatIconMobile = () => {
-    switch (repeatMode) {
-      case 1:
-        return <Repeat className="h-7 w-7" />
-      case 2:
-        return <Repeat1 className="h-7 w-7" />
-      default:
-        return <Repeat className="h-7 w-7" />
-    }
+  const closePlayer = () => {
+    setIsOpen(false)
+    setIsMinimized(false)
   }
 
-  // Initialize shuffled tracks when shuffle is turned on
-  useEffect(() => {
-    if (isShuffled && shuffledTracks.length === 0 && currentPlaylist.tracks.length > 0) {
-      const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
-      setShuffledTracks(shuffled)
-      const currentIndex = shuffled.findIndex((track) => track.id === currentTrack.id)
-      setCurrentShuffleIndex(currentIndex >= 0 ? currentIndex : 0)
-    }
-  }, [isShuffled, currentPlaylist.tracks, currentTrack.id, shuffledTracks.length])
-
-  // Update shuffled tracks when playlist changes
-  useEffect(() => {
-    if (isShuffled && currentPlaylist.tracks.length > 0) {
-      const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
-      setShuffledTracks(shuffled)
-      const currentIndex = shuffled.findIndex((track) => track.id === currentTrack.id)
-      setCurrentShuffleIndex(currentIndex >= 0 ? currentIndex : 0)
-    }
-  }, [currentPlaylist.tracks])
+  const minimizePlayer = () => {
+    setIsMinimized(true)
+  }
 
   return (
     <>
-      <audio ref={audioRef} src={currentTrack.audioUrl} />
-      <audio ref={tempAudioRef} />
-      <input ref={fileInputRef} type="file" accept="audio/*" multiple onChange={handleFileUpload} className="hidden" />
+      <audio 
+        ref={audioRef} 
+        src={currentTrack.audioUrl || (currentTrack.fileObject ? "" : '')} 
+      />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="audio/*,.mp3"
+        multiple
+        onChange={handleFileUpload}
+        className="hidden"
+      />
 
-      {/* Floating Icon */}
+      {notification && (
+        <div className="fixed bottom-4 left-4 right-4 bg-black/90 text-white p-3 rounded-lg text-center z-50 flex items-center justify-between">
+          <span>{notification}</span>
+          <Button onClick={() => setNotification("")} size="sm">OK</Button>
+        </div>
+      )}
+
       {!isOpen && (
         <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
           <Button
@@ -658,7 +405,6 @@ export default function FloatingMusicPlayer() {
         </div>
       )}
 
-      {/* Mobile Full Screen Player */}
       {isOpen && (
         <div
           className={`fixed z-50 transition-all duration-500 ease-out ${
@@ -667,10 +413,9 @@ export default function FloatingMusicPlayer() {
               : "inset-0 md:bottom-6 md:right-6 md:left-auto md:top-auto md:w-96 md:max-h-[80vh] md:inset-auto"
           }`}
         >
-          {/* Mobile Full Screen View - FIXED SCROLL */}
+          {/* Mobile Full Screen View */}
           <div className={`${isMinimized ? "hidden" : "block md:hidden"} h-full w-full`}>
             <div className="h-full w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-y-auto">
-              {/* Mobile Header - FIXED */}
               <div className="sticky top-0 z-10 bg-gradient-to-b from-gray-900 to-gray-900/95 backdrop-blur-sm flex items-center justify-between p-4 pt-12">
                 <Button
                   variant="ghost"
@@ -694,7 +439,6 @@ export default function FloatingMusicPlayer() {
                 </Button>
               </div>
 
-              {/* Playlist Selector Modal */}
               {showPlaylistSelector && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-20 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
@@ -710,7 +454,6 @@ export default function FloatingMusicPlayer() {
                   </div>
 
                   <div className="flex-1 overflow-y-auto p-4">
-                    {/* Create New Playlist */}
                     <div className="mb-6">
                       <Button
                         onClick={() => setShowCreatePlaylist(true)}
@@ -729,7 +472,6 @@ export default function FloatingMusicPlayer() {
                       </Button>
                     </div>
 
-                    {/* Existing Playlists */}
                     <div className="space-y-3">
                       {playlists.map((playlist) => (
                         <div
@@ -759,7 +501,6 @@ export default function FloatingMusicPlayer() {
                 </div>
               )}
 
-              {/* Create Playlist Modal */}
               {showCreatePlaylist && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
@@ -798,7 +539,6 @@ export default function FloatingMusicPlayer() {
                 </div>
               )}
 
-              {/* Add to Playlist Modal */}
               {showAddToPlaylist && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
@@ -868,10 +608,8 @@ export default function FloatingMusicPlayer() {
                 </div>
               )}
 
-              {/* Mobile Content - SCROLLABLE */}
               {!showPlaylistSelector && !showCreatePlaylist && !showAddToPlaylist && (
                 <div className="pb-4">
-                  {/* Mobile Album Art */}
                   <div className="flex justify-center px-8 py-4">
                     <div className="w-72 h-72 rounded-2xl overflow-hidden shadow-2xl">
                       <img
@@ -882,14 +620,12 @@ export default function FloatingMusicPlayer() {
                     </div>
                   </div>
 
-                  {/* Mobile Track Info */}
                   <div className="px-8 py-2 text-center">
                     <h1 className="text-xl font-bold gradient-text-neon mb-1">{currentTrack.title}</h1>
                     <p className="text-base text-gray-300 mb-1">{currentTrack.artist}</p>
                     <p className="text-sm text-gray-400">{currentTrack.album}</p>
                   </div>
 
-                  {/* Mobile Progress Bar */}
                   <div className="px-8 py-3">
                     <Slider
                       value={[currentTime]}
@@ -904,7 +640,6 @@ export default function FloatingMusicPlayer() {
                     </div>
                   </div>
 
-                  {/* Mobile Controls - Larger buttons */}
                   <div className="px-8 py-4">
                     <div className="flex items-center justify-center space-x-8">
                       <Button
@@ -948,12 +683,15 @@ export default function FloatingMusicPlayer() {
                         onClick={toggleRepeat}
                         className={`hover:bg-white/10 text-gray-300 w-14 h-14 ${repeatMode > 0 ? "text-cyan-400" : ""}`}
                       >
-                        {getRepeatIconMobile()}
+                        {repeatMode === 2 ? (
+                          <Repeat1 className="h-7 w-7" />
+                        ) : (
+                          <Repeat className="h-7 w-7" />
+                        )}
                       </Button>
                     </div>
                   </div>
 
-                  {/* Mobile Playlist - SCROLLABLE */}
                   <div className="px-4 pb-8">
                     <div className="bg-black/20 rounded-2xl p-4 backdrop-blur-sm">
                       <div className="flex items-center justify-between mb-4">
@@ -1030,7 +768,6 @@ export default function FloatingMusicPlayer() {
             className={`${isMinimized ? "block" : "hidden md:block"} professional-card hover-card floating-player-glass overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 slide-in-from-right-4`}
           >
             <CardContent className="p-0">
-              {/* Desktop Playlist Selector Modal */}
               {showDesktopPlaylistSelector && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 rounded-lg overflow-hidden">
                   <div className="p-4">
@@ -1096,7 +833,6 @@ export default function FloatingMusicPlayer() {
                 </div>
               )}
 
-              {/* Minimized View */}
               {isMinimized ? (
                 <div className="flex items-center p-3 space-x-2 md:p-4 md:space-x-3">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden flex-shrink-0">
@@ -1142,9 +878,7 @@ export default function FloatingMusicPlayer() {
                   </div>
                 </div>
               ) : (
-                /* Desktop Full Player View */
                 <div className="space-y-3 p-4 md:space-y-4 md:p-6">
-                  {/* Header */}
                   <div className="flex items-center justify-between">
                     <h2 className="text-base md:text-lg font-semibold gradient-text-neon">Music Player</h2>
                     <div className="flex items-center space-x-1">
@@ -1167,7 +901,6 @@ export default function FloatingMusicPlayer() {
                     </div>
                   </div>
 
-                  {/* Current Track */}
                   <div className="flex items-center space-x-3 md:space-x-4">
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-lg overflow-hidden flex-shrink-0">
                       <img
@@ -1185,7 +918,6 @@ export default function FloatingMusicPlayer() {
                     </div>
                   </div>
 
-                  {/* Progress Bar */}
                   <div className="space-y-2">
                     <Slider
                       value={[currentTime]}
@@ -1200,7 +932,6 @@ export default function FloatingMusicPlayer() {
                     </div>
                   </div>
 
-                  {/* Control Buttons */}
                   <div className="flex items-center justify-center space-x-3 md:space-x-4">
                     <Button
                       variant="ghost"
@@ -1247,11 +978,14 @@ export default function FloatingMusicPlayer() {
                       onClick={toggleRepeat}
                       className={`hover:bg-white/10 text-gray-300 w-8 h-8 md:w-10 md:h-10 ${repeatMode > 0 ? "text-cyan-400" : ""}`}
                     >
-                      {getRepeatIcon()}
+                      {repeatMode === 2 ? (
+                        <Repeat1 className="h-3 w-3 md:h-4 md:w-4" />
+                      ) : (
+                        <Repeat className="h-3 w-3 md:h-4 md:w-4" />
+                      )}
                     </Button>
                   </div>
 
-                  {/* Volume Control - Desktop Only */}
                   <div className="flex items-center space-x-3">
                     <Button variant="ghost" size="icon" onClick={toggleMute} className="hover:bg-white/10 w-8 h-8">
                       {isMuted ? (
@@ -1270,7 +1004,6 @@ export default function FloatingMusicPlayer() {
                     <span className="text-xs text-muted-foreground w-6 md:w-8">{isMuted ? 0 : volume[0]}</span>
                   </div>
 
-                  {/* Playlist */}
                   <div className="space-y-2 max-h-32 md:max-h-48 overflow-y-auto bg-black/20 rounded-lg p-2 md:p-3 backdrop-blur-sm">
                     <div className="flex items-center justify-between">
                       <h4
