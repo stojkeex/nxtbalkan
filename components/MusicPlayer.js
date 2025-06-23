@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect, useRef } from 'react'
 import { Volume2, VolumeX, X, Move, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -18,16 +17,45 @@ export default function MusicPlayer() {
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [orbitAngle, setOrbitAngle] = useState(0)
   const audioRef = useRef(null)
   const playerRef = useRef(null)
+  const animationRef = useRef(null)
 
   // Initialize position higher on screen
   useEffect(() => {
     setPosition({
       x: window.innerWidth - 100,
-      y: window.innerHeight - 180 // Higher initial position
+      y: window.innerHeight - 180
     })
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
   }, [])
+
+  // Orbit animation
+  useEffect(() => {
+    if (isMenuOpen) {
+      const animateOrbit = () => {
+        setOrbitAngle(prev => (prev + 0.5) % 360)
+        animationRef.current = requestAnimationFrame(animateOrbit)
+      }
+      animationRef.current = requestAnimationFrame(animateOrbit)
+    } else {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [isMenuOpen])
 
   // Handle dragging with boundaries
   const startDrag = (e) => {
@@ -132,13 +160,13 @@ export default function MusicPlayer() {
 
   if (isHidden) return null
 
-  // Circular button positions with rotation effect
+  // Circular button configuration
   const orbitRadius = 70
   const buttons = [
-    { icon: <ChevronLeft className="h-5 w-5 text-white" />, action: prevTrack, angle: 180, label: "Previous track" },
-    { icon: <Move className="h-5 w-5 text-white" />, action: startDrag, angle: 90, label: "Move player" },
-    { icon: <X className="h-5 w-5 text-white" />, action: () => setIsHidden(true), angle: 270, label: "Hide player" },
-    { icon: <ChevronRight className="h-5 w-5 text-white" />, action: nextTrack, angle: 0, label: "Next track" }
+    { icon: <ChevronLeft className="h-5 w-5 text-white" />, action: prevTrack, angleOffset: 0, label: "Previous track" },
+    { icon: <Move className="h-5 w-5 text-white" />, action: startDrag, angleOffset: 90, label: "Move player" },
+    { icon: <X className="h-5 w-5 text-white" />, action: () => setIsHidden(true), angleOffset: 180, label: "Hide player" },
+    { icon: <ChevronRight className="h-5 w-5 text-white" />, action: nextTrack, angleOffset: 270, label: "Next track" }
   ]
 
   return (
@@ -156,7 +184,8 @@ export default function MusicPlayer() {
         {isMenuOpen && (
           <>
             {buttons.map((button, index) => {
-              const radians = (button.angle * Math.PI) / 180
+              const currentAngle = (orbitAngle + button.angleOffset) % 360
+              const radians = (currentAngle * Math.PI) / 180
               const x = orbitRadius * Math.cos(radians)
               const y = orbitRadius * Math.sin(radians)
               
@@ -168,20 +197,14 @@ export default function MusicPlayer() {
                     scale: 1,
                     x: x,
                     y: y,
-                    opacity: 1,
-                    rotate: [0, 360] // Rotation animation
+                    opacity: 1
                   }}
                   exit={{ scale: 0, x: 0, y: 0, opacity: 0 }}
                   transition={{ 
                     type: 'spring',
                     stiffness: 300,
                     damping: 20,
-                    delay: index * 0.1,
-                    rotate: { 
-                      duration: 5,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }
+                    delay: index * 0.1
                   }}
                   onClick={(e) => {
                     e.stopPropagation()
