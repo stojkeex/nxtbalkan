@@ -43,7 +43,7 @@ export default function AboutPage() {
       bio: "Talent scout extraordinaire with an ear for discovering the next big Balkan stars.",
     },
     {
-      name: "Stefan Jovanović",
+      name: "R. Kavčič",
       role: "Owner",
       bio: "Award-winning producer who has worked with top artists across the Balkans and beyond.",
     },
