@@ -160,7 +160,7 @@ export default function ServicesPage() {
             </p>
           </motion.div>
 
-         {/* Pricing Packages Section */}
+        {/* Pricing Packages Section */}
 <motion.section
   initial={{ opacity: 0, y: 50 }}
   whileInView={{ opacity: 1, y: 0 }}
@@ -185,8 +185,8 @@ export default function ServicesPage() {
         <div className={`professional-card p-8 rounded-xl h-full relative z-10 ${pkg.featured ? "border-2 border-white/20 glow-border" : "border border-white/10"}`}>
           <div className="mb-6">
             <h3 className={`text-2xl font-bold mb-2 ${pkg.featured ? "gradient-text-neon" : "text-white"}`}>{pkg.title}</h3>
-            <div className="text-4xl font-bold mb-2 gradient-text">{pkg.price}</div>
-            <p className="text-gray-400">{pkg.description}</p>
+            <p className="text-gray-400 mb-4">{pkg.description}</p>
+            <div className="text-4xl font-bold gradient-text">{pkg.price}</div>
           </div>
 
           <ul className="space-y-3 mb-6">
@@ -216,7 +216,6 @@ export default function ServicesPage() {
     ))}
   </div>
 </motion.section>
-
           {/* Services Grid */}
           <section className="mb-32">
             <div className="grid lg:grid-cols-2 gap-12">
