@@ -20,7 +20,9 @@ export default function MusicPlayer() {
   const [orbitAngle, setOrbitAngle] = useState(0)
   const audioRef = useRef(null)
   const animationRef = useRef(null)
+  const dragTimeoutRef = useRef(null)
 
+  // Nastavi začetno pozicijo predvajalnika
   useEffect(() => {
     setPosition({
       x: window.innerWidth - 100,
@@ -32,7 +34,7 @@ export default function MusicPlayer() {
     }
   }, [])
 
-  // Orbit animation
+  // Optimizirana animacija za mobilne naprave
   useEffect(() => {
     if (isMenuOpen) {
       const animateOrbit = () => {
@@ -55,16 +57,20 @@ export default function MusicPlayer() {
     document.body.style.userSelect = 'none'
   }
 
+  // Debouncing dragging na mobilnem telefonu
   const handleDrag = (e) => {
     if (!isDragging) return
-    const clientX = e.clientX || e.touches?.[0]?.clientX
-    const clientY = e.clientY || e.touches?.[0]?.clientY
-    if (clientX && clientY) {
-      setPosition({
-        x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
-        y: Math.max(80, Math.min(window.innerHeight - 80, clientY - 24))
-      })
-    }
+    clearTimeout(dragTimeoutRef.current)
+    dragTimeoutRef.current = setTimeout(() => {
+      const clientX = e.clientX || e.touches?.[0]?.clientX
+      const clientY = e.clientY || e.touches?.[0]?.clientY
+      if (clientX && clientY) {
+        setPosition({
+          x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
+          y: Math.max(80, Math.min(window.innerHeight - 80, clientY - 24))
+        })
+      }
+    }, 10) // Debounce na 10ms, kar zmanjša prekomerno obdelavo dogodkov
   }
 
   const stopDrag = () => {
@@ -185,7 +191,7 @@ export default function MusicPlayer() {
         )}
       </AnimatePresence>
 
-      {/* Main toggle/menu/mute button */}
+      {/* Glavni gumb za mute/menu */}
       <motion.button
         onClick={(e) => {
           e.stopPropagation()
