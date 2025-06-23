@@ -16,14 +16,14 @@ export function NotificationToasts() {
 
   const messages = [
     { emoji: "🎧", message: 'Check out the new Devito album – "Nema Spavanja"' },
-    { emoji: "☕", message: "Time for a break? Grab a coffee and come back fresh!" },
-    { emoji: "🪩", message: "Tonight's vibe: neon lights & deep beats. Stay tuned." },
-    { emoji: "🚀", message: "You just unlocked a secret vibe. Don't tell anyone." },
-    { emoji: "🔥", message: "Your energy today? 100%. Let's keep it going!" },
-    { emoji: "🎉", message: "New features just dropped – scroll down and explore!" },
+    { emoji: "🎧", message: 'Listen new song "Nase prvo leto"' },
+    { emoji: "🪩", message: "Use code NXT15 for 15% off on all our services!" },
+    { emoji: "🚀", message: "Let's work together and be more." },
+    { emoji: "🔥", message: "Follow US on all our Social Medias and send proof in DM for suprise!" },
+    { emoji: "🎉", message: "Jala Brat & Buba Corelli just drop new album...Check it!" },
     { emoji: "🧠", message: "Fun fact: Websites with good music taste load faster." },
     { emoji: "📱", message: "Psst… Try this on mobile. It hits different." },
-    { emoji: "🤖", message: "AI is watching, but in a cool way." },
+    { emoji: "😉", message: 'Our future is also your future,so fast go to "Join US" and work together!' },
   ]
 
   useEffect(() => {
