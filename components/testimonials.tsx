@@ -49,7 +49,7 @@ export function Testimonials() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-8 gradient-text-alt">WHAT ARTISTS SAY</h2>
+          <h2 className="text-5xl md:text-6xl font-bold mb-8 gradient-text-alt">WHAT CLIENTS SAY</h2>
           <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
             Don't just take our word for it. Here's what our artists and collaborators have to say about working with
             NXT Balkan.
