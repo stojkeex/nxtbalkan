@@ -15,7 +15,7 @@ export default function MusicPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [position, setPosition] = useState({ x: 20, y: 20 })
+  const [position, setPosition] = useState({ x: window.innerWidth - 100, y: window.innerHeight - 100 })
   const [isDragging, setIsDragging] = useState(false)
   const audioRef = useRef(null)
   const menuRef = useRef(null)
@@ -25,7 +25,7 @@ export default function MusicPlayer() {
   const startDrag = (e) => {
     e.stopPropagation()
     setIsDragging(true)
-    document.body.style.userSelect = 'none' // Prevent text selection during drag
+    document.body.style.userSelect = 'none'
   }
 
   const handleDrag = (e) => {
@@ -142,8 +142,10 @@ export default function MusicPlayer() {
       ref={playerRef}
       className="fixed z-50 flex flex-col items-end gap-2 select-none"
       style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
+        right: isDragging ? 'auto' : '20px',
+        bottom: isDragging ? 'auto' : '20px',
+        left: isDragging ? `${position.x}px` : 'auto',
+        top: isDragging ? `${position.y}px` : 'auto',
         cursor: isDragging ? 'grabbing' : 'pointer',
         touchAction: isDragging ? 'none' : 'auto'
       }}
