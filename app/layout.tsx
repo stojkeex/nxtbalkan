@@ -12,6 +12,7 @@ import { ScrollToTop } from "@/components/scroll-to-top"
 import Script from "next/script"
 import Head from "next/head"
 import { PremiumOffer } from '@/components/PremiumOffer';
+import FloatingMusicPlayer from "@/floating-music-player"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -121,6 +122,7 @@ export default function RootLayout({
           <PremiumOffer />
           <NotificationToasts />
           <LiveSupportSystem />
+          <FloatingMusicPlayer />
         </ThemeProvider>
       </body>
     </html>
