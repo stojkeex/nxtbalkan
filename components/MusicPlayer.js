@@ -17,6 +17,7 @@ export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
+  const [dragMode, setDragMode] = useState(false) // New state for drag mode
   const audioRef = useRef(null)
   const menuRef = useRef(null)
   const playerRef = useRef(null)
@@ -31,13 +32,14 @@ export default function MusicPlayer() {
 
   // Handle dragging
   const startDrag = (e) => {
+    if (!dragMode) return
     e.stopPropagation()
     setIsDragging(true)
     document.body.style.userSelect = 'none'
   }
 
   const handleDrag = (e) => {
-    if (!isDragging) return
+    if (!isDragging || !dragMode) return
     
     const clientX = e.clientX || e.touches?.[0]?.clientX
     const clientY = e.clientY || e.touches?.[0]?.clientY
@@ -55,6 +57,11 @@ export default function MusicPlayer() {
     document.body.style.userSelect = ''
   }
 
+  const toggleDragMode = () => {
+    setDragMode(!dragMode)
+    setShowMenu(false)
+  }
+
   useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleDrag)
@@ -69,7 +76,7 @@ export default function MusicPlayer() {
       document.removeEventListener('mouseup', stopDrag)
       document.removeEventListener('touchend', stopDrag)
     }
-  }, [isDragging])
+  }, [isDragging, dragMode])
 
   // Handle clicks outside menu
   useEffect(() => {
@@ -154,9 +161,11 @@ export default function MusicPlayer() {
         bottom: isDragging ? 'auto' : '20px',
         left: isDragging ? `${position.x}px` : 'auto',
         top: isDragging ? `${position.y}px` : 'auto',
-        cursor: isDragging ? 'grabbing' : 'pointer',
+        cursor: dragMode ? (isDragging ? 'grabbing' : 'grab') : 'pointer',
         touchAction: isDragging ? 'none' : 'auto'
       }}
+      onMouseDown={startDrag}
+      onTouchStart={startDrag}
     >
       {showMenu && (
         <div 
@@ -197,6 +206,14 @@ export default function MusicPlayer() {
               <span>{isMuted ? "Unmute" : "Mute"}</span>
               {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </button>
+
+            <button
+              onClick={toggleDragMode}
+              className={`w-full p-3 rounded-lg flex items-center justify-between text-sm ${dragMode ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/5'}`}
+            >
+              <span>{dragMode ? "Exit Move Mode" : "Move Player"}</span>
+              <Move size={18} />
+            </button>
             
             <button
               onClick={() => setIsHidden(true)}
@@ -209,31 +226,20 @@ export default function MusicPlayer() {
         </div>
       )}
 
-      <div className="flex items-center gap-2">
-        <button
-          onMouseDown={startDrag}
-          onTouchStart={startDrag}
-          className="p-2 rounded-full bg-black/50 hover:bg-white/20 transition-all"
-          aria-label="Drag player"
-        >
-          <Move className="h-4 w-4 text-white" />
-        </button>
-        
-        <button
-          onClick={toggleMenu}
-          className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all active:scale-95"
-          aria-label={showMenu ? "Close settings" : "Open settings"}
-        >
-          {isMuted ? (
-            <VolumeX className="h-6 w-6 text-white" />
-          ) : (
-            <Volume2 className="h-6 w-6 text-white" />
-          )}
-          {!isMuted && isPlaying && (
-            <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3 animate-pulse"></div>
-          )}
-        </button>
-      </div>
+      <button
+        onClick={toggleMenu}
+        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all active:scale-95"
+        aria-label={showMenu ? "Close settings" : "Open settings"}
+      >
+        {isMuted ? (
+          <VolumeX className="h-6 w-6 text-white" />
+        ) : (
+          <Volume2 className="h-6 w-6 text-white" />
+        )}
+        {!isMuted && isPlaying && (
+          <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3 animate-pulse"></div>
+        )}
+      </button>
 
       <audio
         ref={audioRef}
