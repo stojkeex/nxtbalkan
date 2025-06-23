@@ -12,7 +12,7 @@ import { ScrollToTop } from "@/components/scroll-to-top"
 import Script from "next/script"
 import Head from "next/head"
 import { PremiumOffer } from '@/components/PremiumOffer';
-import FloatingMusicPlayer from "@/floating-music-player"
+import FloatingMusicPlayer from "@/components/floating-music-player"
 
 const inter = Inter({ subsets: ["latin"] })
 
