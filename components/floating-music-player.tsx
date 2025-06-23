@@ -18,6 +18,7 @@ import {
   Repeat,
   Repeat1,
   ChevronDown,
+  List,
 } from "lucide-react"
 
 interface Track {
@@ -66,6 +67,7 @@ const sampleTracks: Track[] = [
 export default function FloatingMusicPlayer() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
+  const [showPlaylist, setShowPlaylist] = useState(false)
   const [currentTrack, setCurrentTrack] = useState<Track>(sampleTracks[0])
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -78,6 +80,55 @@ export default function FloatingMusicPlayer() {
   const [currentShuffleIndex, setCurrentShuffleIndex] = useState(0)
 
   const audioRef = useRef<HTMLAudioElement>(null)
+
+  // Media Session API for system notifications
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentTrack.title,
+        artist: currentTrack.artist,
+        album: currentTrack.album,
+        artwork: [
+          {
+            src: currentTrack.cover,
+            sizes: "512x512",
+            type: "image/jpeg",
+          },
+        ],
+      })
+
+      // Set action handlers
+      navigator.mediaSession.setActionHandler("play", () => {
+        if (!isPlaying) togglePlay()
+      })
+
+      navigator.mediaSession.setActionHandler("pause", () => {
+        if (isPlaying) togglePlay()
+      })
+
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        previousTrack()
+      })
+
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        nextTrack()
+      })
+
+      // Update playback state
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused"
+    }
+  }, [currentTrack, isPlaying])
+
+  // Update position state
+  useEffect(() => {
+    if ("mediaSession" in navigator && "setPositionState" in navigator.mediaSession) {
+      navigator.mediaSession.setPositionState({
+        duration: duration,
+        playbackRate: 1,
+        position: currentTime,
+      })
+    }
+  }, [currentTime, duration])
 
   // Initialize shuffled tracks
   useEffect(() => {
@@ -293,10 +344,16 @@ export default function FloatingMusicPlayer() {
   const closePlayer = () => {
     setIsOpen(false)
     setIsMinimized(false)
+    setShowPlaylist(false)
   }
 
   const minimizePlayer = () => {
     setIsMinimized(true)
+    setShowPlaylist(false)
+  }
+
+  const togglePlaylist = () => {
+    setShowPlaylist(!showPlaylist)
   }
 
   const getRepeatIcon = () => {
@@ -357,143 +414,180 @@ export default function FloatingMusicPlayer() {
                 <Button variant="ghost" size="icon" onClick={minimizePlayer} className="text-white hover:bg-white/10">
                   <ChevronDown className="h-6 w-6" />
                 </Button>
-                <h2 className="text-lg font-semibold gradient-text-neon">Now Playing</h2>
+                <div className="text-center">
+                  <h2 className="text-lg font-semibold gradient-text-neon">NXT Balkan</h2>
+                  <p className="text-xs text-gray-400">Music Player</p>
+                </div>
                 <Button variant="ghost" size="icon" onClick={closePlayer} className="text-white hover:bg-white/10">
                   <X className="h-6 w-6" />
                 </Button>
               </div>
 
-              {/* Mobile Album Art */}
-              <div className="flex justify-center px-8 py-8">
-                <div className="w-80 h-80 rounded-2xl overflow-hidden shadow-2xl">
-                  <img
-                    src={currentTrack.cover || "/placeholder.svg"}
-                    alt={currentTrack.album}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Mobile Track Info */}
-              <div className="px-8 py-4 text-center">
-                <h1 className="text-2xl font-bold gradient-text-neon mb-2">{currentTrack.title}</h1>
-                <p className="text-lg text-gray-300 mb-1">{currentTrack.artist}</p>
-                <p className="text-sm text-gray-400">{currentTrack.album}</p>
-              </div>
-
-              {/* Mobile Progress Bar */}
-              <div className="px-8 py-4">
-                <Slider
-                  value={[currentTime]}
-                  max={duration || 100}
-                  step={1}
-                  onValueChange={handleProgressChange}
-                  className="w-full [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-cyan-400 [&_[role=slider]]:to-purple-500 [&_[role=slider]]:w-4 [&_[role=slider]]:h-4 [&_[role=slider]]:border-0 [&>span:first-child_span]:bg-gradient-to-r [&>span:first-child_span]:from-cyan-400 [&>span:first-child_span]:to-purple-500"
-                />
-                <div className="flex justify-between text-sm text-gray-400 mt-2">
-                  <span>{formatTime(currentTime)}</span>
-                  <span>{formatTime(duration)}</span>
-                </div>
-              </div>
-
-              {/* Mobile Controls */}
-              <div className="px-8 py-6">
-                <div className="flex items-center justify-center space-x-8">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={toggleShuffle}
-                    className={`hover:bg-white/10 text-gray-300 w-12 h-12 ${isShuffled ? "text-cyan-400" : ""}`}
-                  >
-                    <Shuffle className="h-6 w-6" />
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={previousTrack}
-                    className="hover:bg-white/10 text-gray-300 w-12 h-12"
-                  >
-                    <SkipBack className="h-7 w-7" />
-                  </Button>
-
-                  <Button
-                    onClick={togglePlay}
-                    size="icon"
-                    className="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-black"
-                  >
-                    {isPlaying ? <Pause className="h-8 w-8" /> : <Play className="h-8 w-8 ml-1" />}
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={nextTrack}
-                    className="hover:bg-white/10 text-gray-300 w-12 h-12"
-                  >
-                    <SkipForward className="h-7 w-7" />
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={toggleRepeat}
-                    className={`hover:bg-white/10 text-gray-300 w-12 h-12 ${repeatMode > 0 ? "text-cyan-400" : ""}`}
-                  >
-                    {getRepeatIconMobile()}
-                  </Button>
-                </div>
-              </div>
-
-              {/* Mobile Playlist */}
-              <div className="px-4 pb-8 flex-1 overflow-hidden">
-                <div className="bg-black/20 rounded-2xl p-4 h-full overflow-y-auto backdrop-blur-sm">
-                  <h4 className="text-lg font-medium text-gray-300 mb-4">Up Next</h4>
-                  {sampleTracks.map((track) => (
-                    <div
-                      key={track.id}
-                      onClick={() => selectTrack(track)}
-                      className={`flex items-center space-x-4 p-3 rounded-xl cursor-pointer transition-all hover:bg-white/5 mb-2 ${
-                        currentTrack.id === track.id ? "bg-white/10" : ""
-                      }`}
-                    >
-                      <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                        <img
-                          src={track.cover || "/placeholder.svg"}
-                          alt={track.album}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p
-                          className={`text-base font-medium truncate ${
-                            currentTrack.id === track.id ? "gradient-text-neon" : "text-white"
-                          }`}
-                        >
-                          {track.title}
-                        </p>
-                        <p className="text-sm text-gray-400 truncate">{track.artist}</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        {currentTrack.id === track.id && isPlaying && (
-                          <div className="flex items-center space-x-1">
-                            <div className="w-1 h-4 bg-cyan-400 rounded-full animate-pulse"></div>
-                            <div
-                              className="w-1 h-3 bg-purple-500 rounded-full animate-pulse"
-                              style={{ animationDelay: "0.2s" }}
-                            ></div>
-                            <div
-                              className="w-1 h-5 bg-cyan-400 rounded-full animate-pulse"
-                              style={{ animationDelay: "0.4s" }}
-                            ></div>
-                          </div>
-                        )}
-                        <span className="text-sm text-gray-400">{track.duration}</span>
-                      </div>
+              {/* Mobile Content - Player or Playlist */}
+              {!showPlaylist ? (
+                <>
+                  {/* Mobile Album Art */}
+                  <div className="flex justify-center px-8 py-8">
+                    <div className="w-80 h-80 rounded-2xl overflow-hidden shadow-2xl">
+                      <img
+                        src={currentTrack.cover || "/placeholder.svg"}
+                        alt={currentTrack.album}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Mobile Track Info */}
+                  <div className="px-8 py-4 text-center">
+                    <h1 className="text-2xl font-bold gradient-text-neon mb-2">{currentTrack.title}</h1>
+                    <p className="text-lg text-gray-300 mb-1">{currentTrack.artist}</p>
+                    <p className="text-sm text-gray-400">{currentTrack.album}</p>
+                  </div>
+
+                  {/* Mobile Progress Bar */}
+                  <div className="px-8 py-4">
+                    <Slider
+                      value={[currentTime]}
+                      max={duration || 100}
+                      step={1}
+                      onValueChange={handleProgressChange}
+                      className="w-full [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-cyan-400 [&_[role=slider]]:to-purple-500 [&_[role=slider]]:w-4 [&_[role=slider]]:h-4 [&_[role=slider]]:border-0 [&>span:first-child_span]:bg-gradient-to-r [&>span:first-child_span]:from-cyan-400 [&>span:first-child_span]:to-purple-500"
+                    />
+                    <div className="flex justify-between text-sm text-gray-400 mt-2">
+                      <span>{formatTime(currentTime)}</span>
+                      <span>{formatTime(duration)}</span>
+                    </div>
+                  </div>
+
+                  {/* Mobile Controls */}
+                  <div className="px-8 py-6">
+                    <div className="flex items-center justify-center space-x-8">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={toggleShuffle}
+                        className={`hover:bg-white/10 text-gray-300 w-12 h-12 ${isShuffled ? "text-cyan-400" : ""}`}
+                      >
+                        <Shuffle className="h-6 w-6" />
+                      </Button>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={previousTrack}
+                        className="hover:bg-white/10 text-gray-300 w-12 h-12"
+                      >
+                        <SkipBack className="h-7 w-7" />
+                      </Button>
+
+                      <Button
+                        onClick={togglePlay}
+                        size="icon"
+                        className="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-black"
+                      >
+                        {isPlaying ? <Pause className="h-8 w-8" /> : <Play className="h-8 w-8 ml-1" />}
+                      </Button>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={nextTrack}
+                        className="hover:bg-white/10 text-gray-300 w-12 h-12"
+                      >
+                        <SkipForward className="h-7 w-7" />
+                      </Button>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={toggleRepeat}
+                        className={`hover:bg-white/10 text-gray-300 w-12 h-12 ${repeatMode > 0 ? "text-cyan-400" : ""}`}
+                      >
+                        {getRepeatIconMobile()}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Mobile Playlist Button */}
+                  <div className="px-8 pb-8">
+                    <Button
+                      onClick={togglePlaylist}
+                      className="w-full bg-white/10 hover:bg-white/20 text-white border-0 rounded-xl py-4"
+                    >
+                      <List className="h-5 w-5 mr-2" />
+                      View Playlist ({sampleTracks.length} songs)
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                /* Mobile Playlist View */
+                <div className="px-4 pb-8 flex-1 overflow-hidden">
+                  <div className="flex items-center justify-between mb-6 px-4">
+                    <h3 className="text-xl font-bold gradient-text-neon">Playlist</h3>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={togglePlaylist}
+                      className="text-white hover:bg-white/10"
+                    >
+                      <X className="h-6 w-6" />
+                    </Button>
+                  </div>
+
+                  <div className="bg-black/20 rounded-2xl p-4 h-full overflow-y-auto backdrop-blur-sm">
+                    {sampleTracks.map((track, index) => (
+                      <div
+                        key={track.id}
+                        onClick={() => {
+                          selectTrack(track)
+                          setShowPlaylist(false)
+                        }}
+                        className={`flex items-center space-x-4 p-4 rounded-xl cursor-pointer transition-all hover:bg-white/5 mb-3 ${
+                          currentTrack.id === track.id ? "bg-white/10" : ""
+                        }`}
+                      >
+                        <div className="w-4 text-center">
+                          <span className="text-sm text-gray-400">{index + 1}</span>
+                        </div>
+                        <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
+                          <img
+                            src={track.cover || "/placeholder.svg"}
+                            alt={track.album}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p
+                            className={`text-base font-medium truncate ${
+                              currentTrack.id === track.id ? "gradient-text-neon" : "text-white"
+                            }`}
+                          >
+                            {track.title}
+                          </p>
+                          <p className="text-sm text-gray-400 truncate">{track.artist}</p>
+                          <p className="text-xs text-gray-500 truncate">{track.album}</p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {currentTrack.id === track.id && isPlaying && (
+                            <div className="flex items-center space-x-1">
+                              <div className="w-1 h-4 bg-cyan-400 rounded-full animate-pulse"></div>
+                              <div
+                                className="w-1 h-3 bg-purple-500 rounded-full animate-pulse"
+                                style={{ animationDelay: "0.2s" }}
+                              ></div>
+                              <div
+                                className="w-1 h-5 bg-cyan-400 rounded-full animate-pulse"
+                                style={{ animationDelay: "0.4s" }}
+                              ></div>
+                            </div>
+                          )}
+                          <span className="text-sm text-gray-400">{track.duration}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
