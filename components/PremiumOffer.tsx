@@ -1,12 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export function PremiumOffer() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Preveri, če je uporabnik že zaprl ponudbo (v tem brskalniku)
+    const hasClosedOffer = localStorage.getItem('closedPremiumOffer');
+    
+    // Če je ponudba še ne zaprta, jo prikaži po 3 sekundah
+    if (!hasClosedOffer) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 3000); // Zakasnitev 3 sekunde za boljšo uporabniško izkušnjo
+      
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const handleClose = () => {
+    // Shrani v localStorage, da je uporabnik zaprl ponudbo
+    localStorage.setItem('closedPremiumOffer', 'true');
     setIsVisible(false);
   };
 
