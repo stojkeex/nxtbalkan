@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
-import { Volume2, VolumeX, X, Move } from 'lucide-react'
+import { Volume2, VolumeX, X, Move, ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const tracks = [
   { name: "Vultures", path: "/music/vultures.mp3" },
@@ -11,40 +12,22 @@ const tracks = [
 
 export default function MusicPlayer() {
   const [isMuted, setIsMuted] = useState(true)
-  const [showMenu, setShowMenu] = useState(false)
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
-  const [menuDirection, setMenuDirection] = useState('down') // 'up' or 'down'
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const audioRef = useRef(null)
-  const menuRef = useRef(null)
   const playerRef = useRef(null)
 
-  // Initialize position safely after component mounts
+  // Initialize position
   useEffect(() => {
     setPosition({
       x: window.innerWidth - 100,
       y: window.innerHeight - 100
     })
   }, [])
-
-  // Calculate menu direction when showMenu changes
-  useEffect(() => {
-    if (showMenu && playerRef.current) {
-      const playerRect = playerRef.current.getBoundingClientRect()
-      const menuHeight = 300 // Approximate menu height
-      const spaceBelow = window.innerHeight - playerRect.bottom
-      const spaceAbove = playerRect.top
-      
-      if (spaceBelow < menuHeight && spaceAbove > menuHeight) {
-        setMenuDirection('up')
-      } else {
-        setMenuDirection('down')
-      }
-    }
-  }, [showMenu])
 
   // Handle dragging
   const startDrag = (e) => {
@@ -70,6 +53,7 @@ export default function MusicPlayer() {
   const stopDrag = () => {
     setIsDragging(false)
     document.body.style.userSelect = ''
+    setIsMenuOpen(false) // Close menu when dragging stops
   }
 
   useEffect(() => {
@@ -87,22 +71,6 @@ export default function MusicPlayer() {
       document.removeEventListener('touchend', stopDrag)
     }
   }, [isDragging])
-
-  // Handle clicks outside menu
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setShowMenu(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    document.addEventListener('touchstart', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('touchstart', handleClickOutside)
-    }
-  }, [])
 
   // Initialize audio
   useEffect(() => {
@@ -147,17 +115,17 @@ export default function MusicPlayer() {
     }
   }
 
-  const changeTrack = (index) => {
-    setCurrentTrackIndex(index)
-    setShowMenu(false)
-    if (!isMuted) {
-      audioRef.current.play()
-    }
+  const nextTrack = () => {
+    setCurrentTrackIndex((prev) => (prev + 1) % tracks.length)
+  }
+
+  const prevTrack = () => {
+    setCurrentTrackIndex((prev) => (prev - 1 + tracks.length) % tracks.length)
   }
 
   const toggleMenu = (e) => {
     e.stopPropagation()
-    setShowMenu(!showMenu)
+    setIsMenuOpen(!isMenuOpen)
   }
 
   if (isHidden) return null
@@ -165,7 +133,7 @@ export default function MusicPlayer() {
   return (
     <div 
       ref={playerRef}
-      className="fixed z-50 flex flex-col items-end gap-2 select-none"
+      className="fixed z-50 select-none"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -173,75 +141,70 @@ export default function MusicPlayer() {
         touchAction: isDragging ? 'none' : 'auto'
       }}
     >
-      {showMenu && (
-        <div 
-          ref={menuRef}
-          className={`bg-black/90 backdrop-blur-md border border-white/20 rounded-lg p-4 shadow-lg w-72 max-w-[90vw] ${
-            menuDirection === 'up' ? 'mb-2' : 'mt-2'
-          }`}
-          style={{
-            [menuDirection === 'up' ? 'bottom' : 'top']: '100%'
-          }}
-        >
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-medium text-white text-lg">Music Settings</h3>
-            <button 
-              onClick={() => setShowMenu(false)}
-              className="text-white/50 hover:text-white p-1"
-              aria-label="Close menu"
+      <AnimatePresence>
+        {isMenuOpen && (
+          <div className="absolute -left-1/2 -top-1/2 w-48 h-48 flex items-center justify-center pointer-events-none">
+            {/* Previous Track Button */}
+            <motion.button
+              initial={{ scale: 0, x: 0, y: 0 }}
+              animate={{ scale: 1, x: -60, y: 0 }}
+              exit={{ scale: 0, x: 0, y: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              onClick={prevTrack}
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              aria-label="Previous track"
             >
-              <X size={20} />
-            </button>
-          </div>
+              <ChevronLeft className="h-5 w-5 text-white" />
+            </motion.button>
 
-          <div className="mb-4">
-            <h4 className="text-sm text-white/70 mb-2">Select Track</h4>
-            <div className="space-y-2 max-h-[40vh] overflow-y-auto">
-              {tracks.map((track, index) => (
-                <button
-                  key={index}
-                  onClick={() => changeTrack(index)}
-                  className={`w-full text-left p-3 rounded-lg text-sm ${currentTrackIndex === index ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/5'}`}
-                >
-                  {track.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={toggleMute}
-              className={`w-full p-3 rounded-lg flex items-center justify-between text-sm ${isMuted ? 'text-white/70' : 'text-white'}`}
-            >
-              <span>{isMuted ? "Unmute" : "Mute"}</span>
-              {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-            </button>
-
-            <button
+            {/* Move Button */}
+            <motion.button
+              initial={{ scale: 0, x: 0, y: 0 }}
+              animate={{ scale: 1, x: 0, y: -60 }}
+              exit={{ scale: 0, x: 0, y: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
               onMouseDown={startDrag}
               onTouchStart={startDrag}
-              className="w-full p-3 rounded-lg text-white/70 hover:text-white flex items-center justify-between text-sm"
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              aria-label="Move player"
             >
-              <span>Move Player</span>
-              <Move size={18} />
-            </button>
-            
-            <button
-              onClick={() => setIsHidden(true)}
-              className="w-full p-3 rounded-lg text-white/70 hover:text-white flex items-center justify-between text-sm"
-            >
-              <span>Hide Music Player</span>
-              <X size={18} />
-            </button>
-          </div>
-        </div>
-      )}
+              <Move className="h-5 w-5 text-white" />
+            </motion.button>
 
-      <button
+            {/* Hide Button */}
+            <motion.button
+              initial={{ scale: 0, x: 0, y: 0 }}
+              animate={{ scale: 1, x: 0, y: 60 }}
+              exit={{ scale: 0, x: 0, y: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.2 }}
+              onClick={() => setIsHidden(true)}
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              aria-label="Hide player"
+            >
+              <X className="h-5 w-5 text-white" />
+            </motion.button>
+
+            {/* Next Track Button */}
+            <motion.button
+              initial={{ scale: 0, x: 0, y: 0 }}
+              animate={{ scale: 1, x: 60, y: 0 }}
+              exit={{ scale: 0, x: 0, y: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.3 }}
+              onClick={nextTrack}
+              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto"
+              aria-label="Next track"
+            >
+              <ChevronRight className="h-5 w-5 text-white" />
+            </motion.button>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <motion.button
         onClick={toggleMenu}
-        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all active:scale-95"
-        aria-label={showMenu ? "Close settings" : "Open settings"}
+        whileTap={{ scale: 0.9 }}
+        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative"
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
       >
         {isMuted ? (
           <VolumeX className="h-6 w-6 text-white" />
@@ -249,9 +212,13 @@ export default function MusicPlayer() {
           <Volume2 className="h-6 w-6 text-white" />
         )}
         {!isMuted && isPlaying && (
-          <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3 animate-pulse"></div>
+          <motion.div 
+            className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
         )}
-      </button>
+      </motion.button>
 
       <audio
         ref={audioRef}
