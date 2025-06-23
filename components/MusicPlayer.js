@@ -20,7 +20,6 @@ export default function MusicPlayer() {
   const [orbitAngle, setOrbitAngle] = useState(0)
   const audioRef = useRef(null)
   const animationRef = useRef(null)
-  const dragTimeoutRef = useRef(null)
 
   // Nastavi začetno pozicijo predvajalnika
   useEffect(() => {
@@ -62,17 +61,14 @@ export default function MusicPlayer() {
   // Debouncing za premikanje
   const handleDrag = useCallback((e) => {
     if (!isDragging) return
-    clearTimeout(dragTimeoutRef.current)
-    dragTimeoutRef.current = setTimeout(() => {
-      const clientX = e.clientX || e.touches?.[0]?.clientX
-      const clientY = e.clientY || e.touches?.[0]?.clientY
-      if (clientX && clientY) {
-        setPosition({
-          x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
-          y: Math.max(80, Math.min(window.innerHeight - 80, clientY - 24))
-        })
-      }
-    }, 10) // Debounce na 10ms
+    const clientX = e.clientX || e.touches?.[0]?.clientX
+    const clientY = e.clientY || e.touches?.[0]?.clientY
+    if (clientX && clientY) {
+      setPosition({
+        x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
+        y: Math.max(80, Math.min(window.innerHeight - 80, clientY - 24))
+      })
+    }
   }, [isDragging])
 
   const stopDrag = () => {
@@ -201,7 +197,6 @@ export default function MusicPlayer() {
           e.stopPropagation()
           setIsMenuOpen(prev => !prev)
         }}
-        whileTap={{ scale: 0.9 }}
         className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg z-10"
         aria-label="Toggle menu"
       >
