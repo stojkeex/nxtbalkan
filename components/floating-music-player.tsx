@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
@@ -225,16 +225,6 @@ export default function FloatingMusicPlayer() {
     }
   }, [currentTime, duration])
 
-  // Initialize shuffled tracks
-  useEffect(() => {
-    if (isShuffled && shuffledTracks.length === 0) {
-      const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
-      setShuffledTracks(shuffled)
-      const currentIndex = shuffled.findIndex((track) => track.id === currentTrack.id)
-      setCurrentShuffleIndex(currentIndex >= 0 ? currentIndex : 0)
-    }
-  }, [isShuffled, currentTrack, currentPlaylist])
-
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -255,10 +245,10 @@ export default function FloatingMusicPlayer() {
       audio.removeEventListener("loadedmetadata", updateDuration)
       audio.removeEventListener("ended", handleEnded)
     }
-  }, [currentTrack, repeatMode, isShuffled])
+  }, [currentTrack])
 
   // Handle what happens when track ends
-  const handleTrackEnd = () => {
+  const handleTrackEnd = useCallback(() => {
     if (repeatMode === 2) {
       // Repeat current track
       const audio = audioRef.current
@@ -282,7 +272,7 @@ export default function FloatingMusicPlayer() {
         setIsPlaying(false)
       }
     }
-  }
+  }, [repeatMode, isShuffled, currentPlaylist.tracks, currentTrack.id])
 
   // Auto-load & play the new track (fixes NotSupportedError)
   useEffect(() => {
@@ -306,35 +296,27 @@ export default function FloatingMusicPlayer() {
     return () => audio.removeEventListener("loadeddata", handleReady)
   }, [currentTrack])
 
-  // Lock body scroll when mobile player is open
+  // Lock body scroll when mobile player is open - FIXED
   useEffect(() => {
     if (isOpen && !isMinimized) {
       // Only lock on mobile
       const isMobile = window.innerWidth < 768
       if (isMobile) {
-        // Instead of locking entire body, just prevent background scroll
+        // Save current scroll position
+        const scrollY = window.scrollY
         document.body.style.position = "fixed"
+        document.body.style.top = `-${scrollY}px`
         document.body.style.width = "100%"
-        document.body.style.top = `-${window.scrollY}px`
-      }
-    } else {
-      // Restore scroll position
-      const scrollY = document.body.style.top
-      document.body.style.position = ""
-      document.body.style.width = ""
-      document.body.style.top = ""
-      if (scrollY) {
-        window.scrollTo(0, Number.parseInt(scrollY || "0") * -1)
-      }
-    }
+        document.body.style.overflow = "hidden"
 
-    return () => {
-      const scrollY = document.body.style.top
-      document.body.style.position = ""
-      document.body.style.width = ""
-      document.body.style.top = ""
-      if (scrollY) {
-        window.scrollTo(0, Number.parseInt(scrollY || "0") * -1)
+        return () => {
+          // Restore scroll position when cleaning up
+          document.body.style.position = ""
+          document.body.style.top = ""
+          document.body.style.width = ""
+          document.body.style.overflow = ""
+          window.scrollTo(0, scrollY)
+        }
       }
     }
   }, [isOpen, isMinimized])
@@ -390,7 +372,7 @@ export default function FloatingMusicPlayer() {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`
   }
 
-  const toggleShuffle = () => {
+  const toggleShuffle = useCallback(() => {
     if (!isShuffled) {
       // Turn on shuffle
       const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
@@ -404,14 +386,14 @@ export default function FloatingMusicPlayer() {
       setShuffledTracks([])
       setCurrentShuffleIndex(0)
     }
-  }
+  }, [isShuffled, currentPlaylist.tracks, currentTrack.id])
 
-  const toggleRepeat = () => {
+  const toggleRepeat = useCallback(() => {
     setRepeatMode((prev) => (prev + 1) % 3)
     // 0: no repeat, 1: repeat all, 2: repeat one
-  }
+  }, [])
 
-  const nextTrack = () => {
+  const nextTrack = useCallback(() => {
     if (isShuffled && shuffledTracks.length > 0) {
       const nextIndex = (currentShuffleIndex + 1) % shuffledTracks.length
       setCurrentShuffleIndex(nextIndex)
@@ -429,9 +411,9 @@ export default function FloatingMusicPlayer() {
       setCurrentTrack(currentPlaylist.tracks[nextIndex])
     }
     setIsPlaying(true)
-  }
+  }, [isShuffled, shuffledTracks, currentShuffleIndex, currentPlaylist.tracks, currentTrack.id, repeatMode])
 
-  const previousTrack = () => {
+  const previousTrack = useCallback(() => {
     if (isShuffled && shuffledTracks.length > 0) {
       const prevIndex = currentShuffleIndex === 0 ? shuffledTracks.length - 1 : currentShuffleIndex - 1
       setCurrentShuffleIndex(prevIndex)
@@ -442,7 +424,7 @@ export default function FloatingMusicPlayer() {
       setCurrentTrack(currentPlaylist.tracks[prevIndex])
     }
     setIsPlaying(true)
-  }
+  }, [isShuffled, shuffledTracks, currentShuffleIndex, currentPlaylist.tracks, currentTrack.id])
 
   const selectTrack = (track: Track) => {
     setCurrentTrack(track)
@@ -635,6 +617,16 @@ export default function FloatingMusicPlayer() {
     }
   }
 
+  // Initialize shuffled tracks when shuffle is turned on
+  useEffect(() => {
+    if (isShuffled && shuffledTracks.length === 0 && currentPlaylist.tracks.length > 0) {
+      const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
+      setShuffledTracks(shuffled)
+      const currentIndex = shuffled.findIndex((track) => track.id === currentTrack.id)
+      setCurrentShuffleIndex(currentIndex >= 0 ? currentIndex : 0)
+    }
+  }, [isShuffled, currentPlaylist.tracks, currentTrack.id, shuffledTracks.length])
+
   // Update shuffled tracks when playlist changes
   useEffect(() => {
     if (isShuffled && currentPlaylist.tracks.length > 0) {
@@ -643,7 +635,7 @@ export default function FloatingMusicPlayer() {
       const currentIndex = shuffled.findIndex((track) => track.id === currentTrack.id)
       setCurrentShuffleIndex(currentIndex >= 0 ? currentIndex : 0)
     }
-  }, [currentPlaylist.tracks, isShuffled, currentTrack.id])
+  }, [currentPlaylist.tracks])
 
   return (
     <>
@@ -675,11 +667,11 @@ export default function FloatingMusicPlayer() {
               : "inset-0 md:bottom-6 md:right-6 md:left-auto md:top-auto md:w-96 md:max-h-[80vh] md:inset-auto"
           }`}
         >
-          {/* Mobile Full Screen View */}
-          <div className={`${isMinimized ? "hidden" : "block md:hidden"} h-full w-full overflow-y-auto`}>
-            <div className="h-full w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white flex flex-col">
-              {/* Mobile Header */}
-              <div className="flex items-center justify-between p-4 pt-12">
+          {/* Mobile Full Screen View - FIXED SCROLL */}
+          <div className={`${isMinimized ? "hidden" : "block md:hidden"} h-full w-full`}>
+            <div className="h-full w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-y-auto">
+              {/* Mobile Header - FIXED */}
+              <div className="sticky top-0 z-10 bg-gradient-to-b from-gray-900 to-gray-900/95 backdrop-blur-sm flex items-center justify-between p-4 pt-12">
                 <Button
                   variant="ghost"
                   size="icon"
@@ -704,7 +696,7 @@ export default function FloatingMusicPlayer() {
 
               {/* Playlist Selector Modal */}
               {showPlaylistSelector && (
-                <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-10 flex flex-col">
+                <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-20 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
                     <h3 className="text-xl font-bold gradient-text-neon">Select Playlist</h3>
                     <Button
@@ -769,7 +761,7 @@ export default function FloatingMusicPlayer() {
 
               {/* Create Playlist Modal */}
               {showCreatePlaylist && (
-                <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-20 flex flex-col">
+                <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
                     <h3 className="text-xl font-bold gradient-text-neon">Create Playlist</h3>
                     <Button
@@ -808,7 +800,7 @@ export default function FloatingMusicPlayer() {
 
               {/* Add to Playlist Modal */}
               {showAddToPlaylist && (
-                <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-20 flex flex-col">
+                <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
                     <h3 className="text-xl font-bold gradient-text-neon">Add Songs</h3>
                     <Button
@@ -876,9 +868,9 @@ export default function FloatingMusicPlayer() {
                 </div>
               )}
 
-              {/* Mobile Content - Always show playlist at bottom */}
+              {/* Mobile Content - SCROLLABLE */}
               {!showPlaylistSelector && !showCreatePlaylist && !showAddToPlaylist && (
-                <>
+                <div className="pb-4">
                   {/* Mobile Album Art */}
                   <div className="flex justify-center px-8 py-4">
                     <div className="w-72 h-72 rounded-2xl overflow-hidden shadow-2xl">
@@ -961,9 +953,9 @@ export default function FloatingMusicPlayer() {
                     </div>
                   </div>
 
-                  {/* Mobile Playlist - Always Visible */}
-                  <div className="px-4 pb-8 flex-1 min-h-0">
-                    <div className="bg-black/20 rounded-2xl p-4 h-full overflow-y-auto backdrop-blur-sm">
+                  {/* Mobile Playlist - SCROLLABLE */}
+                  <div className="px-4 pb-8">
+                    <div className="bg-black/20 rounded-2xl p-4 backdrop-blur-sm">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="text-lg font-medium text-gray-300 flex items-center">
                           <List className="h-5 w-5 mr-2" />
@@ -978,55 +970,57 @@ export default function FloatingMusicPlayer() {
                           <MoreHorizontal className="h-5 w-5" />
                         </Button>
                       </div>
-                      {currentPlaylist.tracks.map((track, index) => (
-                        <div
-                          key={track.id}
-                          onClick={() => selectTrack(track)}
-                          className={`flex items-center space-x-4 p-3 rounded-xl cursor-pointer transition-all hover:bg-white/5 mb-2 ${
-                            currentTrack.id === track.id ? "bg-white/10" : ""
-                          }`}
-                        >
-                          <div className="w-6 text-center">
-                            <span className="text-sm text-gray-400">{index + 1}</span>
+                      <div className="space-y-2">
+                        {currentPlaylist.tracks.map((track, index) => (
+                          <div
+                            key={track.id}
+                            onClick={() => selectTrack(track)}
+                            className={`flex items-center space-x-4 p-3 rounded-xl cursor-pointer transition-all hover:bg-white/5 ${
+                              currentTrack.id === track.id ? "bg-white/10" : ""
+                            }`}
+                          >
+                            <div className="w-6 text-center">
+                              <span className="text-sm text-gray-400">{index + 1}</span>
+                            </div>
+                            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                              <img
+                                src={track.cover || "/placeholder.svg"}
+                                alt={track.album}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className={`text-base font-medium truncate ${
+                                  currentTrack.id === track.id ? "gradient-text-neon" : "text-white"
+                                }`}
+                              >
+                                {track.title}
+                              </p>
+                              <p className="text-sm text-gray-400 truncate">{track.artist}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              {currentTrack.id === track.id && isPlaying && (
+                                <div className="flex items-center space-x-1">
+                                  <div className="w-1 h-4 bg-cyan-400 rounded-full animate-pulse"></div>
+                                  <div
+                                    className="w-1 h-3 bg-purple-500 rounded-full animate-pulse"
+                                    style={{ animationDelay: "0.2s" }}
+                                  ></div>
+                                  <div
+                                    className="w-1 h-5 bg-cyan-400 rounded-full animate-pulse"
+                                    style={{ animationDelay: "0.4s" }}
+                                  ></div>
+                                </div>
+                              )}
+                              <span className="text-sm text-gray-400">{track.duration}</span>
+                            </div>
                           </div>
-                          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                            <img
-                              src={track.cover || "/placeholder.svg"}
-                              alt={track.album}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p
-                              className={`text-base font-medium truncate ${
-                                currentTrack.id === track.id ? "gradient-text-neon" : "text-white"
-                              }`}
-                            >
-                              {track.title}
-                            </p>
-                            <p className="text-sm text-gray-400 truncate">{track.artist}</p>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            {currentTrack.id === track.id && isPlaying && (
-                              <div className="flex items-center space-x-1">
-                                <div className="w-1 h-4 bg-cyan-400 rounded-full animate-pulse"></div>
-                                <div
-                                  className="w-1 h-3 bg-purple-500 rounded-full animate-pulse"
-                                  style={{ animationDelay: "0.2s" }}
-                                ></div>
-                                <div
-                                  className="w-1 h-5 bg-cyan-400 rounded-full animate-pulse"
-                                  style={{ animationDelay: "0.4s" }}
-                                ></div>
-                              </div>
-                            )}
-                            <span className="text-sm text-gray-400">{track.duration}</span>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>
