@@ -89,7 +89,7 @@ export function NotificationToasts() {
             <div className="bg-black/90 backdrop-blur-md border border-white/20 rounded-xl p-4 shadow-2xl glow-border">
               <div className="flex items-start space-x-3">
                 <span className="text-2xl flex-shrink-0">{toast.emoji}</span>
-                <p className="text-white text-sm flex-1 leading-relaxed">{toast.message}</p>
+                <p className="gradient-text-neon text-sm flex-1 leading-relaxed">{toast.message}</p>
                 <button
                   onClick={() => removeToast(toast.id)}
                   className="text-white/60 hover:text-white transition-colors flex-shrink-0 animated-button magnetic-button"
