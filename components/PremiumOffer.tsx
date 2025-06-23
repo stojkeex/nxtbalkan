@@ -65,7 +65,7 @@ export function PremiumOffer() {
         {/* Premium content */}
         <div className="text-center">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-white mb-2">Upgrade to Premium</h2>
+            <h2 className="text-3xl font-bold gradient-text-neon mb-2">Upgrade to Premium</h2>
             <p className="text-blue-200">Unlock all features and enjoy ad-free experience</p>
           </div>
 
@@ -94,7 +94,7 @@ export function PremiumOffer() {
 
           <div className="mb-6">
             <div className="text-4xl font-bold text-white mb-2">$9.99<span className="text-sm font-normal text-blue-300">/month</span></div>
-            <p className="text-blue-200 text-sm">Cancel anytime</p>
+            <p className="gradient-text-neon text-sm">Cancel anytime</p>
           </div>
 
           <button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity shadow-lg">
