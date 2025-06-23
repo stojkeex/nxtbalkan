@@ -15,11 +15,19 @@ export default function MusicPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [isHidden, setIsHidden] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [position, setPosition] = useState({ x: window.innerWidth - 100, y: window.innerHeight - 100 })
+  const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const audioRef = useRef(null)
   const menuRef = useRef(null)
   const playerRef = useRef(null)
+
+  // Initialize position safely after component mounts
+  useEffect(() => {
+    setPosition({
+      x: window.innerWidth - 100,
+      y: window.innerHeight - 100
+    })
+  }, [])
 
   // Handle dragging
   const startDrag = (e) => {
