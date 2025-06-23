@@ -195,7 +195,7 @@ export default function MusicPlayer() {
         )}
       </AnimatePresence>
 
-      {/* Glavni gumb za mute/menu */}
+      {/* Glavni gumb brez animacije */}
       <motion.button
         onClick={(e) => {
           e.stopPropagation()
@@ -203,8 +203,6 @@ export default function MusicPlayer() {
         }}
         whileTap={{ scale: 0.9 }}
         className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg z-10"
-        animate={{ rotate: isMenuOpen ? 180 : 0 }}
-        transition={{ type: 'spring', stiffness: 300 }}
         aria-label="Toggle menu"
       >
         {isMuted ? <VolumeX className="h-6 w-6 text-white" /> : <Volume2 className="h-6 w-6 text-white" />}
