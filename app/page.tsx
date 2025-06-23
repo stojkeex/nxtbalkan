@@ -17,13 +17,13 @@ export default function HomePage() {
       <InteractiveBackground />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4">
+      <section className="relative min-h-[90vh] flex items-center justify-center px-4">
         <div className="text-center z-10">
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="text-6xl md:text-8xl font-bold mb-6 tracking-tight gradient-text-neon"
+            className="text-6xl md:text-8xl font-bold mb-4 tracking-tight gradient-text-neon"
           >
             NXT
             <br />
@@ -34,7 +34,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-gray-300"
+            className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-300"
           >
             Where tradition meets innovation. We produce, manage, and promote the next generation of Balkan artists.
           </motion.p>
@@ -43,12 +43,12 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="flex flex-col md:flex-row gap-6 justify-center items-center"
+            className="flex flex-col md:flex-row gap-4 justify-center items-center"
           >
             <Link href="/artists">
               <Button
                 size="lg"
-                className="primary-button animated-button magnetic-button ripple-button px-8 py-4 text-lg font-semibold group relative"
+                className="primary-button animated-button magnetic-button ripple-button px-6 py-3 text-lg font-semibold group relative"
               >
                 <span className="shimmer"></span>
                 <span className="flex items-center relative z-10">
@@ -61,7 +61,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="outline-button animated-button magnetic-button ripple-button px-8 py-4 text-lg font-semibold group relative"
+                className="outline-button animated-button magnetic-button ripple-button px-6 py-3 text-lg font-semibold group relative"
               >
                 <span className="shimmer"></span>
                 <span className="flex items-center relative z-10">
@@ -75,28 +75,28 @@ export default function HomePage() {
       </section>
 
       {/* Mobile Banner Ad */}
-      <div className="px-4 py-6 md:hidden">
+      <div className="px-4 py-4 md:hidden">
         <MobileBannerAd />
       </div>
 
-      {/* Mission Section - Moved up with reduced padding */}
-      <section className="py-20 px-4 relative z-10">
+      {/* Mission Section - Tight spacing */}
+      <section className="py-12 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-5xl md:text-6xl font-bold mb-8 gradient-text-alt">OUR MISSION</h2>
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text-alt">OUR MISSION</h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               To bridge the gap between traditional Balkan music and the global stage, empowering artists with
               cutting-edge production, strategic management, and innovative promotion techniques.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 icon: Music,
@@ -122,15 +122,15 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 className="text-center group"
               >
-                <Card3D className="professional-card p-8 rounded-2xl hover-card">
+                <Card3D className="professional-card p-6 rounded-2xl hover-card">
                   <motion.div
-                    className="w-20 h-20 mx-auto mb-6 border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300 hover-target"
+                    className="w-16 h-16 mx-auto mb-4 border-2 border-white rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300 hover-target"
                     whileHover={{ rotateY: 180, scale: 1.1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <service.icon className="h-8 w-8" />
+                    <service.icon className="h-6 w-6" />
                   </motion.div>
-                  <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
+                  <h3 className="text-xl font-bold mb-3">{service.title}</h3>
                   <p className="text-gray-300 leading-relaxed">{service.description}</p>
                 </Card3D>
               </motion.div>
@@ -139,25 +139,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Banner Ad - Reduced padding */}
-      <div className="px-4 py-6">
+      {/* Banner Ad - Tight spacing */}
+      <div className="px-4 py-4">
         <div className="max-w-7xl mx-auto">
           <BannerAd />
         </div>
       </div>
 
-      {/* Testimonials Section - Reduced padding */}
-      <Testimonials className="py-16" />
+      {/* Testimonials Section - Tight spacing */}
+      <Testimonials className="py-12" />
 
-      {/* Native Ad - Reduced padding */}
-      <div className="px-4 py-6">
+      {/* Native Ad - Tight spacing */}
+      <div className="px-4 py-4">
         <div className="max-w-4xl mx-auto">
           <NativeAd />
         </div>
       </div>
 
-      {/* CTA Section - Moved up with reduced padding */}
-      <section className="py-20 px-4 relative z-10">
+      {/* CTA Section - Tight spacing */}
+      <section className="py-12 px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -165,23 +165,23 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto text-center"
         >
-          <Card3D className="professional-card border border-white/20 rounded-2xl p-12 backdrop-blur-sm hover-card">
+          <Card3D className="professional-card border border-white/20 rounded-2xl p-8 backdrop-blur-sm hover-card">
             <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-8 gradient-text-neon"
+              className="text-4xl md:text-5xl font-bold mb-6 gradient-text-neon"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
               Ready to Join the Revolution?
             </motion.h2>
-            <p className="text-xl text-gray-300 mb-10">
+            <p className="text-xl text-gray-300 mb-8">
               Whether you're an artist looking for representation or a music lover seeking the next big sound, NXT
               Balkan is your gateway to the future of music.
             </p>
-            <div className="flex flex-col md:flex-row gap-6 justify-center">
+            <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Link href="/about">
                 <Button
                   size="lg"
-                  className="primary-button animated-button magnetic-button ripple-button px-8 py-4 text-lg font-semibold group relative"
+                  className="primary-button animated-button magnetic-button ripple-button px-6 py-3 text-lg font-semibold group relative"
                 >
                   <span className="shimmer"></span>
                   <span className="flex items-center relative z-10">
@@ -194,7 +194,7 @@ export default function HomePage() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="outline-button animated-button magnetic-button ripple-button px-8 py-4 text-lg font-semibold group relative"
+                  className="outline-button animated-button magnetic-button ripple-button px-6 py-3 text-lg font-semibold group relative"
                 >
                   <span className="shimmer"></span>
                   <span className="flex items-center relative z-10">
