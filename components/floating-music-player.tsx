@@ -58,6 +58,7 @@ const sampleTracks: Track[] = [
   },
 ]
 
+
 export default function FloatingMusicPlayer() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
@@ -87,6 +88,26 @@ export default function FloatingMusicPlayer() {
       audio.removeEventListener("timeupdate", updateTime)
       audio.removeEventListener("loadedmetadata", updateDuration)
     }
+  }, [currentTrack])
+
+  // Auto-load & play the new track (fixes NotSupportedError)
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+
+    // force reload so browser recognises the new source
+    audio.load()
+
+    const handleReady = () => {
+      // play only after the source is ready
+      audio
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(console.error)
+    }
+
+    audio.addEventListener("loadeddata", handleReady)
+    return () => audio.removeEventListener("loadeddata", handleReady)
   }, [currentTrack])
 
   const togglePlay = () => {
@@ -148,6 +169,16 @@ export default function FloatingMusicPlayer() {
     const prevIndex = currentIndex === 0 ? sampleTracks.length - 1 : currentIndex - 1
     setCurrentTrack(sampleTracks[prevIndex])
   }
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+
+    if (isPlaying) {
+      audio.currentTime = 0 // Reset to beginning
+      audio.play().catch(console.error)
+    }
+  }, [currentTrack])
 
   const openPlayer = () => {
     setIsOpen(true)
@@ -364,7 +395,9 @@ export default function FloatingMusicPlayer() {
                       onValueChange={handleVolumeChange}
                       className="flex-1 [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:bg-white [&_[role=slider]]:w-3 [&_[role=slider]]:h-3 [&_[role=slider]]:border-0 [&>span:first-child_span]:bg-white"
                     />
-                    <span className="text-xs text-muted-foreground w-6 md:w-8">{isMuted ? 0 : volume[0]}</span>
+                    <span className="text-xs text-muted-foreground w-6 md:w-8 hidden md:block">
+                      {isMuted ? 0 : volume[0]}
+                    </span>
                   </div>
 
                   {/* Playlist */}
