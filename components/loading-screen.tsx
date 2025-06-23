@@ -50,7 +50,7 @@ export function LoadingScreen() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="text-2xl font-bold text-white"
+          className="text-2xl font-bold gradient-text-neon"
         >
           NXT Balkan
         </motion.h1>
