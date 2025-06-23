@@ -18,58 +18,18 @@ export default function MusicPlayer() {
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [menuPositions, setMenuPositions] = useState({
-    left: { x: -60, y: 0 },
-    top: { x: 0, y: -60 },
-    bottom: { x: 0, y: 60 },
-    right: { x: 60, y: 0 }
-  })
   const audioRef = useRef(null)
   const playerRef = useRef(null)
 
-  // Initialize position
+  // Initialize position higher on screen
   useEffect(() => {
     setPosition({
       x: window.innerWidth - 100,
-      y: window.innerHeight - 150 // Start slightly higher
+      y: window.innerHeight - 180 // Higher initial position
     })
   }, [])
 
-  // Adjust menu positions when opening or moving
-  useEffect(() => {
-    if (isMenuOpen && playerRef.current) {
-      const playerRect = playerRef.current.getBoundingClientRect()
-      const buttonRadius = 60 // Distance from center
-      const buttonSize = 44 // Button width/height
-      const padding = 20 // Extra space from screen edge
-      
-      const newPositions = { ...menuPositions }
-
-      // Check left side
-      if (playerRect.left + playerRect.width/2 - buttonRadius - buttonSize < padding) {
-        newPositions.left.x = -40 // Bring closer if near edge
-      }
-
-      // Check right side
-      if (playerRect.left + playerRect.width/2 + buttonRadius + buttonSize > window.innerWidth - padding) {
-        newPositions.right.x = 40 // Bring closer if near edge
-      }
-
-      // Check top side
-      if (playerRect.top + playerRect.height/2 - buttonRadius - buttonSize < padding) {
-        newPositions.top.y = -40 // Bring closer if near edge
-      }
-
-      // Check bottom side
-      if (playerRect.top + playerRect.height/2 + buttonRadius + buttonSize > window.innerHeight - padding) {
-        newPositions.bottom.y = 40 // Bring closer if near edge
-      }
-
-      setMenuPositions(newPositions)
-    }
-  }, [isMenuOpen, position])
-
-  // Handle dragging
+  // Handle dragging with boundaries
   const startDrag = (e) => {
     e.stopPropagation()
     setIsDragging(true)
@@ -84,8 +44,8 @@ export default function MusicPlayer() {
     
     if (clientX && clientY) {
       setPosition({
-        x: Math.max(50, Math.min(window.innerWidth - 50, clientX - (playerRef.current?.offsetWidth / 2 || 0)), // Keep within screen bounds
-        y: Math.max(50, Math.min(window.innerHeight - 50, clientY - (playerRef.current?.offsetHeight / 2 || 0)))
+        x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
+        y: Math.max(80, Math.min(window.innerHeight - 80, clientY - 24))
       })
     }
   }
@@ -112,7 +72,7 @@ export default function MusicPlayer() {
     }
   }, [isDragging])
 
-  // Initialize audio
+  // Audio initialization
   useEffect(() => {
     const handleFirstInteraction = () => {
       if (audioRef.current && !isPlaying) {
@@ -131,7 +91,7 @@ export default function MusicPlayer() {
     return () => document.removeEventListener('click', handleFirstInteraction)
   }, [isPlaying])
 
-  // Handle track changes
+  // Track handling
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = tracks[currentTrackIndex].path
@@ -172,6 +132,15 @@ export default function MusicPlayer() {
 
   if (isHidden) return null
 
+  // Circular button positions with rotation effect
+  const orbitRadius = 70
+  const buttons = [
+    { icon: <ChevronLeft className="h-5 w-5 text-white" />, action: prevTrack, angle: 180, label: "Previous track" },
+    { icon: <Move className="h-5 w-5 text-white" />, action: startDrag, angle: 90, label: "Move player" },
+    { icon: <X className="h-5 w-5 text-white" />, action: () => setIsHidden(true), angle: 270, label: "Hide player" },
+    { icon: <ChevronRight className="h-5 w-5 text-white" />, action: nextTrack, angle: 0, label: "Next track" }
+  ]
+
   return (
     <div 
       ref={playerRef}
@@ -185,68 +154,65 @@ export default function MusicPlayer() {
     >
       <AnimatePresence>
         {isMenuOpen && (
-          <div className="absolute -left-1/2 -top-1/2 w-48 h-48 flex items-center justify-center pointer-events-none">
-            {/* Previous Track Button */}
-            <motion.button
-              initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: menuPositions.left.x, y: menuPositions.left.y }}
-              exit={{ scale: 0, x: 0, y: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              onClick={prevTrack}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
-              aria-label="Previous track"
-            >
-              <ChevronLeft className="h-5 w-5 text-white" />
-            </motion.button>
-
-            {/* Move Button */}
-            <motion.button
-              initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: menuPositions.top.x, y: menuPositions.top.y }}
-              exit={{ scale: 0, x: 0, y: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.1 }}
-              onMouseDown={startDrag}
-              onTouchStart={startDrag}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
-              aria-label="Move player"
-            >
-              <Move className="h-5 w-5 text-white" />
-            </motion.button>
-
-            {/* Hide Button */}
-            <motion.button
-              initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: menuPositions.bottom.x, y: menuPositions.bottom.y }}
-              exit={{ scale: 0, x: 0, y: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.2 }}
-              onClick={() => setIsHidden(true)}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
-              aria-label="Hide player"
-            >
-              <X className="h-5 w-5 text-white" />
-            </motion.button>
-
-            {/* Next Track Button */}
-            <motion.button
-              initial={{ scale: 0, x: 0, y: 0 }}
-              animate={{ scale: 1, x: menuPositions.right.x, y: menuPositions.right.y }}
-              exit={{ scale: 0, x: 0, y: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.3 }}
-              onClick={nextTrack}
-              className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
-              aria-label="Next track"
-            >
-              <ChevronRight className="h-5 w-5 text-white" />
-            </motion.button>
-          </div>
+          <>
+            {buttons.map((button, index) => {
+              const radians = (button.angle * Math.PI) / 180
+              const x = orbitRadius * Math.cos(radians)
+              const y = orbitRadius * Math.sin(radians)
+              
+              return (
+                <motion.button
+                  key={index}
+                  initial={{ scale: 0, x: 0, y: 0, opacity: 0 }}
+                  animate={{ 
+                    scale: 1,
+                    x: x,
+                    y: y,
+                    opacity: 1,
+                    rotate: [0, 360] // Rotation animation
+                  }}
+                  exit={{ scale: 0, x: 0, y: 0, opacity: 0 }}
+                  transition={{ 
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 20,
+                    delay: index * 0.1,
+                    rotate: { 
+                      duration: 5,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    button.action()
+                  }}
+                  onMouseDown={button.label === "Move player" ? button.action : undefined}
+                  onTouchStart={button.label === "Move player" ? button.action : undefined}
+                  className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
+                  aria-label={button.label}
+                  style={{
+                    originX: 0.5,
+                    originY: 0.5
+                  }}
+                >
+                  {button.icon}
+                </motion.button>
+              )
+            })}
+          </>
         )}
       </AnimatePresence>
 
       <motion.button
         onClick={toggleMenu}
         whileTap={{ scale: 0.9 }}
-        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg"
+        className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg z-10"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        animate={{
+          rotate: isMenuOpen ? 180 : 0
+        }}
+        transition={{ type: 'spring', stiffness: 300 }}
       >
         {isMuted ? (
           <VolumeX className="h-6 w-6 text-white" />
