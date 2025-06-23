@@ -1,12 +1,27 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function PremiumOffer() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Nastavi časovnik, da se prikaže po loadingu (4s kot v vašem loading screenu)
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isVisible) return null;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       className="fixed inset-0 z-[9999] bg-black bg-opacity-70 flex items-center justify-center p-4"
     >
       <motion.div 
@@ -14,9 +29,9 @@ export function PremiumOffer() {
         animate={{ y: 0, scale: 1 }}
         className="relative bg-gradient-to-br from-purple-900 to-blue-800 rounded-xl p-8 max-w-md w-full shadow-2xl"
       >
-        {/* Close button (X) */}
+        {/* Close button (X) - samo zapre, ne refresha */}
         <button
-          onClick={() => window.location.reload()} // Ob kliku samo osveži stran
+          onClick={() => setIsVisible(false)}
           className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
           aria-label="Close premium offer"
         >
@@ -71,10 +86,7 @@ export function PremiumOffer() {
             <p className="gradient-text-neon text-sm">Cancel anytime</p>
           </div>
 
-          <button 
-            onClick={() => alert("Redirecting to payment...")}
-            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity shadow-lg"
-          >
+          <button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity shadow-lg">
             Get Premium Now
           </button>
         </div>
