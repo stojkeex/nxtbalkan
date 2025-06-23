@@ -265,13 +265,22 @@ export default function FloatingMusicPlayer() {
       if (audio) {
         audio.currentTime = 0
         audio.play()
+        setIsPlaying(true)
       }
-    } else if (repeatMode === 1 || isShuffled) {
-      // Repeat all or shuffle - go to next track
+    } else if (repeatMode === 1) {
+      // Repeat all - go to next track
+      nextTrack()
+    } else if (isShuffled) {
+      // Shuffle mode - go to next track
       nextTrack()
     } else {
-      // No repeat - stop playing
-      setIsPlaying(false)
+      // No repeat - check if we're at the end
+      const currentIndex = currentPlaylist.tracks.findIndex((track) => track.id === currentTrack.id)
+      if (currentIndex < currentPlaylist.tracks.length - 1) {
+        nextTrack()
+      } else {
+        setIsPlaying(false)
+      }
     }
   }
 
@@ -303,20 +312,30 @@ export default function FloatingMusicPlayer() {
       // Only lock on mobile
       const isMobile = window.innerWidth < 768
       if (isMobile) {
-        document.body.style.overflow = "hidden"
+        // Instead of locking entire body, just prevent background scroll
         document.body.style.position = "fixed"
         document.body.style.width = "100%"
+        document.body.style.top = `-${window.scrollY}px`
       }
     } else {
-      document.body.style.overflow = ""
+      // Restore scroll position
+      const scrollY = document.body.style.top
       document.body.style.position = ""
       document.body.style.width = ""
+      document.body.style.top = ""
+      if (scrollY) {
+        window.scrollTo(0, Number.parseInt(scrollY || "0") * -1)
+      }
     }
 
     return () => {
-      document.body.style.overflow = ""
+      const scrollY = document.body.style.top
       document.body.style.position = ""
       document.body.style.width = ""
+      document.body.style.top = ""
+      if (scrollY) {
+        window.scrollTo(0, Number.parseInt(scrollY || "0") * -1)
+      }
     }
   }, [isOpen, isMinimized])
 
@@ -393,29 +412,34 @@ export default function FloatingMusicPlayer() {
   }
 
   const nextTrack = () => {
-    const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
     if (isShuffled && shuffledTracks.length > 0) {
       const nextIndex = (currentShuffleIndex + 1) % shuffledTracks.length
       setCurrentShuffleIndex(nextIndex)
       setCurrentTrack(shuffledTracks[nextIndex])
     } else {
-      const currentIndex = tracks.findIndex((track) => track.id === currentTrack.id)
-      const nextIndex = (currentIndex + 1) % tracks.length
-      setCurrentTrack(tracks[nextIndex])
+      const currentIndex = currentPlaylist.tracks.findIndex((track) => track.id === currentTrack.id)
+      const nextIndex = (currentIndex + 1) % currentPlaylist.tracks.length
+
+      // If repeat is off and we're at the end, stop playing
+      if (repeatMode === 0 && currentIndex === currentPlaylist.tracks.length - 1) {
+        setIsPlaying(false)
+        return
+      }
+
+      setCurrentTrack(currentPlaylist.tracks[nextIndex])
     }
     setIsPlaying(true)
   }
 
   const previousTrack = () => {
-    const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
     if (isShuffled && shuffledTracks.length > 0) {
       const prevIndex = currentShuffleIndex === 0 ? shuffledTracks.length - 1 : currentShuffleIndex - 1
       setCurrentShuffleIndex(prevIndex)
       setCurrentTrack(shuffledTracks[prevIndex])
     } else {
-      const currentIndex = tracks.findIndex((track) => track.id === currentTrack.id)
-      const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1
-      setCurrentTrack(tracks[prevIndex])
+      const currentIndex = currentPlaylist.tracks.findIndex((track) => track.id === currentTrack.id)
+      const prevIndex = currentIndex === 0 ? currentPlaylist.tracks.length - 1 : currentIndex - 1
+      setCurrentTrack(currentPlaylist.tracks[prevIndex])
     }
     setIsPlaying(true)
   }
@@ -611,6 +635,16 @@ export default function FloatingMusicPlayer() {
     }
   }
 
+  // Update shuffled tracks when playlist changes
+  useEffect(() => {
+    if (isShuffled && currentPlaylist.tracks.length > 0) {
+      const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
+      setShuffledTracks(shuffled)
+      const currentIndex = shuffled.findIndex((track) => track.id === currentTrack.id)
+      setCurrentShuffleIndex(currentIndex >= 0 ? currentIndex : 0)
+    }
+  }, [currentPlaylist.tracks, isShuffled, currentTrack.id])
+
   return (
     <>
       <audio ref={audioRef} src={currentTrack.audioUrl} />
@@ -642,8 +676,8 @@ export default function FloatingMusicPlayer() {
           }`}
         >
           {/* Mobile Full Screen View */}
-          <div className={`${isMinimized ? "hidden" : "block md:hidden"} h-full w-full`}>
-            <div className="h-full w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-hidden">
+          <div className={`${isMinimized ? "hidden" : "block md:hidden"} h-full w-full overflow-y-auto`}>
+            <div className="h-full w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white flex flex-col">
               {/* Mobile Header */}
               <div className="flex items-center justify-between p-4 pt-12">
                 <Button
@@ -928,7 +962,7 @@ export default function FloatingMusicPlayer() {
                   </div>
 
                   {/* Mobile Playlist - Always Visible */}
-                  <div className="px-4 pb-8 flex-1 overflow-hidden">
+                  <div className="px-4 pb-8 flex-1 min-h-0">
                     <div className="bg-black/20 rounded-2xl p-4 h-full overflow-y-auto backdrop-blur-sm">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="text-lg font-medium text-gray-300 flex items-center">
