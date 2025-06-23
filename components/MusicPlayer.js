@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Volume2, VolumeX, X, Move, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -34,16 +34,17 @@ export default function MusicPlayer() {
     }
   }, [])
 
-  // Optimizirana animacija za mobilne naprave
+  // Optimizirana animacija za mobilne naprave in računalnik
   useEffect(() => {
-    if (isMenuOpen) {
-      const animateOrbit = () => {
+    const animateOrbit = () => {
+      if (isMenuOpen) {
         setOrbitAngle(prev => (prev + 1) % 360)
         animationRef.current = requestAnimationFrame(animateOrbit)
       }
+    }
+
+    if (isMenuOpen) {
       animationRef.current = requestAnimationFrame(animateOrbit)
-    } else {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
 
     return () => {
@@ -51,14 +52,15 @@ export default function MusicPlayer() {
     }
   }, [isMenuOpen])
 
+  // Start dragging funkcionalnost
   const startDrag = (e) => {
     e.stopPropagation()
     setIsDragging(true)
     document.body.style.userSelect = 'none'
   }
 
-  // Debouncing dragging na mobilnem telefonu
-  const handleDrag = (e) => {
+  // Debouncing za premikanje
+  const handleDrag = useCallback((e) => {
     if (!isDragging) return
     clearTimeout(dragTimeoutRef.current)
     dragTimeoutRef.current = setTimeout(() => {
@@ -70,8 +72,8 @@ export default function MusicPlayer() {
           y: Math.max(80, Math.min(window.innerHeight - 80, clientY - 24))
         })
       }
-    }, 10) // Debounce na 10ms, kar zmanjša prekomerno obdelavo dogodkov
-  }
+    }, 10) // Debounce na 10ms
+  }, [isDragging])
 
   const stopDrag = () => {
     setIsDragging(false)
@@ -92,8 +94,9 @@ export default function MusicPlayer() {
       document.removeEventListener('mouseup', stopDrag)
       document.removeEventListener('touchend', stopDrag)
     }
-  }, [isDragging])
+  }, [isDragging, handleDrag])
 
+  // Začetno nalaganje audio datotek
   useEffect(() => {
     const handleFirstInteraction = () => {
       if (audioRef.current && !isPlaying) {
@@ -112,6 +115,7 @@ export default function MusicPlayer() {
     return () => document.removeEventListener('click', handleFirstInteraction)
   }, [isPlaying])
 
+  // Posodobi trenutno predvajano skladbo
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = tracks[currentTrackIndex].path
