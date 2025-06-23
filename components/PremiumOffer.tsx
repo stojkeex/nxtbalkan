@@ -1,38 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export function PremiumOffer() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    // Preveri, če je uporabnik že zaprl ponudbo (v tem brskalniku)
-    const hasClosedOffer = localStorage.getItem('closedPremiumOffer');
-    
-    // Če je ponudba še ne zaprta, jo prikaži po 3 sekundah
-    if (!hasClosedOffer) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 3000); // Zakasnitev 3 sekunde za boljšo uporabniško izkušnjo
-      
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  const handleClose = () => {
-    // Shrani v localStorage, da je uporabnik zaprl ponudbo
-    localStorage.setItem('closedPremiumOffer', 'true');
-    setIsVisible(false);
-  };
-
-  if (!isVisible) return null;
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       className="fixed inset-0 z-[9999] bg-black bg-opacity-70 flex items-center justify-center p-4"
     >
       <motion.div 
@@ -42,7 +16,7 @@ export function PremiumOffer() {
       >
         {/* Close button (X) */}
         <button
-          onClick={handleClose}
+          onClick={() => window.location.reload()} // Ob kliku samo osveži stran
           className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
           aria-label="Close premium offer"
         >
@@ -97,7 +71,10 @@ export function PremiumOffer() {
             <p className="gradient-text-neon text-sm">Cancel anytime</p>
           </div>
 
-          <button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity shadow-lg">
+          <button 
+            onClick={() => alert("Redirecting to payment...")}
+            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity shadow-lg"
+          >
             Get Premium Now
           </button>
         </div>
