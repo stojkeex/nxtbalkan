@@ -29,7 +29,7 @@ export default function MusicPlayer() {
         ref={audioRef} 
         loop
         autoPlay
-        src="/music/background-music.mp3" // Change to your music file path
+        src="/music/vultures.mp3" // Change to your music file path
       />
       
       <button
