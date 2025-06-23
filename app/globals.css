@@ -81,7 +81,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00ffff;
+  background: #a9a9a9;
   background-size: 200% 200%;
   border-radius: 10px;
   animation: gradient-flow 4s ease infinite;
