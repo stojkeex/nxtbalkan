@@ -17,6 +17,7 @@ export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
+  const [menuDirection, setMenuDirection] = useState('down') // 'up' or 'down'
   const audioRef = useRef(null)
   const menuRef = useRef(null)
   const playerRef = useRef(null)
@@ -28,6 +29,22 @@ export default function MusicPlayer() {
       y: window.innerHeight - 100
     })
   }, [])
+
+  // Calculate menu direction when showMenu changes
+  useEffect(() => {
+    if (showMenu && playerRef.current) {
+      const playerRect = playerRef.current.getBoundingClientRect()
+      const menuHeight = 300 // Approximate menu height
+      const spaceBelow = window.innerHeight - playerRect.bottom
+      const spaceAbove = playerRect.top
+      
+      if (spaceBelow < menuHeight && spaceAbove > menuHeight) {
+        setMenuDirection('up')
+      } else {
+        setMenuDirection('down')
+      }
+    }
+  }, [showMenu])
 
   // Handle dragging
   const startDrag = (e) => {
@@ -159,7 +176,12 @@ export default function MusicPlayer() {
       {showMenu && (
         <div 
           ref={menuRef}
-          className="bg-black/90 backdrop-blur-md border border-white/20 rounded-lg p-4 shadow-lg w-72 max-w-[90vw]"
+          className={`bg-black/90 backdrop-blur-md border border-white/20 rounded-lg p-4 shadow-lg w-72 max-w-[90vw] ${
+            menuDirection === 'up' ? 'mb-2' : 'mt-2'
+          }`}
+          style={{
+            [menuDirection === 'up' ? 'bottom' : 'top']: '100%'
+          }}
         >
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-medium text-white text-lg">Music Settings</h3>
