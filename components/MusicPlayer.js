@@ -19,10 +19,8 @@ export default function MusicPlayer() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [orbitAngle, setOrbitAngle] = useState(0)
   const audioRef = useRef(null)
-  const playerRef = useRef(null)
   const animationRef = useRef(null)
 
-  // Initialize position higher on screen
   useEffect(() => {
     setPosition({
       x: window.innerWidth - 100,
@@ -30,34 +28,26 @@ export default function MusicPlayer() {
     })
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
   }, [])
 
-  // Orbit animation
   useEffect(() => {
     if (isMenuOpen) {
       const animateOrbit = () => {
-        setOrbitAngle(prev => (prev + 0.5) % 360)
+        setOrbitAngle(prev => (prev + 1) % 360)
         animationRef.current = requestAnimationFrame(animateOrbit)
       }
       animationRef.current = requestAnimationFrame(animateOrbit)
     } else {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current)
     }
   }, [isMenuOpen])
 
-  // Handle dragging with boundaries
   const startDrag = (e) => {
     e.stopPropagation()
     setIsDragging(true)
@@ -66,10 +56,10 @@ export default function MusicPlayer() {
 
   const handleDrag = (e) => {
     if (!isDragging) return
-    
+
     const clientX = e.clientX || e.touches?.[0]?.clientX
     const clientY = e.clientY || e.touches?.[0]?.clientY
-    
+
     if (clientX && clientY) {
       setPosition({
         x: Math.max(80, Math.min(window.innerWidth - 80, clientX - 24)),
@@ -100,7 +90,6 @@ export default function MusicPlayer() {
     }
   }, [isDragging])
 
-  // Audio initialization
   useEffect(() => {
     const handleFirstInteraction = () => {
       if (audioRef.current && !isPlaying) {
@@ -119,7 +108,6 @@ export default function MusicPlayer() {
     return () => document.removeEventListener('click', handleFirstInteraction)
   }, [isPlaying])
 
-  // Track handling
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = tracks[currentTrackIndex].path
@@ -134,7 +122,7 @@ export default function MusicPlayer() {
       const newMutedState = !audioRef.current.muted
       audioRef.current.muted = newMutedState
       setIsMuted(newMutedState)
-      
+
       if (!isPlaying && !newMutedState) {
         audioRef.current.play()
           .then(() => setIsPlaying(true))
@@ -160,18 +148,16 @@ export default function MusicPlayer() {
 
   if (isHidden) return null
 
-  // Circular button configuration
   const orbitRadius = 70
-  const buttons = [
-    { icon: <ChevronLeft className="h-5 w-5 text-white" />, action: prevTrack, angleOffset: 0, label: "Previous track" },
-    { icon: <Move className="h-5 w-5 text-white" />, action: startDrag, angleOffset: 90, label: "Move player" },
-    { icon: <X className="h-5 w-5 text-white" />, action: () => setIsHidden(true), angleOffset: 180, label: "Hide player" },
-    { icon: <ChevronRight className="h-5 w-5 text-white" />, action: nextTrack, angleOffset: 270, label: "Next track" }
+  const menuButtons = [
+    { icon: <ChevronLeft className="h-5 w-5 text-white" />, action: prevTrack, label: "Previous track" },
+    { icon: <Move className="h-5 w-5 text-white" />, action: startDrag, label: "Move player" },
+    { icon: <X className="h-5 w-5 text-white" />, action: () => setIsHidden(true), label: "Hide player" },
+    { icon: <ChevronRight className="h-5 w-5 text-white" />, action: nextTrack, label: "Next track" }
   ]
 
   return (
-    <div 
-      ref={playerRef}
+    <div
       className="fixed z-50 select-none"
       style={{
         left: `${position.x}px`,
@@ -183,28 +169,28 @@ export default function MusicPlayer() {
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {buttons.map((button, index) => {
-              const currentAngle = (orbitAngle + button.angleOffset) % 360
-              const radians = (currentAngle * Math.PI) / 180
+            {menuButtons.map((button, index) => {
+              const anglePerButton = 360 / menuButtons.length
+              const totalAngle = orbitAngle + index * anglePerButton
+              const radians = (totalAngle * Math.PI) / 180
               const x = orbitRadius * Math.cos(radians)
               const y = orbitRadius * Math.sin(radians)
-              
+
               return (
                 <motion.button
                   key={index}
                   initial={{ scale: 0, x: 0, y: 0, opacity: 0 }}
-                  animate={{ 
+                  animate={{
                     scale: 1,
                     x: x,
                     y: y,
                     opacity: 1
                   }}
                   exit={{ scale: 0, x: 0, y: 0, opacity: 0 }}
-                  transition={{ 
+                  transition={{
                     type: 'spring',
                     stiffness: 300,
-                    damping: 20,
-                    delay: index * 0.1
+                    damping: 20
                   }}
                   onClick={(e) => {
                     e.stopPropagation()
@@ -214,10 +200,6 @@ export default function MusicPlayer() {
                   onTouchStart={button.label === "Move player" ? button.action : undefined}
                   className="absolute bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all pointer-events-auto shadow-lg"
                   aria-label={button.label}
-                  style={{
-                    originX: 0.5,
-                    originY: 0.5
-                  }}
                 >
                   {button.icon}
                 </motion.button>
@@ -228,13 +210,14 @@ export default function MusicPlayer() {
       </AnimatePresence>
 
       <motion.button
-        onClick={toggleMenu}
+        onClick={(e) => {
+          toggleMute()
+          toggleMenu(e)
+        }}
         whileTap={{ scale: 0.9 }}
         className="p-4 rounded-full bg-black/70 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all relative shadow-lg z-10"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        animate={{
-          rotate: isMenuOpen ? 180 : 0
-        }}
+        animate={{ rotate: isMenuOpen ? 180 : 0 }}
         transition={{ type: 'spring', stiffness: 300 }}
       >
         {isMuted ? (
@@ -243,9 +226,9 @@ export default function MusicPlayer() {
           <Volume2 className="h-6 w-6 text-white" />
         )}
         {!isMuted && isPlaying && (
-          <motion.div 
+          <motion.div
             className="absolute -top-1 -right-1 bg-red-500 rounded-full w-3 h-3"
-            animate={{ opacity: [0.5, 1, 0.5] }}
+                        animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />
         )}
@@ -261,3 +244,4 @@ export default function MusicPlayer() {
     </div>
   )
 }
+         
