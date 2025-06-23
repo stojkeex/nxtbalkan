@@ -70,43 +70,46 @@ export function PremiumOffer() {
 
             {/* Premium content */}
             <div className="text-center">
-              <div className="mb-6">
-                <h2 className="text-3xl font-bold mb-2 gradient-text-neon">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold mb-3 gradient-text-neon tracking-tight">
                   Upgrade to Premium
                 </h2>
-                <p className="text-gray-300">Unlock all features and enjoy ad-free experience</p>
+                <p className="text-gray-300 text-lg">Unlock exclusive features and ad-free experience</p>
               </div>
 
-              <div className="bg-black bg-opacity-40 rounded-lg p-6 mb-6 border border-gray-700">
-                <ul className="space-y-3 text-left text-white">
-                  <li className="flex items-center">
-                    <svg className="h-5 w-5 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="bg-black bg-opacity-40 rounded-xl p-6 mb-8 border border-gray-700">
+                <ul className="space-y-4 text-left text-white">
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    No advertisements
+                    <span>Complete ad-free browsing experience</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="h-5 w-5 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Exclusive content
+                    <span>Exclusive premium content and features</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="h-5 w-5 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <li className="flex items-start">
+                    <svg className="h-6 w-6 text-green-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Priority support
+                    <span>Priority customer support</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="mb-6">
-                <div className="text-4xl font-bold gradient-text-neon mb-2">$9.99<span className="text-sm font-normal text-gray-400">/month</span></div>
-                <p className="gradient-text-neon text-sm">Cancel anytime</p>
+              <div className="mb-8">
+                <div className="flex flex-col items-center justify-center">
+                  <div className="text-5xl font-bold gradient-text-neon mb-1">$9.99</div>
+                  <div className="text-gray-400 text-lg font-medium">per month</div>
+                  <div className="mt-4 text-sm gradient-text-neon font-medium tracking-wide">Cancel anytime with one click</div>
+                </div>
               </div>
 
-              <button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity shadow-lg">
-                Get Premium Now
+              <button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-4 px-6 rounded-lg hover:opacity-90 transition-opacity shadow-lg text-lg">
+                Start Premium Now
               </button>
             </div>
           </motion.div>
