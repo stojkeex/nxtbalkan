@@ -91,7 +91,7 @@ export function Navigation() {
           <div className="flex items-center justify-between h-20">
             <Link href="/" className="flex items-center space-x-2" onClick={handleLinkClick}>
               <motion.img
-                src="/nxtbalkancolored.webp"
+                src="/nxtbalkancolored2.png"
                 alt="NXT Balkan"
                 className="h-8 w-auto"
                 whileHover={{ scale: 1.05 }}
