@@ -79,15 +79,15 @@ export default function HomePage() {
         <MobileBannerAd />
       </div>
 
-      {/* Mission Section */}
-      <section className="py-32 px-4 relative z-10">
+      {/* Mission Section - Moved up with reduced padding */}
+      <section className="py-20 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-bold mb-8 gradient-text-alt">OUR MISSION</h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
@@ -96,7 +96,7 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-3 gap-10">
             {[
               {
                 icon: Music,
@@ -139,25 +139,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Banner Ad */}
-      <div className="px-4 py-8">
+      {/* Banner Ad - Reduced padding */}
+      <div className="px-4 py-6">
         <div className="max-w-7xl mx-auto">
           <BannerAd />
         </div>
       </div>
 
-      {/* Testimonials Section */}
-      <Testimonials />
+      {/* Testimonials Section - Reduced padding */}
+      <Testimonials className="py-16" />
 
-      {/* Native Ad */}
-      <div className="px-4 py-8">
+      {/* Native Ad - Reduced padding */}
+      <div className="px-4 py-6">
         <div className="max-w-4xl mx-auto">
           <NativeAd />
         </div>
       </div>
 
-      {/* CTA Section */}
-      <section className="py-32 px-4 relative z-10">
+      {/* CTA Section - Moved up with reduced padding */}
+      <section className="py-20 px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -165,7 +165,7 @@ export default function HomePage() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto text-center"
         >
-          <Card3D className="professional-card border border-white/20 rounded-2xl p-16 backdrop-blur-sm hover-card">
+          <Card3D className="professional-card border border-white/20 rounded-2xl p-12 backdrop-blur-sm hover-card">
             <motion.h2
               className="text-4xl md:text-5xl font-bold mb-8 gradient-text-neon"
               whileHover={{ scale: 1.02 }}
@@ -173,7 +173,7 @@ export default function HomePage() {
             >
               Ready to Join the Revolution?
             </motion.h2>
-            <p className="text-xl text-gray-300 mb-12">
+            <p className="text-xl text-gray-300 mb-10">
               Whether you're an artist looking for representation or a music lover seeking the next big sound, NXT
               Balkan is your gateway to the future of music.
             </p>
