@@ -17,7 +17,6 @@ export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
-  const [dragMode, setDragMode] = useState(false) // New state for drag mode
   const audioRef = useRef(null)
   const menuRef = useRef(null)
   const playerRef = useRef(null)
@@ -32,14 +31,13 @@ export default function MusicPlayer() {
 
   // Handle dragging
   const startDrag = (e) => {
-    if (!dragMode) return
     e.stopPropagation()
     setIsDragging(true)
     document.body.style.userSelect = 'none'
   }
 
   const handleDrag = (e) => {
-    if (!isDragging || !dragMode) return
+    if (!isDragging) return
     
     const clientX = e.clientX || e.touches?.[0]?.clientX
     const clientY = e.clientY || e.touches?.[0]?.clientY
@@ -57,11 +55,6 @@ export default function MusicPlayer() {
     document.body.style.userSelect = ''
   }
 
-  const toggleDragMode = () => {
-    setDragMode(!dragMode)
-    setShowMenu(false)
-  }
-
   useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleDrag)
@@ -76,7 +69,7 @@ export default function MusicPlayer() {
       document.removeEventListener('mouseup', stopDrag)
       document.removeEventListener('touchend', stopDrag)
     }
-  }, [isDragging, dragMode])
+  }, [isDragging])
 
   // Handle clicks outside menu
   useEffect(() => {
@@ -157,15 +150,11 @@ export default function MusicPlayer() {
       ref={playerRef}
       className="fixed z-50 flex flex-col items-end gap-2 select-none"
       style={{
-        right: isDragging ? 'auto' : '20px',
-        bottom: isDragging ? 'auto' : '20px',
-        left: isDragging ? `${position.x}px` : 'auto',
-        top: isDragging ? `${position.y}px` : 'auto',
-        cursor: dragMode ? (isDragging ? 'grabbing' : 'grab') : 'pointer',
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        cursor: isDragging ? 'grabbing' : 'pointer',
         touchAction: isDragging ? 'none' : 'auto'
       }}
-      onMouseDown={startDrag}
-      onTouchStart={startDrag}
     >
       {showMenu && (
         <div 
@@ -208,10 +197,11 @@ export default function MusicPlayer() {
             </button>
 
             <button
-              onClick={toggleDragMode}
-              className={`w-full p-3 rounded-lg flex items-center justify-between text-sm ${dragMode ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/5'}`}
+              onMouseDown={startDrag}
+              onTouchStart={startDrag}
+              className="w-full p-3 rounded-lg text-white/70 hover:text-white flex items-center justify-between text-sm"
             >
-              <span>{dragMode ? "Exit Move Mode" : "Move Player"}</span>
+              <span>Move Player</span>
               <Move size={18} />
             </button>
             
