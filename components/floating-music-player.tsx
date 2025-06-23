@@ -31,11 +31,11 @@ interface Track {
 const sampleTracks: Track[] = [
   {
     id: 1,
-    title: "Midnight Dreams",
-    artist: "Luna Eclipse",
-    album: "Neon Nights",
-    duration: "3:42",
-    cover: "/music/covers/midnight-dreams.jpg",
+    title: "VULTURES",
+    artist: "¥$, Ye, Ty Dolla $ign",
+    album: "VULTURES 1",
+    duration: "4:24",
+    cover: "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
     audioUrl: "/music/vultures.mp3",
   },
   {
