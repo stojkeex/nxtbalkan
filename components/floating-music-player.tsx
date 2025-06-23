@@ -36,7 +36,7 @@ const sampleTracks: Track[] = [
     album: "Neon Nights",
     duration: "3:42",
     cover: "/placeholder.svg?height=300&width=300",
-    audioUrl: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+    src: "music/vultures.mp3",
   },
   {
     id: 2,
@@ -45,7 +45,7 @@ const sampleTracks: Track[] = [
     album: "Digital Horizon",
     duration: "4:15",
     cover: "/placeholder.svg?height=300&width=300",
-    audioUrl: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+    src: "",
   },
   {
     id: 3,
@@ -54,7 +54,7 @@ const sampleTracks: Track[] = [
     album: "Beyond Stars",
     duration: "5:28",
     cover: "/placeholder.svg?height=300&width=300",
-    audioUrl: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav",
+    src: "",
   },
 ]
 
