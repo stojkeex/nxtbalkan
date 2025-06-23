@@ -63,7 +63,7 @@ export default function AboutPage() {
             transition={{ duration: 1 }}
             className="text-center mb-20"
           >
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text">OUR STORY</h1>
+            <h1 className="text-6xl md:text-8xl font-bold mb-8 gradient-text-neon">OUR STORY</h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Born from a passion for Balkan music and a vision for its global future, NXT Balkan represents the perfect
               fusion of tradition and innovation.
