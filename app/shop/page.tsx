@@ -34,36 +34,34 @@ export default function ShopPage() {
   const products = [
     {
       id: 1,
-      name: "NXT Balkan Classic T-Shirt",
-      price: 25.0,
-      originalPrice: 35.0,
+      name: "NXT Balkan Premium T-Shirt",
+      price: 29.99,
+      originalPrice: 39.99,
       image: "/placeholder.svg?height=400&width=400",
-      category: "T-Shirts",
-      rating: 4.8,
-      reviews: 124,
+      category: "Apparel",
+      rating: 4.9,
+      reviews: 156,
       description:
-        "Premium quality black t-shirt featuring the iconic NXT Balkan logo with headphones and sound wave design. Made from 100% organic cotton for maximum comfort and durability. Perfect for concerts, casual wear, or showing your support for Balkan music culture.",
+        "Premium quality t-shirt featuring the iconic NXT Balkan logo with modern design elements. Made from 100% organic cotton for maximum comfort and durability. Perfect for showcasing your connection to digital excellence and innovation.",
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
       features: ["100% Organic Cotton", "Pre-shrunk fabric", "Reinforced seams", "Machine washable", "Unisex fit"],
       colors: ["Black", "White", "Navy"],
       inStock: true,
       isNew: false,
       isBestseller: true,
-      discount: 29,
-      gradient: "from-cyan-400 to-blue-500",
-      bgGradient: "from-cyan-400/10 to-blue-500/10",
+      discount: 25,
     },
     {
       id: 2,
       name: "NXT Balkan Premium Hoodie",
-      price: 45.0,
-      originalPrice: 60.0,
+      price: 59.99,
+      originalPrice: 79.99,
       image: "/placeholder.svg?height=400&width=400",
-      category: "Hoodies",
-      rating: 4.9,
+      category: "Apparel",
+      rating: 4.8,
       reviews: 89,
       description:
-        "Cozy premium hoodie with the signature NXT Balkan design. Perfect for studio sessions or casual wear. Features a spacious front pocket and adjustable drawstring hood. Made with high-quality cotton blend for ultimate comfort.",
+        "Cozy premium hoodie with the signature NXT Balkan design. Perfect for casual wear or professional events. Features a spacious front pocket and adjustable drawstring hood. Made with high-quality cotton blend for ultimate comfort.",
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
       features: [
         "80% Cotton, 20% Polyester",
@@ -77,66 +75,53 @@ export default function ShopPage() {
       isNew: true,
       isBestseller: false,
       discount: 25,
-      gradient: "from-purple-400 to-pink-500",
-      bgGradient: "from-purple-400/10 to-pink-500/10",
     },
     {
       id: 3,
-      name: "Off-White x NXT Balkan Limited Edition",
-      price: 65.0,
-      originalPrice: 85.0,
-      image: "/placeholder.svg?height=400&width=400",
-      category: "Limited Edition",
-      rating: 5.0,
-      reviews: 45,
-      description:
-        "Exclusive collaboration piece featuring a unique crossed arrows design with the NXT Balkan logo. Limited production run - only 500 pieces available worldwide. Each piece comes with a numbered authenticity tag and collector's packaging.",
-      sizes: ["S", "M", "L", "XL", "XXL"],
-      features: [
-        "Premium cotton blend",
-        "Limited edition design",
-        "Numbered authenticity tag",
-        "Collector's packaging",
-        "Exclusive collaboration",
-      ],
-      colors: ["Black"],
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      isLimited: true,
-      discount: 24,
-      gradient: "from-orange-400 to-red-500",
-      bgGradient: "from-orange-400/10 to-red-500/10",
-    },
-    {
-      id: 4,
-      name: "NXT Balkan Snapback Cap",
-      price: 20.0,
-      originalPrice: 25.0,
+      name: "NXT Balkan Limited Edition Cap",
+      price: 24.99,
+      originalPrice: 34.99,
       image: "/placeholder.svg?height=400&width=400",
       category: "Accessories",
       rating: 4.7,
       reviews: 67,
       description:
-        "Stylish snapback cap with embroidered NXT Balkan logo. Adjustable fit for maximum comfort. Perfect accessory to complete your NXT Balkan look. High-quality construction ensures long-lasting wear.",
+        "Stylish cap with embroidered NXT Balkan logo. Adjustable fit for maximum comfort. Perfect accessory to complete your professional look. High-quality construction ensures long-lasting wear.",
       sizes: ["One Size"],
-      features: ["Embroidered logo", "Adjustable snapback", "Curved brim", "Cotton blend", "One size fits all"],
-      colors: ["Black", "White", "Red"],
+      features: ["Embroidered logo", "Adjustable strap", "Curved brim", "Cotton blend", "One size fits all"],
+      colors: ["Black", "White", "Navy"],
+      inStock: true,
+      isNew: false,
+      isBestseller: false,
+      isLimited: true,
+      discount: 29,
+    },
+    {
+      id: 4,
+      name: "NXT Balkan Laptop Sleeve",
+      price: 39.99,
+      originalPrice: 49.99,
+      image: "/placeholder.svg?height=400&width=400",
+      category: "Tech",
+      rating: 4.9,
+      reviews: 124,
+      description:
+        "Premium laptop sleeve with NXT Balkan branding. Padded interior protects your device while showcasing your professional style. Perfect for business meetings, conferences, or daily use.",
+      sizes: ["13 inch", "15 inch", "17 inch"],
+      features: ["Padded protection", "Water-resistant", "Zipper closure", "Slim profile", "Premium materials"],
+      colors: ["Black", "Gray"],
       inStock: true,
       isNew: true,
-      isBestseller: false,
+      isBestseller: true,
       discount: 20,
-      gradient: "from-green-400 to-emerald-500",
-      bgGradient: "from-green-400/10 to-emerald-500/10",
     },
   ]
 
   const categories = [
     { name: "All", count: products.length },
-    { name: "T-Shirts", count: products.filter((p) => p.category === "T-Shirts").length },
-    { name: "Hoodies", count: products.filter((p) => p.category === "Hoodies").length },
-    { name: "Limited Edition", count: products.filter((p) => p.category === "Limited Edition").length },
+    { name: "Apparel", count: products.filter((p) => p.category === "Apparel").length },
     { name: "Accessories", count: products.filter((p) => p.category === "Accessories").length },
+    { name: "Tech", count: products.filter((p) => p.category === "Tech").length },
   ]
 
   const features = [
@@ -172,34 +157,30 @@ export default function ShopPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 px-4 overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10" />
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <Badge className="mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold px-4 py-2">
-              🛍️ Official Merchandise
+      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5">
+        <div className="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <Badge className="mb-6 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-medium px-4 py-2 text-sm">
+              Official Store
             </Badge>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent leading-tight">
-              NXT Shop
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mb-6 px-4">
+              <span className="text-white">NXT Balkan</span>
+              <br />
+              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent font-medium">
+                Store
+              </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Wear the revolution. Express your passion for Balkan music with our exclusive merchandise collection that
-              supports our artists.
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8 px-4">
+              Discover our exclusive collection of premium merchandise that represents digital excellence and
+              innovation. Wear your passion for quality and style.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
               >
                 <ShoppingBag className="h-5 w-5 mr-2" />
                 Shop Now
@@ -207,7 +188,7 @@ export default function ShopPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300"
+                className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
               >
                 Size Guide
                 <ArrowRight className="h-5 w-5 ml-2" />
@@ -218,9 +199,9 @@ export default function ShopPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-12 px-4 bg-gray-900/20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
@@ -228,14 +209,13 @@ export default function ShopPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                className="text-center"
               >
-                <Card className="bg-gray-900/50 border-gray-800 text-center">
-                  <CardContent className="p-4">
-                    <feature.icon className="h-6 w-6 text-cyan-400 mx-auto mb-2" />
-                    <div className="text-sm font-semibold text-white mb-1">{feature.title}</div>
-                    <div className="text-xs text-gray-400">{feature.description}</div>
-                  </CardContent>
-                </Card>
+                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
+                  <feature.icon className="h-6 w-6 sm:h-8 sm:w-8 text-cyan-400" />
+                </div>
+                <div className="text-sm sm:text-base font-medium text-white mb-1">{feature.title}</div>
+                <div className="text-xs sm:text-sm text-gray-400">{feature.description}</div>
               </motion.div>
             ))}
           </div>
@@ -243,7 +223,7 @@ export default function ShopPage() {
       </section>
 
       {/* Category Filter */}
-      <section className="py-8 px-4">
+      <section className="py-8 px-4 sm:px-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -260,9 +240,9 @@ export default function ShopPage() {
                 onClick={() => setSelectedCategory(category.name)}
                 className={`${
                   selectedCategory === category.name
-                    ? "bg-gradient-to-r from-cyan-400 to-purple-500 text-black hover:scale-105"
+                    ? "bg-gradient-to-r from-cyan-500 to-pink-500 text-white hover:scale-105"
                     : "border-gray-600 text-gray-300 hover:bg-white hover:text-black"
-                } transition-all duration-300 font-medium`}
+                } transition-all duration-300 font-medium rounded-full`}
               >
                 {category.name}
                 <Badge variant="secondary" className="ml-2 text-xs">
@@ -279,9 +259,9 @@ export default function ShopPage() {
       </section>
 
       {/* Products Grid */}
-      <section className="py-16 px-4">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {filteredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
@@ -292,12 +272,10 @@ export default function ShopPage() {
                 className="group cursor-pointer"
                 onClick={() => handleViewProduct(product)}
               >
-                <Card className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 h-full overflow-hidden group-hover:scale-[1.02]">
+                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 h-full overflow-hidden group-hover:scale-105">
                   <CardContent className="p-0">
                     {/* Product Image */}
                     <div className="relative overflow-hidden">
-                      <div className={`absolute inset-0 bg-gradient-to-t ${product.bgGradient} opacity-20`} />
-
                       <img
                         src={product.image || "/placeholder.svg"}
                         alt={product.name}
@@ -309,13 +287,13 @@ export default function ShopPage() {
                         <div className="flex gap-2">
                           <Button
                             size="sm"
-                            className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-black transition-all duration-300"
+                            className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-black transition-all duration-300 rounded-full"
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button
                             size="sm"
-                            className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-black transition-all duration-300"
+                            className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-black transition-all duration-300 rounded-full"
                           >
                             <Heart className="h-4 w-4" />
                           </Button>
@@ -325,24 +303,24 @@ export default function ShopPage() {
                       {/* Badges */}
                       <div className="absolute top-3 left-3 flex flex-col gap-2">
                         {product.isNew && (
-                          <Badge className="bg-green-500 text-white font-semibold">
+                          <Badge className="bg-green-500 text-white font-medium">
                             <Sparkles className="h-3 w-3 mr-1" />
                             New
                           </Badge>
                         )}
                         {product.isBestseller && (
-                          <Badge className="bg-orange-500 text-white font-semibold">
+                          <Badge className="bg-orange-500 text-white font-medium">
                             <Crown className="h-3 w-3 mr-1" />
                             Bestseller
                           </Badge>
                         )}
-                        {product.isLimited && <Badge className="bg-red-500 text-white font-semibold">Limited</Badge>}
+                        {product.isLimited && <Badge className="bg-red-500 text-white font-medium">Limited</Badge>}
                       </div>
 
                       {/* Discount badge */}
                       {product.discount && (
                         <div className="absolute top-3 right-3">
-                          <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-semibold">
+                          <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-medium">
                             -{product.discount}%
                           </Badge>
                         </div>
@@ -350,7 +328,7 @@ export default function ShopPage() {
                     </div>
 
                     {/* Product Info */}
-                    <div className="p-4">
+                    <div className="p-4 sm:p-6">
                       <div className="flex items-center justify-between mb-2">
                         <Badge variant="secondary" className="text-xs">
                           {product.category}
@@ -363,7 +341,7 @@ export default function ShopPage() {
                         </div>
                       </div>
 
-                      <h3 className="text-lg font-bold mb-2 text-white line-clamp-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300">
+                      <h3 className="text-lg font-medium mb-2 text-white line-clamp-2 group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-pink-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                         {product.name}
                       </h3>
 
@@ -396,14 +374,14 @@ export default function ShopPage() {
                       {/* Price */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="text-lg font-bold text-white">€{product.price}</span>
+                          <span className="text-lg font-medium text-white">€{product.price}</span>
                           {product.originalPrice && (
                             <span className="text-sm text-gray-400 line-through">€{product.originalPrice}</span>
                           )}
                         </div>
                         <Button
                           size="sm"
-                          className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black hover:scale-105 transition-all duration-300"
+                          className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white hover:scale-105 transition-all duration-300 rounded-full"
                         >
                           View Details
                         </Button>
@@ -418,64 +396,62 @@ export default function ShopPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-gray-900/50 to-black">
-        <div className="max-w-4xl mx-auto">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
+        <div className="max-w-5xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-700 overflow-hidden">
-              <CardContent className="p-8 md:p-12 text-center relative">
-                {/* Background decoration */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-purple-500/5" />
+            <Card className="bg-gray-900/80 border border-gray-800">
+              <CardContent className="p-8 sm:p-12 lg:p-16">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
+                  <ShoppingBag className="h-8 w-8 sm:h-10 sm:w-10 text-cyan-400" />
+                </div>
 
-                <div className="relative z-10">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-2xl mb-6">
-                    <ShoppingBag className="h-8 w-8 text-black" />
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 text-white">
+                  Join the{" "}
+                  <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                    NXT Family
+                  </span>
+                </h2>
+
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed">
+                  Every purchase supports our mission of digital excellence and innovation. Wear your passion, showcase
+                  your style, and be part of the movement.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
+                  >
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Browse All Products
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
+                  >
+                    Size Guide
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </div>
+
+                <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
+                  <div className="flex items-center gap-2">
+                    <Truck className="h-4 w-4 text-green-400" />
+                    Free Shipping €50+
                   </div>
-
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                    Join the NXT Family
-                  </h2>
-
-                  <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Every purchase supports our artists and helps us continue revolutionizing the Balkan music scene.
-                    Wear your passion, support the movement.
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button
-                      size="lg"
-                      className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300 px-8"
-                    >
-                      <Sparkles className="h-5 w-5 mr-2" />
-                      Browse All Products
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8"
-                    >
-                      Size Guide
-                      <ArrowRight className="h-5 w-5 ml-2" />
-                    </Button>
+                  <div className="flex items-center gap-2">
+                    <RotateCcw className="h-4 w-4 text-blue-400" />
+                    30-Day Returns
                   </div>
-
-                  <div className="mt-8 flex items-center justify-center gap-6 text-sm text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <Truck className="h-4 w-4 text-green-400" />
-                      Free Shipping €50+
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <RotateCcw className="h-4 w-4 text-blue-400" />
-                      30-Day Returns
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-purple-400" />
-                      Direct Contact
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-purple-400" />
+                    Secure Ordering
                   </div>
                 </div>
               </CardContent>
@@ -496,7 +472,7 @@ export default function ShopPage() {
             <div className="p-6">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                <h2 className="text-2xl font-medium bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
                   Product Details
                 </h2>
                 <Button
@@ -518,7 +494,7 @@ export default function ShopPage() {
                     className="w-full h-96 object-cover rounded-xl"
                   />
                   {selectedProduct.isLimited && (
-                    <Badge className="absolute top-4 left-4 bg-red-500 text-white font-semibold">Limited Edition</Badge>
+                    <Badge className="absolute top-4 left-4 bg-red-500 text-white font-medium">Limited Edition</Badge>
                   )}
                 </div>
 
@@ -534,9 +510,9 @@ export default function ShopPage() {
                         </span>
                       </div>
                     </div>
-                    <h3 className="text-3xl font-bold text-white mb-2">{selectedProduct.name}</h3>
+                    <h3 className="text-3xl font-medium text-white mb-2">{selectedProduct.name}</h3>
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl font-bold text-white">€{selectedProduct.price}</span>
+                      <span className="text-3xl font-light text-white">€{selectedProduct.price}</span>
                       {selectedProduct.originalPrice && (
                         <span className="text-xl text-gray-400 line-through">€{selectedProduct.originalPrice}</span>
                       )}
@@ -560,7 +536,7 @@ export default function ShopPage() {
                           onClick={() => setSelectedSize(size)}
                           className={
                             selectedSize === size
-                              ? "bg-gradient-to-r from-cyan-400 to-purple-500 text-black"
+                              ? "bg-gradient-to-r from-cyan-500 to-pink-500 text-white"
                               : "border-gray-600 text-gray-300 hover:bg-white hover:text-black"
                           }
                         >
@@ -599,7 +575,7 @@ export default function ShopPage() {
 
                   {/* Features */}
                   <div>
-                    <h4 className="text-lg font-semibold text-white mb-3">Features</h4>
+                    <h4 className="text-lg font-medium text-white mb-3">Features</h4>
                     <ul className="space-y-2">
                       {selectedProduct.features.map((feature: string, index: number) => (
                         <li key={index} className="flex items-center gap-2 text-gray-300">
@@ -614,7 +590,7 @@ export default function ShopPage() {
                   <Button
                     onClick={handleBuyProduct}
                     size="lg"
-                    className="w-full bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium hover:scale-105 transition-all duration-300 rounded-full"
                   >
                     <ShoppingBag className="h-5 w-5 mr-2" />
                     Buy Now - €{selectedProduct.price}
@@ -638,7 +614,7 @@ export default function ShopPage() {
             <div className="p-6">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                <h2 className="text-xl font-medium bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
                   Contact Us to Order
                 </h2>
                 <Button
@@ -653,7 +629,7 @@ export default function ShopPage() {
 
               {/* Order Summary */}
               <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
-                <h3 className="font-semibold text-white mb-2">Order Summary</h3>
+                <h3 className="font-medium text-white mb-2">Order Summary</h3>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-300">Product:</span>
@@ -667,7 +643,7 @@ export default function ShopPage() {
                     <span className="text-gray-300">Color:</span>
                     <span className="text-white">{selectedColor}</span>
                   </div>
-                  <div className="flex justify-between font-semibold">
+                  <div className="flex justify-between font-medium">
                     <span className="text-gray-300">Price:</span>
                     <span className="text-white">€{selectedProduct.price}</span>
                   </div>
@@ -680,7 +656,7 @@ export default function ShopPage() {
                   Choose your preferred contact method to complete your order:
                 </p>
 
-                <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white">
+                <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full">
                   <a
                     href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${encodeURIComponent(generateWhatsAppMessage())}`}
                     target="_blank"
@@ -693,7 +669,7 @@ export default function ShopPage() {
 
                 <Button
                   asChild
-                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
+                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full"
                 >
                   <a href="https://instagram.com/nxt.balkan" target="_blank" rel="noopener noreferrer">
                     <Instagram className="h-5 w-5 mr-2" />
@@ -701,7 +677,7 @@ export default function ShopPage() {
                   </a>
                 </Button>
 
-                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full">
                   <a href={`mailto:info@nxtbalkan.com?${generateEmailMessage()}`}>
                     <Mail className="h-5 w-5 mr-2" />
                     Order via Email
