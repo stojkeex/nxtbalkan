@@ -10,7 +10,6 @@ import {
   Globe,
   Zap,
   Users,
-  Music,
   TrendingUp,
   Star,
   ArrowRight,
@@ -19,44 +18,38 @@ import {
   Heart,
   Target,
 } from "lucide-react"
-import Link from "next/link"
 
 export default function AboutPage() {
   const milestones = [
     {
       year: "2020",
       title: "Foundation",
-      description: "NXT Balkan was founded with a vision to revolutionize the music industry",
+      description: "NXT Balkan was founded with a vision to revolutionize digital excellence",
       icon: Star,
-      gradient: "from-cyan-400 to-blue-500",
     },
     {
       year: "2021",
-      title: "First Studio",
-      description: "Opened our state-of-the-art recording facility in Belgrade",
-      icon: Music,
-      gradient: "from-purple-400 to-pink-500",
+      title: "First Major Project",
+      description: "Launched our flagship digital transformation initiative",
+      icon: Zap,
     },
     {
       year: "2022",
       title: "International Expansion",
-      description: "Partnered with global streaming platforms and labels",
+      description: "Partnered with global brands and expanded our reach worldwide",
       icon: Globe,
-      gradient: "from-orange-400 to-red-500",
     },
     {
       year: "2023",
-      title: "AI Integration",
-      description: "Launched our AI-powered music discovery and promotion tools",
-      icon: Zap,
-      gradient: "from-green-400 to-emerald-500",
+      title: "Innovation Leadership",
+      description: "Pioneered cutting-edge solutions in digital marketing and brand strategy",
+      icon: TrendingUp,
     },
     {
       year: "2024",
       title: "Global Recognition",
-      description: "Recognized as the leading Balkan music agency worldwide",
+      description: "Recognized as a leading digital agency with award-winning campaigns",
       icon: Award,
-      gradient: "from-yellow-400 to-orange-500",
     },
   ]
 
@@ -64,91 +57,98 @@ export default function AboutPage() {
     {
       name: "M. Stojanović",
       role: "Founder & CEO",
-      bio: "Visionary leader with 15+ years in the music industry, passionate about bridging traditional and modern sounds.",
-      gradient: "from-cyan-400 to-purple-500",
+      bio: "Visionary leader with 15+ years in digital innovation, passionate about transforming brands through strategic excellence.",
       initials: "MS",
     },
     {
       name: "K. Kruljac",
       role: "CEO",
-      bio: "Talent scout extraordinaire with an ear for discovering the next big Balkan stars.",
-      gradient: "from-purple-400 to-pink-500",
+      bio: "Strategic mastermind with expertise in scaling businesses and building lasting partnerships across global markets.",
       initials: "KK",
     },
     {
       name: "R. Kavčič",
       role: "Owner",
-      bio: "Award-winning producer who has worked with top artists across the Balkans and beyond.",
-      gradient: "from-orange-400 to-red-500",
+      bio: "Creative director and brand strategist who has crafted award-winning campaigns for industry leaders.",
       initials: "RK",
     },
   ]
 
   const stats = [
-    { label: "Countries Reached", value: "50+", icon: Globe, color: "text-cyan-400" },
-    { label: "Awards Won", value: "25+", icon: Award, color: "text-purple-400" },
-    { label: "Artists Managed", value: "100+", icon: Users, color: "text-pink-400" },
-    { label: "Years Experience", value: "4+", icon: Calendar, color: "text-orange-400" },
+    { label: "Countries Reached", value: "50+", icon: Globe },
+    { label: "Awards Won", value: "25+", icon: Award },
+    { label: "Projects Completed", value: "200+", icon: TrendingUp },
+    { label: "Years Experience", value: "5+", icon: Calendar },
   ]
 
   const values = [
     {
       icon: Heart,
       title: "Passion",
-      description: "We live and breathe music, bringing authentic passion to every project we touch.",
-      gradient: "from-red-400 to-pink-500",
+      description: "We live and breathe digital excellence, bringing authentic passion to every project we touch.",
     },
     {
       icon: Target,
       title: "Innovation",
       description: "Constantly pushing boundaries with cutting-edge technology and creative approaches.",
-      gradient: "from-cyan-400 to-blue-500",
     },
     {
       icon: Crown,
       title: "Excellence",
       description: "Delivering world-class quality in every aspect of our work and partnerships.",
-      gradient: "from-yellow-400 to-orange-500",
     },
     {
       icon: Users,
       title: "Community",
-      description: "Building a supportive ecosystem where artists and creators can thrive together.",
-      gradient: "from-green-400 to-emerald-500",
+      description: "Building a supportive ecosystem where brands and creators can thrive together.",
     },
   ]
 
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 px-4 overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10" />
+      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5">
+        <div className="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="mb-6 sm:mb-8"
+          >
+            <img
+              src="/nxtbalkancolored2.png"
+              alt="NXT Balkan Logo"
+              className="mx-auto w-48 h-auto sm:w-64 md:w-80 lg:w-96"
+            />
+          </motion.div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <Badge className="mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold px-4 py-2">
-              🎵 Our Story
+            <Badge className="mb-6 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-medium px-4 py-2 text-sm">
+              Our Story
             </Badge>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent leading-tight">
-              About NXT Balkan
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mb-6 px-4">
+              <span className="text-white">About</span>
+              <br />
+              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent font-medium">
+                NXT Balkan
+              </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Born from a passion for Balkan music and a vision for its global future, NXT Balkan represents the perfect
-              fusion of tradition and innovation.
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8 px-4">
+              Born from a passion for digital excellence and a vision for transformative brand experiences, NXT Balkan
+              represents the perfect fusion of innovation and strategic thinking.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
               >
                 <Sparkles className="h-5 w-5 mr-2" />
                 Our Mission
@@ -156,7 +156,7 @@ export default function AboutPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300"
+                className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
               >
                 Meet the Team
                 <ArrowRight className="h-5 w-5 ml-2" />
@@ -167,9 +167,9 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 px-4 bg-gray-900/20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -177,14 +177,15 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                className="text-center"
               >
-                <Card className="bg-gray-900/50 border-gray-800 text-center hover:border-gray-700 transition-all duration-300 hover:scale-105">
-                  <CardContent className="p-4">
-                    <stat.icon className={`h-6 w-6 ${stat.color} mx-auto mb-2`} />
-                    <div className="text-xl md:text-2xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-xs text-gray-400">{stat.label}</div>
-                  </CardContent>
-                </Card>
+                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
+                  <stat.icon className="h-6 w-6 sm:h-8 sm:w-8 text-cyan-400" />
+                </div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-light bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-sm sm:text-base text-gray-400 uppercase tracking-wider">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -192,46 +193,47 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Statement */}
-      <section className="py-16 px-4">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              Our Mission
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 text-white">
+              Our{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Mission</span>
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Revolutionizing the music industry through innovation and passion
+            <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
+              Revolutionizing digital experiences through innovation and excellence
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl md:text-3xl font-bold mb-6 text-white">Bridging Tradition with Innovation</h3>
-              <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                We believe that Balkan music has the power to unite cultures and transcend boundaries. Our mission is to
-                amplify these incredible sounds and stories, bringing them to audiences worldwide while preserving their
-                authentic essence.
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-light mb-6 text-white">
+                Bridging Innovation with Excellence
+              </h3>
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-6">
+                We believe that exceptional digital experiences have the power to transform businesses and connect
+                brands with their audiences in meaningful ways. Our mission is to amplify these connections through
+                strategic innovation and creative excellence.
               </p>
-              <p className="text-lg text-gray-300 leading-relaxed mb-8">
-                Through cutting-edge technology, strategic partnerships, and unwavering dedication to our artists, we're
-                not just promoting music – we're building bridges between worlds.
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-8">
+                Through cutting-edge technology, strategic partnerships, and unwavering dedication to our clients, we're
+                not just creating campaigns – we're building lasting digital legacies.
               </p>
-              <Link href="/services">
-                <Button className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300">
-                  <TrendingUp className="h-5 w-5 mr-2" />
-                  Our Services
-                </Button>
-              </Link>
+              <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20">
+                <TrendingUp className="h-5 w-5 mr-2" />
+                Our Services
+              </Button>
             </motion.div>
 
             <motion.div
@@ -239,21 +241,19 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-4"
+              className="grid grid-cols-2 gap-4 sm:gap-6"
             >
               {values.map((value, index) => (
                 <Card
                   key={index}
-                  className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 hover:scale-105"
+                  className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 hover:scale-105"
                 >
-                  <CardContent className="p-4 text-center">
-                    <div
-                      className={`w-12 h-12 rounded-xl bg-gradient-to-r ${value.gradient} flex items-center justify-center mx-auto mb-3`}
-                    >
-                      <value.icon className="h-6 w-6 text-black" />
+                  <CardContent className="p-4 sm:p-6 text-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <value.icon className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-400" />
                     </div>
-                    <h4 className="font-bold text-white mb-2">{value.title}</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">{value.description}</p>
+                    <h4 className="font-medium text-white mb-2 text-sm sm:text-base">{value.title}</h4>
+                    <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{value.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -263,72 +263,49 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-16 px-4 bg-gray-900/20">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Our Journey
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 text-white">
+              Our{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Journey</span>
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
               From humble beginnings to global recognition - the NXT Balkan story
             </p>
           </motion.div>
 
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-cyan-400 via-purple-500 to-pink-500 opacity-30"></div>
-
+          <div className="space-y-8 sm:space-y-12">
             {milestones.map((milestone, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className={`relative flex items-center mb-12 ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8"
               >
-                <div className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8"}`}>
-                  <Card className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 hover:scale-105">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        {index % 2 === 0 ? (
-                          <>
-                            <div
-                              className={`w-10 h-10 rounded-xl bg-gradient-to-r ${milestone.gradient} flex items-center justify-center`}
-                            >
-                              <milestone.icon className="h-5 w-5 text-black" />
-                            </div>
-                            <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                              {milestone.year}
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                              {milestone.year}
-                            </div>
-                            <div
-                              className={`w-10 h-10 rounded-xl bg-gradient-to-r ${milestone.gradient} flex items-center justify-center`}
-                            >
-                              <milestone.icon className="h-5 w-5 text-black" />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      <h3 className="text-xl font-semibold mb-3 text-white">{milestone.title}</h3>
-                      <p className="text-gray-300 leading-relaxed">{milestone.description}</p>
-                    </CardContent>
-                  </Card>
+                <div className="flex items-center gap-4 sm:w-48 flex-shrink-0">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
+                    <milestone.icon className="h-6 w-6 sm:h-7 sm:w-7 text-cyan-400" />
+                  </div>
+                  <div className="text-xl sm:text-2xl font-light bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                    {milestone.year}
+                  </div>
                 </div>
 
-                {/* Timeline dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full border-4 border-black"></div>
+                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 flex-1">
+                  <CardContent className="p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-medium mb-2 sm:mb-3 text-white">{milestone.title}</h3>
+                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{milestone.description}</p>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -336,24 +313,25 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="py-16 px-4">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              Meet Our Team
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 text-white">
+              Meet Our{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Team</span>
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
               The visionaries and creators behind the NXT Balkan revolution
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {team.map((member, index) => (
               <motion.div
                 key={index}
@@ -363,18 +341,16 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 className="group"
               >
-                <Card className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 hover:scale-105 h-full">
-                  <CardContent className="p-6 text-center">
-                    <div
-                      className={`w-20 h-20 mx-auto mb-4 bg-gradient-to-r ${member.gradient} rounded-2xl flex items-center justify-center text-2xl font-bold text-black group-hover:scale-110 transition-transform duration-300`}
-                    >
+                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 hover:scale-105 h-full">
+                  <CardContent className="p-6 sm:p-8 text-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-r from-cyan-500 to-pink-500 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
                       {member.initials}
                     </div>
-                    <h3 className="text-xl font-bold mb-1 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300">
+                    <h3 className="text-lg sm:text-xl font-medium mb-1 sm:mb-2 text-white group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-pink-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                       {member.name}
                     </h3>
-                    <div className="text-gray-400 mb-4 font-medium">{member.role}</div>
-                    <p className="text-gray-300 leading-relaxed text-sm">{member.bio}</p>
+                    <div className="text-gray-400 mb-3 sm:mb-4 font-medium text-sm sm:text-base">{member.role}</div>
+                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{member.bio}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -384,68 +360,62 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-gray-900/50 to-black">
-        <div className="max-w-4xl mx-auto">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
+        <div className="max-w-5xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-700 overflow-hidden">
-              <CardContent className="p-8 md:p-12 text-center relative">
-                {/* Background decoration */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-purple-500/5" />
+            <Card className="bg-gray-900/80 border border-gray-800">
+              <CardContent className="p-8 sm:p-12 lg:p-16">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
+                  <Star className="h-8 w-8 sm:h-10 sm:w-10 text-cyan-400" />
+                </div>
 
-                <div className="relative z-10">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-2xl mb-6">
-                    <Star className="h-8 w-8 text-black" />
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 text-white">
+                  Ready to{" "}
+                  <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                    Join Our Story?
+                  </span>
+                </h2>
+
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed">
+                  Whether you're a brand looking for transformation or a partner seeking collaboration, we'd love to
+                  hear from you and explore how we can create something amazing together.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
+                  >
+                    <Users className="h-5 w-5 mr-2" />
+                    Work With Us
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
+                  >
+                    Get In Touch
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </div>
+
+                <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
+                  <div className="flex items-center gap-2">
+                    <Heart className="h-4 w-4 text-pink-400" />
+                    Passionate Team
                   </div>
-
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                    Ready to Join Our Story?
-                  </h2>
-
-                  <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Whether you're an artist looking for representation or a partner seeking collaboration, we'd love to
-                    hear from you and explore how we can create something amazing together.
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/join-us">
-                      <Button
-                        size="lg"
-                        className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300 px-8"
-                      >
-                        <Music className="h-5 w-5 mr-2" />
-                        Join Our Family
-                      </Button>
-                    </Link>
-                    <Link href="/contact">
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8"
-                      >
-                        Get In Touch
-                        <ArrowRight className="h-5 w-5 ml-2" />
-                      </Button>
-                    </Link>
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-4 w-4 text-cyan-400" />
+                    Global Reach
                   </div>
-
-                  <div className="mt-8 flex items-center justify-center gap-6 text-sm text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <Heart className="h-4 w-4 text-red-400" />
-                      Passionate Team
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Globe className="h-4 w-4 text-blue-400" />
-                      Global Reach
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Award className="h-4 w-4 text-yellow-400" />
-                      Award Winning
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Award className="h-4 w-4 text-yellow-400" />
+                    Award Winning
                   </div>
                 </div>
               </CardContent>
