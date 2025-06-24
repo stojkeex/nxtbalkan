@@ -832,12 +832,12 @@ export function LiveSupportSystem() {
             >
               <Headphones className="h-5 w-5 sm:h-6 sm:w-6" />
             </motion.div>
-            <span className="text-xs font-semibold whitespace-nowrap writing-mode-vertical transform rotate-180 hidden sm:block">
-              Live Support
-            </span>
-            <span className="text-xs font-semibold whitespace-nowrap writing-mode-vertical transform rotate-180 sm:hidden">
-              Help
-            </span>
+            <span className="text-xs font-semibold whitespace-nowrap writing-mode-vertical hidden sm:block">
+           Live Support
+             </span>
+         <span className="text-xs font-semibold whitespace-nowrap writing-mode-vertical sm:hidden">
+            Help
+           </span>
           </div>
 
           <motion.div
