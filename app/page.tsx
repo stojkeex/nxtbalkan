@@ -9,95 +9,93 @@ export default function HomePage() {
   const services = [
     {
       icon: Users,
-      title: "Social Media Management",
-      description: "We craft content and strategies that drive engagement and build your online presence.",
+      title: "Social Media Strategy",
+      description: "Tailored campaigns that amplify engagement and build lasting communities.",
     },
     {
       icon: TrendingUp,
-      title: "Digital Marketing",
-      description: "Results-driven campaigns that amplify your reach, conversions, and ROI.",
+      title: "Performance Marketing",
+      description: "Precision-targeted ads with clear KPIs, built for ROI and rapid growth.",
     },
     {
       icon: Zap,
-      title: "Brand Strategy",
-      description: "We create bold, modern brands that resonate and stand out in crowded markets.",
+      title: "Creative Branding",
+      description: "We design magnetic brand identities that resonate and convert.",
     },
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans">
-      {/* Hero */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 text-center bg-black">
+    <div className="min-h-screen bg-black text-white font-sans tracking-tight">
+      {/* HERO */}
+      <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-90 z-0" />
         <motion.img
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
           src="/nxtbalkancolored2.png"
           alt="NXT Balkan Logo"
-          className="w-60 md:w-72 lg:w-80 mb-8"
+          className="w-64 md:w-72 lg:w-80 mb-10 z-10 relative"
         />
 
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-light"
+          className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent z-10"
         >
-          Digital Excellence<br />
-          <span className="bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent font-semibold">
-            Redefined
-          </span>
+          We Are the Digital Shift
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="text-gray-400 text-lg sm:text-xl max-w-2xl mt-6"
+          className="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl z-10"
         >
-          We design digital experiences that connect, inspire, and deliver real results.
+          A creative digital agency for bold brands that dare to lead.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
-          className="mt-10"
+          className="mt-10 z-10"
         >
-          <Button size="lg" className="rounded-full px-8 py-4 text-lg font-medium bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 transition shadow-lg shadow-cyan-500/20">
-            Get Started <ArrowRight className="ml-2" />
+          <Button size="lg" className="rounded-full px-8 py-4 text-lg font-semibold bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 shadow-xl shadow-cyan-500/20 transition-all">
+            Let’s Build Something <ArrowRight className="ml-2" />
           </Button>
         </motion.div>
       </section>
 
-      {/* Services */}
-      <section className="py-24 bg-black px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      {/* SERVICES */}
+      <section className="py-28 px-6 bg-black">
+        <div className="max-w-7xl mx-auto text-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-5xl font-light text-white mb-16"
+            className="text-4xl md:text-5xl font-bold text-white mb-12"
           >
-            Our <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent font-medium">Services</span>
+            Our Expertise
           </motion.h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {services.map((service, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-500/50 transition-all">
-                  <CardContent className="p-8 text-center">
-                    <div className="mb-6 flex justify-center items-center w-16 h-16 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20">
+                <Card className="bg-white/5 border border-white/10 hover:border-cyan-500/40 backdrop-blur-lg transition-all duration-300 group hover:scale-[1.02] shadow-xl">
+                  <CardContent className="p-8 text-center space-y-4">
+                    <div className="flex justify-center items-center w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400/20 to-pink-500/20 mx-auto group-hover:rotate-6 transition-all">
                       <service.icon className="text-cyan-400 w-8 h-8" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-2">{service.title}</h3>
+                    <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                     <p className="text-gray-400 text-sm">{service.description}</p>
                   </CardContent>
                 </Card>
@@ -107,22 +105,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Call To Action */}
-      <section className="py-24 bg-black text-center px-6">
+      {/* CTA */}
+      <section className="py-28 px-6 bg-gradient-to-br from-black via-gray-900 to-black text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
+          className="max-w-2xl mx-auto"
         >
-          <h2 className="text-3xl sm:text-5xl font-light text-white mb-6">
-            Ready to <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent font-medium">elevate</span> your digital presence?
+          <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6">
+            Ready to launch your brand into the future?
           </h2>
-          <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
-            Let's build something extraordinary together.
+          <p className="text-gray-400 text-lg mb-8">
+            Let’s co-create experiences that move people and markets.
           </p>
-          <Button size="lg" className="rounded-full px-8 py-4 text-lg font-medium bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 transition shadow-lg">
-            Contact Us <ArrowRight className="ml-2" />
+          <Button size="lg" className="rounded-full px-8 py-4 text-lg font-semibold bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 shadow-xl transition">
+            Contact Our Team <ArrowRight className="ml-2" />
           </Button>
         </motion.div>
       </section>
