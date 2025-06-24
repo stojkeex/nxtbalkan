@@ -17,7 +17,115 @@ import {
 } from "lucide-react";
 
 export default function AboutPage() {
-  // ... (ostali podatki ostanejo enaki)
+  const teamMembers = [
+    { name: "Ana Novak", role: "Founder & CEO", description: "Visionary leader driving innovation and growth.", imgSrc: "/team/ana.jpg" },
+    { name: "Marko Kranjc", role: "Creative Director", description: "Crafts stunning campaigns with storytelling & design.", imgSrc: "/team/marko.jpg" },
+    { name: "Sara Petrovic", role: "Head of Marketing", description: "Expert in scaling brands through data-driven strategies.", imgSrc: "/team/sara.jpg" },
+    { name: "Luka Zupan", role: "Lead Developer", description: "Builds scalable and performant digital platforms.", imgSrc: "/team/luka.jpg" },
+  ];
+
+  const coreValues = [
+    {
+      icon: Users,
+      title: "Community First",
+      description:
+        "Building engaged, loyal communities that amplify your brand’s voice and foster genuine connections.",
+    },
+    {
+      icon: Activity,
+      title: "Data-Driven",
+      description:
+        "Using actionable insights and analytics to power strategic decisions and maximize ROI.",
+    },
+    {
+      icon: Star,
+      title: "Innovative",
+      description:
+        "Pushing creative boundaries to deliver standout, memorable digital experiences.",
+    },
+    {
+      icon: Rocket,
+      title: "Growth-Focused",
+      description:
+        "Helping startups and established brands scale rapidly with agile, proven strategies.",
+    },
+    {
+      icon: Globe,
+      title: "Global Reach",
+      description:
+        "Positioning brands on the international stage with tailored, impactful messaging.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Security & Trust",
+      description:
+        "Prioritizing digital protection and seamless compliance to safeguard your business.",
+    },
+    {
+      icon: LayoutDashboard,
+      title: "UI/UX Excellence",
+      description:
+        "Crafting intuitive and visually captivating user experiences across platforms.",
+    },
+    {
+      icon: Lightbulb,
+      title: "Creative Direction",
+      description:
+        "Leading innovative campaigns blending storytelling, motion design, and visual flair.",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "Eva K.",
+      role: "CEO, InnovateX",
+      quote:
+        "NXT Balkan transformed our digital presence — their team is creative, reliable, and results-driven.",
+      imgSrc: "/testimonials/eva.jpg",
+    },
+    {
+      name: "Matej S.",
+      role: "Founder, ScaleUp",
+      quote:
+        "The strategic insights and execution blew us away. Our growth accelerated in months, not years.",
+      imgSrc: "/testimonials/matej.jpg",
+    },
+    {
+      name: "Jana P.",
+      role: "CMO, BrightTech",
+      quote:
+        "A true partner in creativity and data-driven marketing — couldn’t recommend more.",
+      imgSrc: "/testimonials/jana.jpg",
+    },
+  ];
+
+  const partners = [
+    { name: "TechWave", logo: "/partners/techwave.png" },
+    { name: "FutureLabs", logo: "/partners/futurelabs.png" },
+    { name: "GlobalReach", logo: "/partners/globalreach.png" },
+    { name: "BrightSolutions", logo: "/partners/brightsolutions.png" },
+  ];
+
+  const stories = [
+    {
+      title: "How We Helped Scale a Startup to Series A",
+      excerpt:
+        "Discover the strategy and execution behind a rapid growth story that took a startup from idea to funding in less than a year.",
+      imgSrc: "/stories/startup-scale.jpg",
+    },
+    {
+      title: "Rebranding a Global Tech Leader",
+      excerpt:
+        "See how we crafted a fresh brand identity and digital presence for an international tech company.",
+      imgSrc: "/stories/rebranding.jpg",
+    },
+    {
+      title: "Driving Engagement Through Community Building",
+      excerpt:
+        "Learn about our approach to creating and nurturing digital communities that boost loyalty and sales.",
+      imgSrc: "/stories/community-building.jpg",
+    },
+  ];
 
   const cardVariants = {
     offscreen: { opacity: 0, y: 30, scale: 0.97 },
