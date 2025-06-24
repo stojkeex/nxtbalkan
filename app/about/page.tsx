@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { AnimatedBackground } from "@/components/animated-background"
 import { Calendar, Award, Globe, Zap } from "lucide-react"
-import { BannerAd, SquareAd, MobileBannerAd } from "@/components/ad-placeholder"
+import { BannerAd, MobileBannerAd } from "@/components/ad-placeholder"
 
 export default function AboutPage() {
   const milestones = [
