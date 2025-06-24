@@ -3,70 +3,70 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Music, Users, Zap, Star, Sparkles, TrendingUp, Award, Globe, Heart } from "lucide-react"
+import { ArrowRight, Users, Zap, Star, Globe, Award, TrendingUp, Mail, Phone, LayoutDashboard, BarChart2, Smartphone } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
   const services = [
     {
-      icon: Music,
-      title: "Production",
-      description: "State-of-the-art studio facilities and expert producers crafting the perfect sound.",
-      gradient: "from-cyan-400 to-blue-500",
-      bgGradient: "from-cyan-400/10 to-blue-500/10",
+      icon: LayoutDashboard,
+      title: "Social Media Management",
+      description: "Complete management of your social profiles with data-driven strategies for maximum engagement.",
     },
     {
-      icon: Users,
-      title: "Management",
-      description: "Comprehensive career development, branding, and strategic planning for our artists.",
-      gradient: "from-purple-400 to-pink-500",
-      bgGradient: "from-purple-400/10 to-pink-500/10",
+      icon: BarChart2,
+      title: "Content Strategy",
+      description: "Tailored content plans that align with your brand voice and business objectives.",
+    },
+    {
+      icon: Smartphone,
+      title: "Influencer Marketing",
+      description: "Strategic partnerships with influencers to amplify your brand's reach.",
     },
     {
       icon: Zap,
-      title: "Promotion",
-      description: "Digital marketing mastery across Spotify, YouTube, TikTok, and beyond.",
-      gradient: "from-orange-400 to-red-500",
-      bgGradient: "from-orange-400/10 to-red-500/10",
+      title: "Paid Advertising",
+      description: "Precision-targeted ad campaigns that convert across all platforms.",
     },
   ]
 
   const stats = [
-    { label: "Artists Managed", value: "100+", icon: Users, color: "text-cyan-400" },
-    { label: "Countries Reached", value: "50+", icon: Globe, color: "text-purple-400" },
-    { label: "Awards Won", value: "25+", icon: Award, color: "text-pink-400" },
-    { label: "Years Experience", value: "4+", icon: TrendingUp, color: "text-orange-400" },
+    { label: "Clients Served", value: "200+", icon: Users },
+    { label: "Countries Reached", value: "30+", icon: Globe },
+    { label: "Campaigns Managed", value: "500+", icon: Award },
+    { label: "Years Experience", value: "5+", icon: TrendingUp },
   ]
 
   const testimonials = [
     {
-      name: "Marko Petrović",
-      role: "Recording Artist",
-      content: "NXT Balkan transformed my career. Their innovative approach and dedication are unmatched.",
+      name: "Nikola Petrović",
+      role: "CEO, Fashion Brand",
+      content: "Our social media presence transformed completely after working with Balkan Agency. Engagement is up 300%.",
       rating: 5,
     },
     {
-      name: "Ana Jovanović",
-      role: "Music Producer",
-      content: "Working with NXT Balkan has been incredible. They truly understand the Balkan music scene.",
+      name: "Ana Marković",
+      role: "Marketing Director",
+      content: "Their data-driven approach to content strategy delivered real business results, not just vanity metrics.",
       rating: 5,
     },
     {
-      name: "Stefan Nikolić",
-      role: "Singer-Songwriter",
-      content: "The best decision I made was joining NXT Balkan. They've helped me reach global audiences.",
+      name: "Marko Jovanović",
+      role: "E-commerce Founder",
+      content: "The influencer campaigns they organized brought us our best sales quarter ever. Highly recommend!",
       rating: 5,
     },
   ]
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Glass-like background effect */}
+      <div className="fixed inset-0 bg-[url('/grid.svg')] opacity-5 pointer-events-none" />
+      
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 px-4 overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10" />
-
+      <section className="relative pt-32 pb-24 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-black to-black" />
+        
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -74,38 +74,38 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-           
-
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 gradient-text leading-tight tracking-tight">
-            NXT
-            <br />
-            BALKAN
+            <Badge variant="outline" className="mb-4 bg-cyan-500/10 border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/20">
+              Social Media Experts
+            </Badge>
+            
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">Balkan</span>
+              <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-cyan-400">Agency</span>
             </h1>
 
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Where tradition meets innovation. We produce, manage, and promote the next generation of Balkan artists,
-              bridging cultures through the universal language of music.
+              We elevate Balkan brands through cutting-edge social media strategies, data-driven campaigns, 
+              and influencer partnerships that deliver measurable results.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/artists">
+              <Link href="/services">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300 px-8"
+                  className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-medium hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 px-8 shadow-lg shadow-cyan-500/20"
                 >
-                  <Music className="h-5 w-5 mr-2" />
-                  Discover Artists
+                  Our Services
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
-              <Link href="/join-us">
+              <Link href="/contact">
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8"
+                  className="border-gray-700 text-white bg-black/50 hover:bg-white hover:text-black transition-all duration-300 px-8"
                 >
-                  <Sparkles className="h-5 w-5 mr-2" />
-                  Submit Demo
+                  Get Started
                 </Button>
               </Link>
             </div>
@@ -114,9 +114,9 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 px-4 bg-gray-900/20">
+      <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -125,11 +125,13 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-gray-900/50 border-gray-800 text-center hover:border-gray-700 transition-all duration-300 hover:scale-105">
-                  <CardContent className="p-4">
-                    <stat.icon className={`h-6 w-6 ${stat.color} mx-auto mb-2`} />
-                    <div className="text-xl md:text-2xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-xs text-gray-400">{stat.label}</div>
+                <Card className="bg-gray-900/30 backdrop-blur-sm border border-gray-800 hover:border-cyan-500/30 transition-all duration-300 group">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-3 group-hover:bg-cyan-500/20 transition-colors duration-300">
+                      <stat.icon className="h-5 w-5 text-cyan-400" />
+                    </div>
+                    <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
+                    <div className="text-sm text-gray-400">{stat.label}</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -138,8 +140,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mission Section */}
-      <section className="py-16 px-4">
+      {/* Services Section */}
+      <section className="py-16 px-4 bg-gradient-to-b from-black to-gray-900/20">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -148,35 +150,30 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-text">
-            Our Mission
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">Our Services</span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Bridging traditional Balkan music with the global stage through innovation and passion
+              Comprehensive solutions tailored for the modern Balkan market
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group"
               >
-                <Card className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 h-full group-hover:scale-[1.02]">
-                  <CardContent className="p-6 text-center">
-                    <div
-                      className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.bgGradient} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <service.icon className="h-8 w-8 text-white" />
+                <Card className="bg-gray-900/30 backdrop-blur-sm border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 h-full hover:shadow-lg hover:shadow-cyan-500/10">
+                  <CardContent className="p-6">
+                    <div className="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center mb-4">
+                      <service.icon className="h-6 w-6 text-cyan-400" />
                     </div>
-                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-300 leading-relaxed">{service.description}</p>
+                    <h3 className="text-xl font-semibold mb-3 text-white">{service.title}</h3>
+                    <p className="text-gray-300 text-sm leading-relaxed">{service.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -186,7 +183,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-gray-900/20">
+      <section className="py-16 px-4 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -195,34 +192,34 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-text">
-            What Artists Say
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">Client Success</span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Hear from the talented artists who trust us with their musical journey
+              Don't just take our word for it - hear from our clients
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 h-full hover:scale-105">
+                <Card className="bg-gray-900/30 backdrop-blur-sm border border-gray-800 hover:border-cyan-500/30 transition-all duration-300 h-full">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-1 mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-cyan-400/80 text-cyan-400/80" />
                       ))}
                     </div>
-                    <p className="text-gray-300 leading-relaxed mb-4 italic">"{testimonial.content}"</p>
-                    <div>
-                      <div className="font-semibold text-white">{testimonial.name}</div>
-                      <div className="text-sm text-gray-400">{testimonial.role}</div>
+                    <p className="text-gray-300 text-sm leading-relaxed mb-4 italic">"{testimonial.content}"</p>
+                    <div className="mt-4 pt-4 border-t border-gray-800">
+                      <div className="font-medium text-white">{testimonial.name}</div>
+                      <div className="text-xs text-cyan-400/80">{testimonial.role}</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -233,7 +230,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-gray-900/50 to-black">
+      <section className="py-24 px-4 bg-[url('/grid.svg')] bg-cover bg-center">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -241,63 +238,46 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 border-gray-700 overflow-hidden">
-              <CardContent className="p-8 md:p-12 text-center relative">
-                {/* Background decoration */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-purple-500/5" />
+            <Card className="bg-gray-900/70 backdrop-blur-sm border border-gray-800 overflow-hidden relative">
+              {/* Decorative elements */}
+              <div className="absolute top-0 left-0 w-32 h-32 bg-cyan-500/10 rounded-full filter blur-3xl -translate-x-1/2 -translate-y-1/2" />
+              <div className="absolute bottom-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full filter blur-3xl translate-x-1/2 translate-y-1/2" />
+              
+              <CardContent className="p-8 md:p-12 text-center relative z-10">
+                <div className="w-16 h-16 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-6">
+                  <Zap className="h-8 w-8 text-cyan-400" />
+                </div>
 
-               <div className="relative z-10">
-               <div className="flex justify-center mb-6"> {/* Dodan flex container za centriranje */}
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-2xl">
-              <Star className="h-8 w-8 text-black" />
-              </div>
-               </div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">
+                    Ready to Transform Your Social Presence?
+                  </span>
+                </h2>
 
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-text">
-                  Ready to Join the Revolution?
-                  </h2>
+                <p className="text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                  Schedule a free consultation with our team to discuss how we can help your brand dominate social media.
+                </p>
 
-                  <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Whether you're an artist looking for representation or a music lover seeking the next big sound, NXT
-                    Balkan is your gateway to the future of music.
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/about">
-                      <Button
-                        size="lg"
-                        className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300 px-8"
-                      >
-                        <Heart className="h-5 w-5 mr-2" />
-                        Learn More About Us
-                      </Button>
-                    </Link>
-                    <Link href="/contact">
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8"
-                      >
-                        Get In Touch
-                        <ArrowRight className="h-5 w-5 ml-2" />
-                      </Button>
-                    </Link>
-                  </div>
-
-                  <div className="mt-8 flex items-center justify-center gap-6 text-sm text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <Music className="h-4 w-4 text-cyan-400" />
-                      Professional Production
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-purple-400" />
-                      Artist Management
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Zap className="h-4 w-4 text-pink-400" />
-                      Global Promotion
-                    </div>
-                  </div>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link href="/contact">
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-medium hover:from-cyan-400 hover:to-cyan-500 transition-all duration-300 px-8 shadow-lg shadow-cyan-500/20"
+                    >
+                      Book a Call
+                      <Phone className="h-5 w-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link href="/contact">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="border-gray-700 text-white bg-black/50 hover:bg-white hover:text-black transition-all duration-300 px-8"
+                    >
+                      Email Us
+                      <Mail className="h-5 w-5 ml-2" />
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
