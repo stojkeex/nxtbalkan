@@ -129,7 +129,7 @@ export default function FloatingMusicPlayer() {
     if ("mediaSession" in navigator) {
       // Set metadata for current track
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: currentTrack.title,
+        title: `${currentTrack.title} • NXT Balkan`,
         artist: currentTrack.artist,
         album: currentTrack.album,
         artwork: [
@@ -215,19 +215,24 @@ export default function FloatingMusicPlayer() {
       })
 
       navigator.mediaSession.setActionHandler("seekto", (details) => {
-        console.log("🎵 Media Session: Seek To", details.seekTime)
-        if (audioRef.current && details.seekTime !== undefined) {
-          audioRef.current.currentTime = details.seekTime
+        console.log("🎵 Media Session: Seek To", details.seekTime, "Duration:", duration)
+        if (audioRef.current && details.seekTime !== undefined && details.seekTime >= 0) {
+          audioRef.current.currentTime = Math.min(details.seekTime, duration)
+          setCurrentTime(details.seekTime)
         }
       })
 
       // Update position state for progress bar
-      if (isPlaying && duration > 0) {
-        navigator.mediaSession.setPositionState({
-          duration: duration,
-          playbackRate: 1.0,
-          position: currentTime,
-        })
+      if (isPlaying && duration > 0 && currentTime >= 0) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: duration,
+            playbackRate: 1.0,
+            position: currentTime,
+          })
+        } catch (error) {
+          console.log("Media Session position error:", error)
+        }
       }
     }
   }, [currentTrack, isPlaying, currentTime, duration])
@@ -236,9 +241,9 @@ export default function FloatingMusicPlayer() {
   useEffect(() => {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: currentTrack.title,
+        title: `${currentTrack.title} • NXT Balkan`,
         artist: currentTrack.artist,
-        album: `${currentTrack.album} • NXT Balkan`,
+        album: currentTrack.album,
         artwork: [
           {
             src: currentTrack.cover || "/favicon/favicon-192x192.png",
@@ -378,15 +383,20 @@ export default function FloatingMusicPlayer() {
     }
 
     const updateTime = () => {
-      setCurrentTime(audio.currentTime)
+      const currentTimeValue = audio.currentTime
+      setCurrentTime(currentTimeValue)
 
-      // Update Media Session position
-      if ("mediaSession" in navigator && isPlaying && duration > 0) {
-        navigator.mediaSession.setPositionState({
-          duration: duration,
-          playbackRate: 1.0,
-          position: audio.currentTime,
-        })
+      // Popravi Media Session position - posodobi samo če je pesem v teku
+      if ("mediaSession" in navigator && duration > 0) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: duration,
+            playbackRate: audio.playbackRate || 1.0,
+            position: currentTimeValue,
+          })
+        } catch (error) {
+          console.log("Position state error:", error)
+        }
       }
     }
 
@@ -432,12 +442,15 @@ export default function FloatingMusicPlayer() {
   }, [repeatMode])
 
   const togglePlay = () => {
+    if (!audioRef.current) return
+
     if (isPlaying) {
-      audioRef.current?.pause()
+      audioRef.current.pause()
     } else {
-      audioRef.current?.play().catch(console.error)
+      // Ne resetiraj currentTime, samo nadaljuj predvajanje
+      audioRef.current.play().catch(console.error)
     }
-    // State will be updated by audio event listeners
+    // State se bo posodobil preko event listenerjev
   }
 
   const nextTrack = useCallback(() => {
