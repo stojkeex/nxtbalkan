@@ -632,13 +632,13 @@ export default function FloatingMusicPlayer() {
       )}
 
       {!isOpen && (
-        <div className="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-50">
+        <div className="fixed left-0 top-1/2 -translate-y-1/2 z-50">
           <Button
             onClick={openPlayer}
-            className="w-14 h-20 md:w-16 md:h-24 rounded-r-2xl rounded-l-none bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-black shadow-2xl hover:scale-105 hover:translate-x-2 transition-all duration-300 flex items-center justify-center relative overflow-hidden"
+            className="w-10 h-16 md:w-12 md:h-20 rounded-r-xl rounded-l-none bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-black shadow-2xl hover:scale-105 hover:translate-x-1 transition-all duration-300 flex items-center justify-center relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-            <Music className="h-6 w-6 md:h-8 md:w-8 relative z-10" />
+            <Music className="h-4 w-4 md:h-5 md:w-5 relative z-10" />
           </Button>
           {isPlaying && (
             <div className="absolute -top-1 -right-1 w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full animate-ping"></div>
@@ -651,8 +651,8 @@ export default function FloatingMusicPlayer() {
           data-player="main"
           className={`fixed z-50 transition-all duration-500 ease-out ${
             isMinimized
-              ? "bottom-4 left-4 w-72 h-16 md:bottom-6 md:left-6 md:w-80 md:h-20"
-              : "inset-0 md:bottom-6 md:left-6 md:right-auto md:top-auto md:w-96 md:max-h-[80vh] md:inset-auto"
+              ? "bottom-4 left-0 w-72 h-16 md:bottom-6 md:left-0 md:w-80 md:h-20"
+              : "inset-0 md:bottom-6 md:left-0 md:right-auto md:top-auto md:w-96 md:max-h-[80vh] md:inset-auto"
           }`}
         >
           {/* Mobile Full Screen View */}
