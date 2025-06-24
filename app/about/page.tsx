@@ -189,10 +189,7 @@ export default function AboutPage() {
               ))}
             </div>
 
-            {/* Square Ad in Team Section */}
-            <div className="mt-16 flex justify-center">
-              <SquareAd />
-            </div>
+            
           </motion.section>
         </div>
       </div>
