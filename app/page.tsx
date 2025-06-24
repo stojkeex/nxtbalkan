@@ -123,20 +123,28 @@ export default function HomePage() {
           {Array.from({ length: 20 }).map((_, i) => (
             <motion.div
               key={i}
-              className="absolute top-0 left-0 w-full h-full"
+              className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"
               style={{
-                background: "radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.05) 0%, rgba(0, 0, 0, 0) 70%)"
+                width: `${Math.random() * 100 + 50}px`,
+                height: `${Math.random() * 100 + 50}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                opacity: Math.random() * 0.3
               }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 2, delay: i * 0.1 }}
+              initial={{ scale: 0 }}
+              animate={{ 
+                scale: [1, 1.5, 1],
+                opacity: [0.1, 0.3, 0.1]
+              }}
+              transition={{
+                duration: Math.random() * 10 + 10,
+                repeat: Infinity,
+                delay: Math.random() * 5
+              }}
             ></motion.div>
           ))}
         </div>
         <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
           className="max-w-7xl mx-auto w-full text-center space-y-8"
         >
           <motion.img
@@ -250,7 +258,7 @@ export default function HomePage() {
                 transition={{ duration: 0.9, delay: i * 0.1 }}
                 className="text-center"
               >
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-{value.color}/20 to-{value.color}/40 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-{value.color}/20 to-{value.color}/40 flex items-center justify-center flex-shrink-0">
                   <value.icon className={`w-8 h-8 text-${value.color.split('-')[1]}-400 animate-pulse`} />
                 </div>
                 <h3 className="text-2xl font-semibold mb-4 text-white">
@@ -373,7 +381,7 @@ export default function HomePage() {
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-{item.color}/20 to-{item.color}/40 flex items-center justify-center flex-shrink-0">
-                    <item.icon className={`w-6 h-6 text-${item.color.split('-')[1]}-400 animate-pulse`} />
+                    <item.icon className={`w-6 h- text-${item.color.split('-')[1]}-400 animate-pulse`} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-3 text-white">
@@ -384,8 +392,8 @@ export default function HomePage() {
                     </p>
                   </div>
                 </div>
-              </motion.div>            
-                ))}
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -413,7 +421,7 @@ export default function HomePage() {
                 We merge strategy, design, and technology into unforgettable digital experiences.
               </p>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                <Button className="bg-gradient-to-r from-cyan-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-10 py-5 rounded-full text-lg shadow-lg hover:shadow-cyan-500/20 animate-bounce">
+                <Button className="bg-gradient-to-r from-cyan-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-10 py-5 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-cyan-500/20 animate-bounce">
                   Let’s Talk <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
                 <Button variant="outline" className="bg-black/20 border border-white/10 hover:border-pink-400/40 text-white font-medium px-10 py-5 rounded-full text-lg transition-all duration-300">
@@ -495,6 +503,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 1 }}
             className="text-center mb-20"
           >
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-light">
@@ -514,7 +523,7 @@ export default function HomePage() {
             >
               <h3 className="text-2xl font-semibold mb-6 text-white mb-6">Contact Information</h3>
               
-              <div className="space-y-6">
+              <div className="space-y-6 text-left">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-6 h-6 text-cyan-400" />
@@ -541,7 +550,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <h4 className="text-white font-medium mb-1">Call Us</h4>
-                    <p className="text-gray-300">+1 (555) 123-4567</p>
+                    <p className="text-gray-300">+1 (555) 123-456-7890</p>
                   </div>
                 </div>
               </div>
@@ -560,7 +569,7 @@ export default function HomePage() {
                   <input
                     type="text"
                     id="name"
-                    className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                    className="w-full bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300 p-3"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -569,7 +578,7 @@ export default function HomePage() {
                   <input
                     type="email"
                     id="email"
-                    className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                    className="w-full bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300 p-3"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -578,11 +587,11 @@ export default function HomePage() {
                   <textarea
                     id="message"
                     rows={4}
-                    className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50"
+                    className="w-full bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300 p-3"
                     placeholder="Tell us about your project"
                   ></textarea>
                 </div>
-                <Button className="w-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium py-3 rounded-lg transition-all duration-300">
+                <Button className="w-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300">
                   Send Message <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </form>
@@ -602,7 +611,7 @@ export default function HomePage() {
               className="text-white"
             >
               <img src="/nxtbalkancolored2.png" alt="NXT Balkan Logo" className="w-40 h-auto mb-4" />
-              <p className="text-gray-400 max-w-xs">
+              <p className="text-gray-500 max-w-xs">
                 We transform businesses into cutting-edge digital powerhouses that thrive on innovation, performance, and connection.
               </p>
             </motion.div>
@@ -654,13 +663,13 @@ export default function HomePage() {
                   <Twitter className="w-5 h-5 text-gray-300 hover:text-cyan-400" />
                 </a>
                 <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
-                  <Instagram className="w-5 h-6 text-gray-300 hover:text-cyan-400" />
+                  <Instagram className="w-5 h-5 text-gray-300 hover:text-cyan-400" />
                 </a>
                 <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
                   <Linkedin className="w-5 h-5 text-gray-300 hover:text-cyan-400" />
                 </a>
               </div>
-              <Button variant="outline" className="bg-black/30 border border-white/10 hover:border-pink-400/40 text-white font-medium px-6 py-3 rounded-full transition-all duration-300">
+              <Button className="bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300">
                 Subscribe to Newsletter <ChevronDown className="ml-2 w-5 h-5" />
               </Button>
             </motion.div>
