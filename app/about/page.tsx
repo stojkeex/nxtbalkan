@@ -146,8 +146,8 @@ export default function AboutPage() {
 
   return (
     <div
-      className="min-h-screen bg-black text-white px-6 sm:px-12 pt-24 pb-16 max-w-7xl mx-auto space-y-28"
-      // pt-24 = več prostora od vrha, da ni blizu navbarja
+      className="min-h-screen bg-black text-white px-6 sm:px-12 pt-40 pb-16 max-w-7xl mx-auto space-y-28"
+      // pt-40 = več prostora od vrha, da ni blizu navbarja
     >
       {/* Header */}
       <motion.div
@@ -264,7 +264,7 @@ export default function AboutPage() {
                   <Icon className="w-8 h-8 text-cyan-400" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
+                <p className="text-gray-300 text-sm">{description}</p>
               </Card>
             </motion.div>
           ))}
@@ -286,7 +286,7 @@ export default function AboutPage() {
           </span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
           {teamMembers.map(({ name, role, description, imgSrc }, i) => (
             <motion.div
               key={i}
@@ -295,101 +295,25 @@ export default function AboutPage() {
               viewport={{ once: true }}
               whileHover="hover"
               variants={cardVariants}
-              transition={{ delay: i * 0.15 }}
-              className="cursor-pointer select-none"
+              transition={{ delay: i * 0.1 }}
             >
-              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-8 shadow-lg flex flex-col items-center text-center">
+              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-6 shadow-lg cursor-pointer select-none flex flex-col items-center text-center">
                 <img
                   src={imgSrc}
                   alt={name}
-                  className="w-28 h-28 rounded-full mb-5 object-cover shadow-md"
+                  className="rounded-full w-32 h-32 object-cover mb-4 border-2 border-cyan-400"
+                  loading="lazy"
                 />
-                <h3 className="text-xl font-semibold mb-1">{name}</h3>
-                <p className="text-cyan-400 font-medium mb-3">{role}</p>
-                <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
+                <h3 className="text-lg font-semibold text-white">{name}</h3>
+                <p className="text-cyan-400 text-sm font-medium mb-2">{role}</p>
+                <p className="text-gray-300 text-xs">{description}</p>
               </Card>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-4xl text-center font-light mb-14"
-        >
-          What{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">
-            Clients Say
-          </span>
-        </motion.h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
-          {testimonials.map(({ name, role, quote, imgSrc }, i) => (
-            <motion.div
-              key={i}
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true }}
-              whileHover="hover"
-              variants={cardVariants}
-              transition={{ delay: i * 0.15 }}
-            >
-              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-8 shadow-lg flex flex-col items-center text-center cursor-pointer select-none">
-                <img
-                  src={imgSrc}
-                  alt={name}
-                  className="w-20 h-20 rounded-full mb-5 object-cover shadow-md"
-                />
-                <p className="text-gray-300 italic mb-4 leading-relaxed max-w-xs">
-                  "{quote}"
-                </p>
-                <h4 className="text-white font-semibold">{name}</h4>
-                <p className="text-cyan-400 text-sm">{role}</p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Partners */}
-      <section>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-4xl text-center font-light mb-14"
-        >
-          Our{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
-            Partners
-          </span>
-        </motion.h2>
-
-        <div className="flex flex-wrap justify-center items-center gap-12 max-w-6xl mx-auto">
-          {partners.map(({ name, logo }, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.85 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="max-h-24 max-w-[160px] p-5 bg-white/10 rounded-[2rem] flex items-center justify-center shadow-lg cursor-pointer select-none"
-              title={name}
-              style={{ borderRadius: "2rem" }}
-            >
-              <img src={logo} alt={name} className="max-h-16 object-contain" />
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Success Stories */}
+      {/* Stories Section */}
       <section>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -399,12 +323,12 @@ export default function AboutPage() {
           className="text-4xl text-center font-light mb-14"
         >
           Success{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
             Stories
           </span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
           {stories.map(({ title, excerpt, imgSrc }, i) => (
             <motion.div
               key={i}
@@ -413,18 +337,92 @@ export default function AboutPage() {
               viewport={{ once: true }}
               whileHover="hover"
               variants={cardVariants}
-              transition={{ delay: i * 0.15 }}
-              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] overflow-hidden shadow-lg flex flex-col cursor-pointer select-none"
+              transition={{ delay: i * 0.1 }}
             >
-              <img
-                src={imgSrc}
-                alt={title}
-                className="w-full h-44 object-cover rounded-t-[2rem]"
-              />
-              <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-semibold mb-3">{title}</h3>
-                <p className="text-gray-300 flex-grow leading-relaxed">{excerpt}</p>
-              </div>
+              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-5 shadow-lg cursor-pointer select-none flex flex-col">
+                <img
+                  src={imgSrc}
+                  alt={title}
+                  className="rounded-xl mb-5 object-cover h-48 w-full"
+                  loading="lazy"
+                />
+                <h3 className="text-lg font-semibold mb-2 text-white">{title}</h3>
+                <p className="text-gray-300 text-sm flex-grow">{excerpt}</p>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="text-4xl text-center font-light mb-14"
+        >
+          Our{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">
+            Partners
+          </span>
+        </motion.h2>
+
+        <div className="flex flex-wrap justify-center gap-14 max-w-5xl mx-auto items-center">
+          {partners.map(({ name, logo }, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.85 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              className="w-36 h-20 flex items-center justify-center filter grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              title={name}
+            >
+              <img src={logo} alt={name} className="max-h-16 object-contain" loading="lazy" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="text-4xl text-center font-light mb-14"
+        >
+          What Our{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
+            Clients Say
+          </span>
+        </motion.h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-7xl mx-auto">
+          {testimonials.map(({ name, role, quote, imgSrc }, i) => (
+            <motion.div
+              key={i}
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true }}
+              whileHover="hover"
+              variants={cardVariants}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-7 shadow-lg cursor-pointer select-none flex flex-col items-center text-center">
+                <img
+                  src={imgSrc}
+                  alt={name}
+                  className="rounded-full w-20 h-20 object-cover mb-4 border-2 border-pink-500"
+                  loading="lazy"
+                />
+                <p className="text-gray-300 italic mb-4">"{quote}"</p>
+                <h4 className="text-white font-semibold">{name}</h4>
+                <p className="text-pink-500 text-sm">{role}</p>
+              </Card>
             </motion.div>
           ))}
         </div>
