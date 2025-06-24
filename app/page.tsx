@@ -28,14 +28,38 @@ const features = [
   },
 ]
 
+const testimonials = [
+  {
+    name: "Maja T.",
+    role: "CEO, NordicFit",
+    text: "They took our digital presence from static to cinematic. 10/10 execution.",
+  },
+  {
+    name: "Igor B.",
+    role: "Founder, ScaleRight",
+    text: "True professionals. Delivered brand, voice, and viral campaigns on time and on point.",
+  },
+]
+
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-black text-white font-sans tracking-tight relative">
+    <div className="min-h-screen bg-black text-white font-sans tracking-tight relative overflow-x-hidden">
       {/* Background Blur Layer */}
       <div className="absolute inset-0 z-0 bg-black bg-opacity-80 backdrop-blur-2xl" />
 
-      {/* HERO */}
-      <section className="relative z-10 flex flex-col items-center justify-center text-center min-h-screen px-6">
+      {/* NAVBAR */}
+      <nav className="fixed z-20 w-full top-0 px-8 py-6 flex justify-between items-center backdrop-blur-md bg-black/50 border-b border-white/10">
+        <div className="text-2xl font-bold text-white">NXT Balkan</div>
+        <div className="space-x-6">
+          <a href="#features" className="text-gray-300 hover:text-white transition">Features</a>
+          <a href="#about" className="text-gray-300 hover:text-white transition">About</a>
+          <a href="#testimonials" className="text-gray-300 hover:text-white transition">Testimonials</a>
+          <Button className="bg-white/10 backdrop-blur-xl text-white px-6 py-2 rounded-full border border-white/10 hover:bg-white/20 transition">Contact</Button>
+        </div>
+      </nav>
+
+      {/* HERO SECTION */}
+      <section className="relative z-10 flex flex-col items-center justify-center text-center min-h-screen px-6 pt-36">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,7 +89,7 @@ export default function HomePage() {
       </section>
 
       {/* FEATURES */}
-      <section className="py-28 px-6 relative z-10">
+      <section id="features" className="py-28 px-6 relative z-10">
         <div className="max-w-7xl mx-auto text-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -86,7 +110,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-white/5 border border-white/10 backdrop-blur-lg shadow-xl transition-all hover:scale-105 hover:shadow-cyan-500/30">
+                <Card className="bg-white/5 border border-white/10 backdrop-blur-lg shadow-xl hover:scale-105 hover:shadow-cyan-500/30 transition-all">
                   <CardContent className="p-8 text-center">
                     <div className="flex justify-center mb-4">
                       <feature.icon className="text-cyan-400 w-10 h-10" />
@@ -101,47 +125,32 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* WHY US */}
-      <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-black via-gray-900 to-black">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold mb-8"
-          >
-            Why NXT Balkan?
-          </motion.h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-12">
-            Because we merge Balkan boldness with global elegance. We don’t just follow trends — we define them.
-          </p>
-          <Button className="bg-white/10 backdrop-blur-xl border border-white/10 text-white px-8 py-4 rounded-full hover:bg-white/20 transition-all text-lg shadow-lg">
-            Learn About Our Process
-          </Button>
+      {/* TESTIMONIALS */}
+      <section id="testimonials" className="py-28 px-6 bg-black relative z-10">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-16">What Our Clients Say</h2>
+          <div className="grid md:grid-cols-2 gap-10">
+            {testimonials.map((testimonial, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: i * 0.3 }}
+                viewport={{ once: true }}
+                className="bg-white/5 border border-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-xl"
+              >
+                <p className="text-lg text-gray-300 mb-4">“{testimonial.text}”</p>
+                <p className="text-sm text-gray-500">— {testimonial.name}, {testimonial.role}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative z-10 py-28 px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-2xl mx-auto"
-        >
-          <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6">
-            Let’s make something iconic.
-          </h2>
-          <p className="text-gray-400 text-lg mb-8">
-            Schedule a call with our lead team – and let's start shaping your digital dominance.
-          </p>
-          <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white px-8 py-4 rounded-full text-lg shadow-lg transition-all">
-            Book Discovery Call
-          </Button>
-        </motion.div>
-      </section>
+      {/* FOOTER */}
+      <footer className="py-16 px-6 border-t border-white/10 bg-black/80 backdrop-blur-xl text-gray-400 text-center relative z-10">
+        <p className="text-sm">© {new Date().getFullYear()} NXT Balkan. All rights reserved.</p>
+      </footer>
     </div>
   )
 }
