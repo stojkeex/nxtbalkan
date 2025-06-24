@@ -78,7 +78,7 @@ export default function HomePage() {
               🎵 Welcome to the Future
             </Badge>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent leading-tight tracking-tight">
+            <h1 className="gradient-text">
               NXT
               <br />
               BALKAN
