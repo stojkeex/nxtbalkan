@@ -1,11 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Users, Star, Activity, Rocket, Globe, ShieldCheck, LayoutDashboard, Flame, Lightbulb } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import {
+  Users,
+  Star,
+  Activity,
+  Rocket,
+  Globe,
+  ShieldCheck,
+  LayoutDashboard,
+  Lightbulb,
+  Flame,
+  MessageCircle,
+  Heart,
+} from "lucide-react";
 
 export default function AboutPage() {
-  // Podatki o ekipi
   const teamMembers = [
     { name: "Ana Novak", role: "Founder & CEO", description: "Visionary leader driving innovation and growth.", imgSrc: "/team/ana.jpg" },
     { name: "Marko Kranjc", role: "Creative Director", description: "Crafts stunning campaigns with storytelling & design.", imgSrc: "/team/marko.jpg" },
@@ -13,7 +24,6 @@ export default function AboutPage() {
     { name: "Luka Zupan", role: "Lead Developer", description: "Builds scalable and performant digital platforms.", imgSrc: "/team/luka.jpg" },
   ];
 
-  // Core Values
   const coreValues = [
     {
       icon: Users,
@@ -65,19 +75,88 @@ export default function AboutPage() {
     },
   ];
 
+  const testimonials = [
+    {
+      name: "Eva K.",
+      role: "CEO, InnovateX",
+      quote:
+        "NXT Balkan transformed our digital presence — their team is creative, reliable, and results-driven.",
+      imgSrc: "/testimonials/eva.jpg",
+    },
+    {
+      name: "Matej S.",
+      role: "Founder, ScaleUp",
+      quote:
+        "The strategic insights and execution blew us away. Our growth accelerated in months, not years.",
+      imgSrc: "/testimonials/matej.jpg",
+    },
+    {
+      name: "Jana P.",
+      role: "CMO, BrightTech",
+      quote:
+        "A true partner in creativity and data-driven marketing — couldn’t recommend more.",
+      imgSrc: "/testimonials/jana.jpg",
+    },
+  ];
+
+  const partners = [
+    { name: "TechWave", logo: "/partners/techwave.png" },
+    { name: "FutureLabs", logo: "/partners/futurelabs.png" },
+    { name: "GlobalReach", logo: "/partners/globalreach.png" },
+    { name: "BrightSolutions", logo: "/partners/brightsolutions.png" },
+  ];
+
+  const stories = [
+    {
+      title: "How We Helped Scale a Startup to Series A",
+      excerpt:
+        "Discover the strategy and execution behind a rapid growth story that took a startup from idea to funding in less than a year.",
+      imgSrc: "/stories/startup-scale.jpg",
+    },
+    {
+      title: "Rebranding a Global Tech Leader",
+      excerpt:
+        "See how we crafted a fresh brand identity and digital presence for an international tech company.",
+      imgSrc: "/stories/rebranding.jpg",
+    },
+    {
+      title: "Driving Engagement Through Community Building",
+      excerpt:
+        "Learn about our approach to creating and nurturing digital communities that boost loyalty and sales.",
+      imgSrc: "/stories/community-building.jpg",
+    },
+  ];
+
+  // Animation variants for cards
+  const cardVariants = {
+    offscreen: { opacity: 0, y: 40, scale: 0.9 },
+    onscreen: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { type: "spring", bounce: 0.3, duration: 0.8 },
+    },
+    hover: {
+      scale: 1.05,
+      y: -5,
+      transition: { duration: 0.3, ease: "easeInOut" },
+      boxShadow: "0px 10px 20px rgba(255, 105, 180, 0.5)",
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white px-6 sm:px-12 py-12 sm:py-20 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-black text-white px-6 sm:px-12 py-12 sm:py-20 max-w-7xl mx-auto space-y-20">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="text-center mb-12"
+        className="text-center max-w-3xl mx-auto"
       >
         <h1 className="text-5xl sm:text-6xl font-extralight tracking-wide mb-3">
           About <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">NXT Balkan</span>
         </h1>
-        <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+        <p className="text-gray-400 text-lg leading-relaxed">
           We are a pioneering digital agency dedicated to transforming brands into next-generation leaders through innovation, creativity, and technology.
         </p>
       </motion.div>
@@ -88,7 +167,7 @@ export default function AboutPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1 }}
-        className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 sm:p-12 shadow-lg mb-14 max-w-4xl mx-auto"
+        className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 sm:p-12 shadow-lg max-w-4xl mx-auto"
       >
         <h2 className="text-4xl font-light mb-6 text-center">
           Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">Journey</span>
@@ -104,8 +183,43 @@ export default function AboutPage() {
         </p>
       </motion.section>
 
+      {/* Vision & Mission */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 shadow-lg"
+        >
+          <Flame className="w-10 h-10 text-pink-500 mb-4 mx-auto" />
+          <h3 className="text-3xl font-light mb-4 text-center">
+            Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">Vision</span>
+          </h3>
+          <p className="text-gray-300 leading-relaxed">
+            To be the premier digital transformation partner that empowers brands globally to innovate, grow, and inspire with cutting-edge technology and creativity.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 shadow-lg"
+        >
+          <Lightbulb className="w-10 h-10 text-cyan-400 mb-4 mx-auto" />
+          <h3 className="text-3xl font-light mb-4 text-center">
+            Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Mission</span>
+          </h3>
+          <p className="text-gray-300 leading-relaxed">
+            To deliver innovative, data-driven digital solutions that help businesses scale, engage audiences, and build lasting digital legacies.
+          </p>
+        </motion.div>
+      </section>
+
       {/* Core Values */}
-      <section className="mb-16">
+      <section>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -116,16 +230,18 @@ export default function AboutPage() {
           Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Core Values</span>
         </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 max-w-7xl mx-auto">
           {coreValues.map(({ icon: Icon, title, description }, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial="offscreen"
+              whileInView="onscreen"
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.1 }}
+              whileHover="hover"
+              variants={cardVariants}
+              transition={{ delay: i * 0.1 }}
             >
-              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 shadow-lg h-full flex flex-col items-center text-center">
+              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 shadow-lg h-full flex flex-col items-center text-center cursor-pointer select-none">
                 <div className="mb-3 w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/30 to-pink-500/30">
                   <Icon className="w-7 h-7 text-cyan-400" />
                 </div>
@@ -153,20 +269,125 @@ export default function AboutPage() {
           {teamMembers.map(({ name, role, description, imgSrc }, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial="offscreen"
+              whileInView="onscreen"
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.15 }}
-              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 shadow-lg flex flex-col items-center text-center"
+              whileHover="hover"
+              variants={cardVariants}
+              transition={{ delay: i * 0.15 }}
+              className="cursor-pointer select-none"
             >
-              <img
-                src={imgSrc}
-                alt={name}
-                className="w-24 h-24 rounded-full mb-4 object-cover shadow-md"
-              />
-              <h3 className="text-xl font-semibold mb-1">{name}</h3>
-              <p className="text-cyan-400 font-medium mb-2">{role}</p>
-              <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
+              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 shadow-lg flex flex-col items-center text-center">
+                <img
+                  src={imgSrc}
+                  alt={name}
+                  className="w-24 h-24 rounded-full mb-4 object-cover shadow-md"
+                />
+                <h3 className="text-xl font-semibold mb-1">{name}</h3>
+                <p className="text-cyan-400 font-medium mb-2">{role}</p>
+                <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="text-4xl text-center font-light mb-10"
+        >
+          What <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Clients Say</span>
+        </motion.h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {testimonials.map(({ name, role, quote, imgSrc }, i) => (
+            <motion.div
+              key={i}
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true }}
+              whileHover="hover"
+              variants={cardVariants}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 shadow-lg flex flex-col items-center text-center cursor-pointer select-none">
+                <img
+                  src={imgSrc}
+                  alt={name}
+                  className="w-20 h-20 rounded-full mb-4 object-cover shadow-md"
+                />
+                <p className="text-gray-300 italic mb-3">"{quote}"</p>
+                <h4 className="text-white font-semibold">{name}</h4>
+                <p className="text-cyan-400 text-sm">{role}</p>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Partners */}
+      <section>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="text-4xl text-center font-light mb-10"
+        >
+          Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">Partners</span>
+        </motion.h2>
+
+        <div className="flex flex-wrap justify-center items-center gap-10 max-w-6xl mx-auto">
+          {partners.map(({ name, logo }, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="max-h-20 max-w-[140px] p-4 bg-white/10 rounded-xl flex items-center justify-center shadow-lg cursor-pointer select-none"
+              title={name}
+            >
+              <img src={logo} alt={name} className="max-h-14 object-contain" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Stories */}
+      <section>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="text-4xl text-center font-light mb-10"
+        >
+          Success <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Stories</span>
+        </motion.h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {stories.map(({ title, excerpt, imgSrc }, i) => (
+            <motion.div
+              key={i}
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true }}
+              whileHover="hover"
+              variants={cardVariants}
+              transition={{ delay: i * 0.15 }}
+              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl overflow-hidden shadow-lg flex flex-col cursor-pointer select-none"
+            >
+              <img src={imgSrc} alt={title} className="w-full h-40 object-cover" />
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-xl font-semibold mb-2">{title}</h3>
+                <p className="text-gray-300 flex-grow">{excerpt}</p>
+              </div>
             </motion.div>
           ))}
         </div>
