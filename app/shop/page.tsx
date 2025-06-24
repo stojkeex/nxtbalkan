@@ -13,18 +13,23 @@ import {
   Shield,
   RotateCcw,
   CreditCard,
-  Plus,
-  Minus,
   Sparkles,
   Crown,
   ArrowRight,
+  X,
+  MessageCircle,
+  Instagram,
+  Mail,
+  Check,
 } from "lucide-react"
 import { useState } from "react"
 
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
-  const [cartItems, setCartItems] = useState<{ [key: number]: number }>({})
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false)
+  const [selectedSize, setSelectedSize] = useState("")
+  const [selectedColor, setSelectedColor] = useState("")
 
   const products = [
     {
@@ -37,9 +42,9 @@ export default function ShopPage() {
       rating: 4.8,
       reviews: 124,
       description:
-        "Premium quality black t-shirt featuring the iconic NXT Balkan logo with headphones and sound wave design.",
+        "Premium quality black t-shirt featuring the iconic NXT Balkan logo with headphones and sound wave design. Made from 100% organic cotton for maximum comfort and durability. Perfect for concerts, casual wear, or showing your support for Balkan music culture.",
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-      features: ["100% Organic Cotton", "Pre-shrunk fabric", "Reinforced seams", "Machine washable"],
+      features: ["100% Organic Cotton", "Pre-shrunk fabric", "Reinforced seams", "Machine washable", "Unisex fit"],
       colors: ["Black", "White", "Navy"],
       inStock: true,
       isNew: false,
@@ -58,9 +63,15 @@ export default function ShopPage() {
       rating: 4.9,
       reviews: 89,
       description:
-        "Cozy premium hoodie with the signature NXT Balkan design. Perfect for studio sessions or casual wear.",
+        "Cozy premium hoodie with the signature NXT Balkan design. Perfect for studio sessions or casual wear. Features a spacious front pocket and adjustable drawstring hood. Made with high-quality cotton blend for ultimate comfort.",
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-      features: ["80% Cotton, 20% Polyester", "Fleece-lined interior", "Kangaroo pocket", "Adjustable drawstring"],
+      features: [
+        "80% Cotton, 20% Polyester",
+        "Fleece-lined interior",
+        "Kangaroo pocket",
+        "Adjustable drawstring",
+        "Ribbed cuffs and hem",
+      ],
       colors: ["Black", "Gray", "Navy"],
       inStock: true,
       isNew: true,
@@ -79,13 +90,14 @@ export default function ShopPage() {
       rating: 5.0,
       reviews: 45,
       description:
-        "Exclusive collaboration piece featuring a unique crossed arrows design. Limited production run - only 500 pieces available.",
+        "Exclusive collaboration piece featuring a unique crossed arrows design with the NXT Balkan logo. Limited production run - only 500 pieces available worldwide. Each piece comes with a numbered authenticity tag and collector's packaging.",
       sizes: ["S", "M", "L", "XL", "XXL"],
       features: [
         "Premium cotton blend",
         "Limited edition design",
         "Numbered authenticity tag",
         "Collector's packaging",
+        "Exclusive collaboration",
       ],
       colors: ["Black"],
       inStock: true,
@@ -105,9 +117,10 @@ export default function ShopPage() {
       category: "Accessories",
       rating: 4.7,
       reviews: 67,
-      description: "Stylish snapback cap with embroidered NXT Balkan logo. Adjustable fit for maximum comfort.",
+      description:
+        "Stylish snapback cap with embroidered NXT Balkan logo. Adjustable fit for maximum comfort. Perfect accessory to complete your NXT Balkan look. High-quality construction ensures long-lasting wear.",
       sizes: ["One Size"],
-      features: ["Embroidered logo", "Adjustable snapback", "Curved brim", "Cotton blend"],
+      features: ["Embroidered logo", "Adjustable snapback", "Curved brim", "Cotton blend", "One size fits all"],
       colors: ["Black", "White", "Red"],
       inStock: true,
       isNew: true,
@@ -129,25 +142,31 @@ export default function ShopPage() {
   const features = [
     { icon: Truck, title: "Free Shipping", description: "On orders over €50" },
     { icon: RotateCcw, title: "Easy Returns", description: "30-day return policy" },
-    { icon: Shield, title: "Secure Payment", description: "SSL encrypted checkout" },
+    { icon: Shield, title: "Secure Payment", description: "Direct contact ordering" },
     { icon: CreditCard, title: "Multiple Payment", description: "Cards, PayPal, Crypto" },
   ]
 
   const filteredProducts =
     selectedCategory === "All" ? products : products.filter((product) => product.category === selectedCategory)
 
-  const addToCart = (productId: number) => {
-    setCartItems((prev) => ({
-      ...prev,
-      [productId]: (prev[productId] || 0) + 1,
-    }))
+  const handleViewProduct = (product: any) => {
+    setSelectedProduct(product)
+    setSelectedSize(product.sizes[0])
+    setSelectedColor(product.colors[0])
   }
 
-  const removeFromCart = (productId: number) => {
-    setCartItems((prev) => ({
-      ...prev,
-      [productId]: Math.max(0, (prev[productId] || 0) - 1),
-    }))
+  const handleBuyProduct = () => {
+    setShowPurchaseModal(true)
+  }
+
+  const generateWhatsAppMessage = () => {
+    if (!selectedProduct) return ""
+    return `Hi! I'm interested in purchasing the ${selectedProduct.name} (€${selectedProduct.price}) in size ${selectedSize} and color ${selectedColor}. Can you help me with the order?`
+  }
+
+  const generateEmailMessage = () => {
+    if (!selectedProduct) return ""
+    return `Subject: Order Inquiry - ${selectedProduct.name}&body=Hi,%0D%0A%0D%0AI'm interested in purchasing:%0D%0A%0D%0AProduct: ${selectedProduct.name}%0D%0APrice: €${selectedProduct.price}%0D%0ASize: ${selectedSize}%0D%0AColor: ${selectedColor}%0D%0A%0D%0ACan you help me with the order process?%0D%0A%0D%0AThank you!`
   }
 
   return (
@@ -270,7 +289,8 @@ export default function ShopPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group"
+                className="group cursor-pointer"
+                onClick={() => handleViewProduct(product)}
               >
                 <Card className="bg-gray-900/50 border-gray-800 hover:border-gray-700 transition-all duration-300 h-full overflow-hidden group-hover:scale-[1.02]">
                   <CardContent className="p-0">
@@ -347,8 +367,6 @@ export default function ShopPage() {
                         {product.name}
                       </h3>
 
-                      <p className="text-sm text-gray-400 mb-3 line-clamp-2">{product.description}</p>
-
                       {/* Colors */}
                       <div className="flex items-center gap-2 mb-3">
                         <span className="text-xs text-gray-400">Colors:</span>
@@ -375,7 +393,7 @@ export default function ShopPage() {
                         </div>
                       </div>
 
-                      {/* Price and Cart */}
+                      {/* Price */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <span className="text-lg font-bold text-white">€{product.price}</span>
@@ -383,29 +401,12 @@ export default function ShopPage() {
                             <span className="text-sm text-gray-400 line-through">€{product.originalPrice}</span>
                           )}
                         </div>
-
-                        <div className="flex items-center gap-2">
-                          {cartItems[product.id] > 0 && (
-                            <>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => removeFromCart(product.id)}
-                                className="w-8 h-8 p-0 border-gray-600 text-gray-300 hover:bg-white hover:text-black"
-                              >
-                                <Minus className="h-3 w-3" />
-                              </Button>
-                              <span className="text-sm font-medium w-6 text-center">{cartItems[product.id]}</span>
-                            </>
-                          )}
-                          <Button
-                            size="sm"
-                            onClick={() => addToCart(product.id)}
-                            className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black hover:scale-105 transition-all duration-300 w-8 h-8 p-0"
-                          >
-                            <Plus className="h-3 w-3" />
-                          </Button>
-                        </div>
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black hover:scale-105 transition-all duration-300"
+                        >
+                          View Details
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -473,7 +474,7 @@ export default function ShopPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Shield className="h-4 w-4 text-purple-400" />
-                      Secure Checkout
+                      Direct Contact
                     </div>
                   </div>
                 </div>
@@ -483,38 +484,236 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* Cart Summary (if items in cart) */}
-      {Object.values(cartItems).some((count) => count > 0) && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <Card className="bg-gray-900/90 border-gray-700 backdrop-blur-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center">
-                  <ShoppingBag className="h-5 w-5 text-black" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-white">
-                    {Object.values(cartItems).reduce((sum, count) => sum + count, 0)} items in cart
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    €
-                    {Object.entries(cartItems)
-                      .reduce((total, [productId, count]) => {
-                        const product = products.find((p) => p.id === Number.parseInt(productId))
-                        return total + (product ? product.price * count : 0)
-                      }, 0)
-                      .toFixed(2)}
-                  </div>
-                </div>
+      {/* Product Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-gray-900 border border-gray-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+          >
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                  Product Details
+                </h2>
                 <Button
-                  size="sm"
-                  className="bg-gradient-to-r from-cyan-400 to-purple-500 text-black hover:scale-105 transition-all duration-300"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSelectedProduct(null)}
+                  className="text-gray-400 hover:text-white"
                 >
-                  Checkout
+                  <X className="h-5 w-5" />
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Product Image */}
+                <div className="relative">
+                  <img
+                    src={selectedProduct.image || "/placeholder.svg"}
+                    alt={selectedProduct.name}
+                    className="w-full h-96 object-cover rounded-xl"
+                  />
+                  {selectedProduct.isLimited && (
+                    <Badge className="absolute top-4 left-4 bg-red-500 text-white font-semibold">Limited Edition</Badge>
+                  )}
+                </div>
+
+                {/* Product Info */}
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="secondary">{selectedProduct.category}</Badge>
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm">
+                          {selectedProduct.rating} ({selectedProduct.reviews} reviews)
+                        </span>
+                      </div>
+                    </div>
+                    <h3 className="text-3xl font-bold text-white mb-2">{selectedProduct.name}</h3>
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl font-bold text-white">€{selectedProduct.price}</span>
+                      {selectedProduct.originalPrice && (
+                        <span className="text-xl text-gray-400 line-through">€{selectedProduct.originalPrice}</span>
+                      )}
+                      {selectedProduct.discount && (
+                        <Badge className="bg-red-500 text-white">-{selectedProduct.discount}%</Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-gray-300 leading-relaxed">{selectedProduct.description}</p>
+
+                  {/* Size Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProduct.sizes.map((size: string) => (
+                        <Button
+                          key={size}
+                          variant={selectedSize === size ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setSelectedSize(size)}
+                          className={
+                            selectedSize === size
+                              ? "bg-gradient-to-r from-cyan-400 to-purple-500 text-black"
+                              : "border-gray-600 text-gray-300 hover:bg-white hover:text-black"
+                          }
+                        >
+                          {size}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Color Selection */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Color</label>
+                    <div className="flex gap-3">
+                      {selectedProduct.colors.map((color: string) => (
+                        <button
+                          key={color}
+                          onClick={() => setSelectedColor(color)}
+                          className={`w-8 h-8 rounded-full border-2 ${
+                            selectedColor === color ? "border-cyan-400" : "border-gray-600"
+                          } ${
+                            color === "Black"
+                              ? "bg-black"
+                              : color === "White"
+                                ? "bg-white"
+                                : color === "Navy"
+                                  ? "bg-blue-900"
+                                  : color === "Gray"
+                                    ? "bg-gray-500"
+                                    : "bg-red-500"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-400 mt-1">Selected: {selectedColor}</p>
+                  </div>
+
+                  {/* Features */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-white mb-3">Features</h4>
+                    <ul className="space-y-2">
+                      {selectedProduct.features.map((feature: string, index: number) => (
+                        <li key={index} className="flex items-center gap-2 text-gray-300">
+                          <Check className="h-4 w-4 text-green-400" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Buy Button */}
+                  <Button
+                    onClick={handleBuyProduct}
+                    size="lg"
+                    className="w-full bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold hover:scale-105 transition-all duration-300"
+                  >
+                    <ShoppingBag className="h-5 w-5 mr-2" />
+                    Buy Now - €{selectedProduct.price}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Purchase Modal */}
+      {showPurchaseModal && selectedProduct && (
+        <div className="fixed inset-0 z-60 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-gray-900 border border-gray-700 rounded-2xl max-w-md w-full"
+          >
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                  Contact Us to Order
+                </h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowPurchaseModal(false)}
+                  className="text-gray-400 hover:text-white"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              {/* Order Summary */}
+              <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
+                <h3 className="font-semibold text-white mb-2">Order Summary</h3>
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Product:</span>
+                    <span className="text-white">{selectedProduct.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Size:</span>
+                    <span className="text-white">{selectedSize}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Color:</span>
+                    <span className="text-white">{selectedColor}</span>
+                  </div>
+                  <div className="flex justify-between font-semibold">
+                    <span className="text-gray-300">Price:</span>
+                    <span className="text-white">€{selectedProduct.price}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Options */}
+              <div className="space-y-3">
+                <p className="text-gray-300 text-sm mb-4">
+                  Choose your preferred contact method to complete your order:
+                </p>
+
+                <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white">
+                  <a
+                    href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${encodeURIComponent(generateWhatsAppMessage())}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <MessageCircle className="h-5 w-5 mr-2" />
+                    Order via WhatsApp
+                  </a>
+                </Button>
+
+                <Button
+                  asChild
+                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
+                >
+                  <a href="https://instagram.com/nxt.balkan" target="_blank" rel="noopener noreferrer">
+                    <Instagram className="h-5 w-5 mr-2" />
+                    Order via Instagram
+                  </a>
+                </Button>
+
+                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                  <a href={`mailto:info@nxtbalkan.com?${generateEmailMessage()}`}>
+                    <Mail className="h-5 w-5 mr-2" />
+                    Order via Email
+                  </a>
+                </Button>
+              </div>
+
+              <p className="text-xs text-gray-400 mt-4 text-center">
+                Our team will contact you within 24 hours to confirm your order and arrange payment & shipping.
+              </p>
+            </div>
+          </motion.div>
         </div>
       )}
     </div>
