@@ -74,9 +74,7 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-           <Badge className="mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold px-4 py-2 mx-auto">
-           🎵 Welcome to the Future
-           </Badge>
+           
 
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 gradient-text leading-tight tracking-tight">
             NXT
