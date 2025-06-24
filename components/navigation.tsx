@@ -14,7 +14,7 @@ const navItems = [
   { name: "Artists", href: "/artists", icon: Users },
   { name: "Shop", href: "/shop", icon: ShoppingBag },
   { name: "Contact", href: "/contact", icon: Mail },
-  { name: "Join Us", href: "/join-us", icon: UserPlus },
+  { name: "TOS", href: "/tos", icon: UserPlus },
 ]
 
 export function Navigation() {
