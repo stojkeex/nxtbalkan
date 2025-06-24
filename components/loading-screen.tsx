@@ -10,22 +10,36 @@ export function LoadingScreen() {
   useEffect(() => {
     setIsMounted(true)
 
-    // Hide scrollbar during loading
+    // More aggressive scrollbar hiding
+    const originalBodyOverflow = document.body.style.overflow
+    const originalHtmlOverflow = document.documentElement.style.overflow
+    const originalBodyPosition = document.body.style.position
+
+    // Lock scroll completely
     document.body.style.overflow = "hidden"
     document.documentElement.style.overflow = "hidden"
+    document.body.style.position = "fixed"
+    document.body.style.width = "100%"
+    document.body.style.height = "100%"
 
     const timer = setTimeout(() => {
       setIsLoading(false)
-      // Restore scrollbar when loading is done
-      document.body.style.overflow = ""
-      document.documentElement.style.overflow = ""
+      // Restore original styles
+      document.body.style.overflow = originalBodyOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
+      document.body.style.position = originalBodyPosition
+      document.body.style.width = ""
+      document.body.style.height = ""
     }, 4000)
 
     return () => {
       clearTimeout(timer)
-      // Cleanup: restore scrollbar if component unmounts
-      document.body.style.overflow = ""
-      document.documentElement.style.overflow = ""
+      // Cleanup: restore original styles
+      document.body.style.overflow = originalBodyOverflow
+      document.documentElement.style.overflow = originalHtmlOverflow
+      document.body.style.position = originalBodyPosition
+      document.body.style.width = ""
+      document.body.style.height = ""
     }
   }, [])
 
@@ -39,9 +53,16 @@ export function LoadingScreen() {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+      style={{
+        overflow: "hidden",
+        touchAction: "none",
+        WebkitOverflowScrolling: "touch",
+        msOverflowStyle: "none",
+        scrollbarWidth: "none",
+      }}
     >
-      <div className="text-center">
+      <div className="text-center" style={{ overflow: "hidden" }}>
         {/* Spinning Circle - Much Larger */}
         <motion.div
           animate={{ rotate: 360 }}
@@ -122,6 +143,29 @@ export function LoadingScreen() {
           ))}
         </motion.div>
       </div>
+
+      {/* Global CSS to hide scrollbars */}
+      <style jsx global>{`
+        body:has(.loading-screen) {
+          overflow: hidden !important;
+          position: fixed !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+        
+        html:has(.loading-screen) {
+          overflow: hidden !important;
+        }
+        
+        .loading-screen::-webkit-scrollbar {
+          display: none !important;
+        }
+        
+        .loading-screen {
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
+        }
+      `}</style>
     </motion.div>
   )
 }
