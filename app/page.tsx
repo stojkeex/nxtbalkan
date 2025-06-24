@@ -25,12 +25,9 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5 pointer-events-none" />
-
+    <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6">
+      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5">
         <div className="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
           {/* Static Logo */}
           <motion.div
@@ -89,7 +86,7 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -113,7 +110,7 @@ export default function HomePage() {
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-white/5 backdrop-blur-md border border-white/10 hover:border-cyan-400/30 transition-all duration-300 h-full group hover:scale-105 hover:-translate-y-2">
+                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 h-full group hover:scale-105 hover:-translate-y-2">
                   <CardContent className="p-6 sm:p-8 lg:p-10 text-center">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 mx-auto mb-4 sm:mb-6 lg:mb-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center group-hover:from-cyan-500/30 group-hover:to-pink-500/30 transition-all duration-300">
                       <service.icon className="h-7 w-7 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-cyan-400" />
@@ -163,7 +160,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6">
+      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -171,7 +168,7 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden">
+            <Card className="bg-gray-900/80 border border-gray-800">
               <CardContent className="p-8 sm:p-12 lg:p-16">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto mb-6 sm:mb-8 lg:mb-10 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
                   <Star className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-cyan-400" />
@@ -203,7 +200,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 border-t border-white/10">
+      <footer className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 border-t border-gray-800 bg-black">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-gray-400 text-sm sm:text-base lg:text-lg">
             © 2024 NXT Balkan. Crafting digital excellence.
