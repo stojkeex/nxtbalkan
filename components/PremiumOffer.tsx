@@ -64,7 +64,7 @@ export function PremiumOffer() {
             {/* Close button */}
             <button
               onClick={handleClose}
-              className="absolute top-3 right-3 z-10 text-gray-400 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
+              className="absolute top-3 right-3 z-10 gradient-text hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
             >
               <X className="h-4 w-4 md:h-5 md:w-5" />
             </button>
@@ -76,7 +76,7 @@ export function PremiumOffer() {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl mb-3 shadow-lg">
                   <Crown className="h-6 w-6 text-black" />
                 </div>
-                <h2 className="text-xl font-bold mb-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                <h2 className="text-xl font-bold mb-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text gradient-text">
                   NXT Balkan Premium
                 </h2>
                 <p className="text-gray-300 text-sm">Ultimate music experience</p>
