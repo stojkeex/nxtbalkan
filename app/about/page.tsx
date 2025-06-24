@@ -109,19 +109,17 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5">
         <div className="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
-          {/* Logo */}
-
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <Badge className="mb-6 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-medium px-4 py-2 text-sm">
-              Our Story
+              About Us
             </Badge>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mb-6 px-4">
-              <span className="text-white">About</span>
+              <span className="text-white">Discover</span>
               <br />
               <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent font-medium">
                 NXT Balkan
@@ -241,7 +239,7 @@ export default function AboutPage() {
                       <value.icon className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-400" />
                     </div>
                     <h4 className="font-medium text-white mb-2 text-sm sm:text-base">{value.title}</h4>
-                    <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">{value.description}</p>
+                    <p className="text-gray-400 text-xs sm:text-sm">{value.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -250,165 +248,74 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
+      {/* Timeline Section */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-cyan-900/10 via-black to-pink-900/10">
+        <div className="max-w-5xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-3xl sm:text-4xl font-light text-center mb-12 text-white"
+          >
+            Our Journey
+          </motion.h2>
+
+          <div className="space-y-10">
+            {milestones.map(({ year, title, description, icon: Icon }, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.15 }}
+                viewport={{ once: true }}
+                className="flex items-center space-x-4 sm:space-x-6"
+              >
+                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-r from-cyan-500 to-pink-500 flex items-center justify-center text-white text-lg font-semibold">
+                  <Icon className="w-7 h-7" />
+                </div>
+                <div>
+                  <h4 className="text-white text-xl font-medium">{year} — {title}</h4>
+                  <p className="text-gray-400 text-sm sm:text-base max-w-xl">{description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-black">
         <div className="max-w-6xl mx-auto">
-          <motion.div
+          <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-3xl sm:text-4xl font-light text-center mb-12 text-white"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 text-white">
-              Our{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Journey</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-              From humble beginnings to global recognition - the NXT Balkan story
-            </p>
-          </motion.div>
+            Meet the Team
+          </motion.h2>
 
-          <div className="space-y-8 sm:space-y-12">
-            {milestones.map((milestone, index) => (
+          <div className="grid sm:grid-cols-3 gap-8">
+            {team.map(({ name, role, bio, initials }, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+                transition={{ duration: 0.7, delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8"
+                className="bg-gray-900/90 rounded-xl p-6 flex flex-col items-center text-center hover:scale-105 transition-transform duration-300"
               >
-                <div className="flex items-center gap-4 sm:w-48 flex-shrink-0">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                    <milestone.icon className="h-6 w-6 sm:h-7 sm:w-7 text-cyan-400" />
-                  </div>
-                  <div className="text-xl sm:text-2xl font-light bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                    {milestone.year}
-                  </div>
+                <div className="w-20 h-20 rounded-full bg-gradient-to-r from-cyan-500 to-pink-500 flex items-center justify-center text-white text-3xl font-bold mb-4 select-none">
+                  {initials}
                 </div>
-
-                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 flex-1">
-                  <CardContent className="p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-medium mb-2 sm:mb-3 text-white">{milestone.title}</h3>
-                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{milestone.description}</p>
-                  </CardContent>
-                </Card>
+                <h3 className="text-white text-xl font-semibold mb-1">{name}</h3>
+                <p className="text-cyan-400 text-sm mb-4 uppercase tracking-wide">{role}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">{bio}</p>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 text-white">
-              Meet Our{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Team</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-              The visionaries and creators behind the NXT Balkan revolution
-            </p>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {team.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 hover:scale-105 h-full">
-                  <CardContent className="p-6 sm:p-8 text-center">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 bg-gradient-to-r from-cyan-500 to-pink-500 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
-                      {member.initials}
-                    </div>
-                    <h3 className="text-lg sm:text-xl font-medium mb-1 sm:mb-2 text-white group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-pink-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                      {member.name}
-                    </h3>
-                    <div className="text-gray-400 mb-3 sm:mb-4 font-medium text-sm sm:text-base">{member.role}</div>
-                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{member.bio}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <Card className="bg-gray-900/80 border border-gray-800">
-              <CardContent className="p-8 sm:p-12 lg:p-16">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                  <Star className="h-8 w-8 sm:h-10 sm:w-10 text-cyan-400" />
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 text-white">
-                  Ready to{" "}
-                  <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                    Join Our Story?
-                  </span>
-                </h2>
-
-                <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed">
-                  Whether you're a brand looking for transformation or a partner seeking collaboration, we'd love to
-                  hear from you and explore how we can create something amazing together.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
-                  >
-                    <Users className="h-5 w-5 mr-2" />
-                    Work With Us
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
-                  >
-                    Get In Touch
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                </div>
-
-                <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4 text-pink-400" />
-                    Passionate Team
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Globe className="h-4 w-4 text-cyan-400" />
-                    Global Reach
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Award className="h-4 w-4 text-yellow-400" />
-                    Award Winning
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
       </section>
     </div>
