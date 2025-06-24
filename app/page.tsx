@@ -3,9 +3,21 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge
-import { ArrowRight, Users, Zap, Star, Globe, Award, TrendingUp, Mail, Phone, LayoutDashboard, BarChart2, Smartphone } from "lucide-react"
-import Link from "next/link"
+import { Badge } from "@/components/ui/badge" // Fixed line - added closing quote
+import { 
+  ArrowRight, 
+  Users, 
+  Zap, 
+  Star, 
+  Globe, 
+  Award, 
+  TrendingUp, 
+  Mail, 
+  Phone, 
+  LayoutDashboard, 
+  BarChart2, 
+  Smartphone 
+} from "lucide-react"
 
 export default function HomePage() {
   const services = [
