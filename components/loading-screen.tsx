@@ -9,11 +9,24 @@ export function LoadingScreen() {
 
   useEffect(() => {
     setIsMounted(true)
+
+    // Hide scrollbar during loading
+    document.body.style.overflow = "hidden"
+    document.documentElement.style.overflow = "hidden"
+
     const timer = setTimeout(() => {
       setIsLoading(false)
+      // Restore scrollbar when loading is done
+      document.body.style.overflow = ""
+      document.documentElement.style.overflow = ""
     }, 4000)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      // Cleanup: restore scrollbar if component unmounts
+      document.body.style.overflow = ""
+      document.documentElement.style.overflow = ""
+    }
   }, [])
 
   if (!isMounted) {
@@ -26,14 +39,14 @@ export function LoadingScreen() {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden"
     >
       <div className="text-center">
         {/* Spinning Circle - Much Larger */}
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full mx-auto mb-8 relative"
+          className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full mx-auto mb-12 relative"
         >
           <div
             className="absolute inset-0 rounded-full p-[3px] sm:p-[4px]"
@@ -51,32 +64,26 @@ export function LoadingScreen() {
           <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-pink-500/10 blur-sm" />
         </motion.div>
 
-        {/* Logo Image */}
+        {/* Logo Image - Larger and More Prominent */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="mb-6"
+          className="mb-8"
         >
-          <img src="/nxtbalkancolored2.png" alt="NXT Balkan" className="mx-auto w-48 h-auto sm:w-56 md:w-64 lg:w-72" />
+          <img
+            src="/nxtbalkancolored2.png"
+            alt="NXT Balkan"
+            className="mx-auto w-56 h-auto sm:w-64 md:w-72 lg:w-80 xl:w-96"
+          />
         </motion.div>
-
-        {/* Main Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-4 bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent"
-        >
-          NXT Balkan
-        </motion.h1>
 
         {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.8 }}
-          className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6"
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-gray-300 mb-8"
         >
           Digital Excellence Redefined
         </motion.p>
@@ -85,8 +92,8 @@ export function LoadingScreen() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="text-base sm:text-lg text-gray-400"
+          transition={{ delay: 0.9, duration: 0.8 }}
+          className="text-base sm:text-lg md:text-xl text-gray-400 mb-6"
         >
           Loading your experience...
         </motion.p>
@@ -95,8 +102,8 @@ export function LoadingScreen() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="flex justify-center space-x-2 mt-6"
+          transition={{ delay: 1.2 }}
+          className="flex justify-center space-x-2"
         >
           {[0, 1, 2].map((index) => (
             <motion.div
