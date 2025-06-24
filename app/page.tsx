@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Zap, Users, TrendingUp, Star, Globe, Activity } from "lucide-react";
+import { ArrowRight, Zap, Users, TrendingUp, Star, Globe, Activity, Infinity, ShieldCheck, LayoutDashboard, Layers, Flame, Lightbulb, Rocket } from "lucide-react";
 
 export default function HomePage() {
   const services = [
@@ -37,6 +37,24 @@ export default function HomePage() {
       description:
         "Actionable insights and analytics that drive informed creative decisions.",
     },
+    {
+      icon: LayoutDashboard,
+      title: "UI/UX Design",
+      description:
+        "Visually captivating and intuitive user experiences across all platforms.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Security & Trust",
+      description:
+        "Top-tier digital protection and seamless compliance frameworks.",
+    },
+    {
+      icon: Rocket,
+      title: "Startup Acceleration",
+      description:
+        "Go from idea to MVP and scale fast with our agile build & launch model.",
+    },
   ];
 
   return (
@@ -55,7 +73,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-            className="mx-auto w-64 sm:w-80 md:w-96 lg:w-[450px]"
+            className="mx-auto w-64 sm:w-80 md:w-96 lg:w-[450px] drop-shadow-[0_0_30px_rgba(0,255,255,0.1)]"
           />
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
@@ -63,7 +81,7 @@ export default function HomePage() {
             transition={{ duration: 1.3, delay: 0.6, ease: "easeOut" }}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extralight tracking-wide"
           >
-            Crafting <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Digital Empires</span>
+            Next-Gen <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Digital Leadership</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -71,48 +89,48 @@ export default function HomePage() {
             transition={{ duration: 1.1, delay: 0.9, ease: "easeOut" }}
             className="text-gray-300 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl"
           >
-            We empower brands with sleek aesthetics, immersive content, and meaningful performance-driven digital experiences.
+            We transform businesses into cutting-edge digital powerhouses that thrive on innovation, performance, and connection.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 1.2, ease: "easeOut" }}
           >
-            <Button className="bg-black/30 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-10 py-5 rounded-full text-xl transition-all duration-300 shadow-lg hover:shadow-cyan-500/20">
-              Let’s Work Together <ArrowRight className="ml-2 w-5 h-5" />
+            <Button className="bg-black/30 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-10 py-5 rounded-full text-xl transition-all duration-300 shadow-lg hover:shadow-cyan-500/20 animate-pulse">
+              Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </motion.div>
         </motion.div>
       </section>
 
       {/* Services Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black">
+      <section className="py-32 px-6 sm:px-12 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-light">
-              Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Expertise</span>
+              Premium <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Services</span>
             </h2>
             <p className="text-gray-400 text-lg sm:text-xl mt-4">
-              A suite of services tailored for forward-thinking brands.
+              Built for visionary brands shaping the future.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {services.map((service, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: i * 0.2 }}
+                transition={{ duration: 0.9, delay: i * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:border-cyan-400/30 transition-all duration-300 rounded-3xl h-full">
+                <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:border-cyan-400/30 transition-all duration-300 rounded-3xl h-full shadow-xl">
                   <CardContent className="p-8 text-center">
                     <div className="mb-6 w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
                       <service.icon className="w-8 h-8 text-cyan-400" />
@@ -131,35 +149,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-br from-black to-[#0a0a0a]">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6">
-          {[
-            { value: "300+", label: "Projects Delivered" },
-            { value: "75+", label: "Global Clients" },
-            { value: "7y", label: "Experience" },
-            { value: "99.8%", label: "Client Retention" },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.1 }}
-              className="text-center"
-            >
-              <div className="text-3xl sm:text-4xl md:text-5xl font-light bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">
-                {stat.value}
-              </div>
-              <div className="text-gray-500 text-sm sm:text-base mt-2 uppercase tracking-wider">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+      {/* Motion Divider */}
+      <motion.div
+        className="h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+        initial={{ width: 0 }}
+        whileInView={{ width: "100%" }}
+        transition={{ duration: 1.5 }}
+      />
+
+      {/* New Section: Innovation */}
+      <section className="py-28 px-6 sm:px-12 bg-black">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="max-w-5xl mx-auto text-center"
+        >
+          <Flame className="w-12 h-12 text-pink-500 mx-auto mb-6 animate-pulse" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+            We <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">Reimagine</span> What's Possible
+          </h2>
+          <p className="text-gray-400 text-lg sm:text-xl">
+            Our mission is simple: create stunning, scalable, and strategic digital ecosystems.
+          </p>
+        </motion.div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black text-center">
+      <section className="py-28 px-6 sm:px-12 bg-black text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -167,19 +185,19 @@ export default function HomePage() {
           transition={{ duration: 1 }}
           className="max-w-4xl mx-auto"
         >
-          <Card className="bg-white/5 border border-white/10 backdrop-blur-lg rounded-3xl">
+          <Card className="bg-white/5 border border-white/10 backdrop-blur-lg rounded-3xl shadow-lg">
             <CardContent className="px-10 py-14">
               <div className="mb-6">
-                <Star className="w-10 h-10 mx-auto text-cyan-400" />
+                <Star className="w-10 h-10 mx-auto text-cyan-400 animate-spin-slow" />
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-                Let’s Build <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Your Legacy</span>
+                Build Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Digital Legacy</span>
               </h2>
               <p className="text-gray-400 text-lg mb-8">
-                Our team of creatives, strategists, and developers are ready to elevate your brand.
+                We merge strategy, design, and technology into unforgettable digital experiences.
               </p>
-              <Button className="bg-black/30 backdrop-blur-xl border border-white/10 hover:border-pink-400/40 text-white font-medium px-10 py-5 rounded-full text-lg shadow-lg hover:shadow-pink-500/20">
-                Contact Us <ArrowRight className="ml-2 w-5 h-5" />
+              <Button className="bg-black/30 backdrop-blur-xl border border-white/10 hover:border-pink-400/40 text-white font-medium px-10 py-5 rounded-full text-lg shadow-lg hover:shadow-pink-500/20 animate-bounce">
+                Let’s Talk <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </CardContent>
           </Card>
