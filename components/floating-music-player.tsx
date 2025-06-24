@@ -50,13 +50,13 @@ interface Playlist {
 const sampleTracks: Track[] = [
   {
     id: 1,
-    title: "VULTURES",
-    artist: "¥$, Ye, Ty Dolla $ign",
-    album: "VULTURES 1",
-    duration: "4:24",
+    title: "Classy",
+    artist: "Corona",
+    album: "Classy",
+    duration: "2:13",
     cover:
-      "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
-    audioUrl: "/music/vultures.mp3",
+      "https://images.genius.com/2cc485248f57864a510c384b6e335458.1000x1000x1.jpg",
+    audioUrl: "/music/CORONA.mp3",
   },
   {
     id: 2,
