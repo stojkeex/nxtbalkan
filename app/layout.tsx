@@ -11,39 +11,39 @@ import { LiveSupportSystem } from "@/components/live-support-system"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import Script from "next/script"
 import Head from "next/head"
-import { PremiumOffer } from '@/components/PremiumOffer';
+import { PremiumOffer } from "@/components/PremiumOffer"
 import FloatingMusicPlayer from "@/components/floating-music-player"
+import { PushNotificationManager } from "@/components/push-notification-manager"
+import { IOSPWAPrompt } from "@/components/ios-pwa-prompt"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "NXT Balkan - Revolutionizing Balkan Music",
   description: "Music production, artist management, and promotion agency specializing in Balkan music.",
-  generator: 'v0.dev',
+  generator: "v0.dev",
   icons: {
     icon: [
-      { url: '/favicon/favicon.ico', sizes: 'any' },
-      { url: '/favicon/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { url: '/favicon/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: "/favicon/favicon.ico", sizes: "any" },
+      { url: "/favicon/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon/favicon-32x32.png", type: "image/png", sizes: "32x32" },
     ],
-    apple: [
-      { url: '/favicon/apple-touch-icon.png', sizes: '180x180' }
-    ],
+    apple: [{ url: "/favicon/apple-touch-icon.png", sizes: "180x180" }],
     other: [
       {
-        rel: 'mask-icon',
-        url: '/favicon/safari-pinned-tab.svg',
-        color: '#5bbad5'
-      }
-    ]
+        rel: "mask-icon",
+        url: "/favicon/safari-pinned-tab.svg",
+        color: "#5bbad5",
+      },
+    ],
   },
-  manifest: '/favicon/site.webmanifest',
-  themeColor: '#000000',
+  manifest: "/site.webmanifest",
+  themeColor: "#000000",
   appleWebApp: {
     capable: true,
-    title: 'NXT Balkan',
-    statusBarStyle: 'black-translucent'
-  }
+    title: "NXT Balkan",
+    statusBarStyle: "black-translucent",
+  },
 }
 
 export default function RootLayout({
@@ -58,24 +58,54 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
-        
+
+        {/* PWA Meta Tags */}
+        <meta name="application-name" content="NXT Balkan" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="NXT Balkan" />
+
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://nxtbalkan.com/" />
         <meta property="og:title" content="NXT Balkan - Revolutionizing Balkan Music" />
-        <meta property="og:description" content="Music production, artist management, and promotion agency specializing in Balkan music." />
+        <meta
+          property="og:description"
+          content="Music production, artist management, and promotion agency specializing in Balkan music."
+        />
         <meta property="og:image" content="https://nxtbalkan.com/images/og-image.jpg" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://nxtbalkan.com/" />
         <meta property="twitter:title" content="NXT Balkan - Revolutionizing Balkan Music" />
-        <meta property="twitter:description" content="Music production, artist management, and promotion agency specializing in Balkan music." />
+        <meta
+          property="twitter:description"
+          content="Music production, artist management, and promotion agency specializing in Balkan music."
+        />
         <meta property="twitter:image" content="https://nxtbalkan.com/images/og-image.jpg" />
       </Head>
-      
+
       <body className={`${inter.className} bg-black text-white`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          {/* Service Worker Registration for Push Notifications */}
+          <Script id="register-sw" strategy="afterInteractive">
+            {`
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                      console.log('🎵 NXT Balkan SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                      console.log('❌ SW registration failed: ', registrationError);
+                    });
+                });
+              }
+            `}
+          </Script>
+
           {/* Client-side protection scripts */}
           <Script id="disable-devtools" strategy="afterInteractive">
             {`
@@ -112,7 +142,7 @@ export default function RootLayout({
 
           {/* Visual deterrent overlay */}
           <div id="protection-overlay" className="fixed inset-0 pointer-events-none z-[99999] select-none" />
-          
+
           {/* Content */}
           <CustomCursor />
           <ScrollToTop />
@@ -123,6 +153,12 @@ export default function RootLayout({
           <NotificationToasts />
           <LiveSupportSystem />
           <FloatingMusicPlayer />
+
+          {/* Push Notification Manager - skrit, deluje v ozadju */}
+          <PushNotificationManager />
+
+          {/* iOS PWA Prompt */}
+          <IOSPWAPrompt />
         </ThemeProvider>
       </body>
     </html>
