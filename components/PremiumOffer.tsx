@@ -64,7 +64,7 @@ export function PremiumOffer() {
             {/* Close button */}
             <button
               onClick={handleClose}
-              className="absolute top-3 right-3 z-10 gradient-text hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
+              className="absolute top-3 right-3 z-10 text-black hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10"
             >
               <X className="h-4 w-4 md:h-5 md:w-5" />
             </button>
