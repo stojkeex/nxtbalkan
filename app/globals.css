@@ -137,3 +137,67 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* Animated Gradient Text Effects */
+.gradient-text,
+.gradient-text-alt,
+.gradient-text-neon {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  animation: gradient-flow 4s ease infinite;
+  background-size: 200% 200%;
+  will-change: background-position;
+}
+
+.gradient-text {
+  background-image: linear-gradient(90deg, #00ffff, #8b5cf6, #ec4899, #00ffff);
+}
+
+.gradient-text-alt {
+  background-image: linear-gradient(90deg, #06b6d4, #a855f7, #f472b6, #06b6d4);
+}
+
+.gradient-text-neon {
+  background-image: linear-gradient(90deg, #22d3ee, #c084fc, #fb7185, #22d3ee);
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Faster animation variant */
+.gradient-text-fast {
+  background-image: linear-gradient(90deg, #00ffff, #8b5cf6, #ec4899, #00ffff);
+  background-size: 200% 200%;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-flow-fast 2s ease infinite;
+}
+
+@keyframes gradient-flow-fast {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
