@@ -244,9 +244,7 @@ export default function ServicesPage() {
                     <div
                       className={`w-12 h-12 rounded-xl bg-gradient-to-r ${service.bgGradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
                     >
-                      <service.icon
-                        className={`h-6 w-6 bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent`}
-                      />
+                      <service.icon className="h-6 w-6 text-white" />
                     </div>
 
                     <h3 className="text-xl font-bold mb-2 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300">
