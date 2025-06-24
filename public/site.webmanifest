@@ -1,0 +1,96 @@
+{
+  "name": "NXT Balkan - Revolutionizing Balkan Music",
+  "short_name": "NXT Balkan",
+  "description": "Music production, artist management, and promotion agency specializing in Balkan music.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["music", "entertainment", "multimedia"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/favicon/favicon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/favicon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/favicon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/favicon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon/favicon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nova glasba",
+      "short_name": "Nova glasba",
+      "description": "Poslušaj najnovejše pesmi",
+      "url": "/music",
+      "icons": [{ "src": "/favicon/favicon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Umetniki",
+      "short_name": "Umetniki", 
+      "description": "Odkrijte naše umetnike",
+      "url": "/artists",
+      "icons": [{ "src": "/favicon/favicon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-wide.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "NXT Balkan Desktop View"
+    },
+    {
+      "src": "/images/screenshot-narrow.jpg", 
+      "sizes": "720x1280",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "NXT Balkan Mobile View"
+    }
+  ]
+}
