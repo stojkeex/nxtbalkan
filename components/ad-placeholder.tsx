@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ExternalLink, Music, Headphones, Mic, Radio, Volume2 } from "lucide-react"
 
 interface AdPlaceholderProps {
-  variant?: "banner" | "square" | "native" | "sidebar" | "mobile-banner"
+  variant?: "banner" | "native" | "sidebar" | "mobile-banner"
   className?: string
 }
 
@@ -52,8 +52,6 @@ export function AdPlaceholder({ variant = "banner", className = "" }: AdPlacehol
     switch (variant) {
       case "banner":
         return "w-full h-32 md:h-40"
-      case "square":
-        return "w-full aspect-square max-w-sm mx-auto"
       case "native":
         return "w-full min-h-48 md:min-h-56"
       case "sidebar":
@@ -70,7 +68,6 @@ export function AdPlaceholder({ variant = "banner", className = "" }: AdPlacehol
       case "banner":
       case "mobile-banner":
         return "flex-row items-center justify-between px-6 md:px-8"
-      case "square":
       case "sidebar":
         return "flex-col items-center justify-center text-center p-6"
       case "native":
@@ -146,10 +143,6 @@ export function AdPlaceholder({ variant = "banner", className = "" }: AdPlacehol
 // Specialized ad components for different use cases
 export function BannerAd({ className }: { className?: string }) {
   return <AdPlaceholder variant="banner" className={className} />
-}
-
-export function SquareAd({ className }: { className?: string }) {
-  return <AdPlaceholder variant="square" className={className} />
 }
 
 export function NativeAd({ className }: { className?: string }) {
