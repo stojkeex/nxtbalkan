@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Music, Users, Zap, Star, Sparkles, TrendingUp, Award, Globe, Heart } from 'lucide-react'
+import { ArrowRight, Music, Users, Zap, Star, Sparkles, TrendingUp, Award, Globe, Heart } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
@@ -173,9 +173,7 @@ export default function HomePage() {
                     <div
                       className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.bgGradient} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
                     >
-                      <service.icon
-                        className={`h-8 w-8 bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent`}
-                      />
+                      <service.icon className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="text-xl font-bold mb-3 text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300">
                       {service.title}
