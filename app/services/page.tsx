@@ -250,15 +250,15 @@ export default function ServicesPage() {
             className="text-center mb-12 sm:mb-16"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 text-white">
-              Choose Your{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Package</span>
+              Pricing{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Packages</span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-              Flexible solutions designed for every stage of your business journey
+              Choose the plan that fits your needs and budget
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
             {pricingPackages.map((pkg, index) => (
               <motion.div
                 key={index}
@@ -266,72 +266,52 @@ export default function ServicesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className={`relative ${pkg.featured ? "md:scale-105" : ""}`}
               >
-                {pkg.featured && (
-                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-pink-400 rounded-2xl blur opacity-30" />
-                )}
-
                 <Card
-                  className={`relative bg-gray-900/80 border-gray-800 h-full ${
-                    pkg.featured ? "border-cyan-400/50" : ""
-                  }`}
+                  className={`border ${
+                    pkg.featured ? "border-pink-500 bg-pink-900/40" : "border-gray-800 bg-gray-900/80"
+                  } hover:scale-105 transition-all duration-300 shadow-lg shadow-pink-500/30`}
                 >
-                  <CardContent className="p-6 sm:p-8">
-                    {pkg.featured && (
-                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <Badge className="bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-medium px-3 py-1">
-                          <Crown className="h-3 w-3 mr-1" />
-                          Most Popular
-                        </Badge>
-                      </div>
-                    )}
+                  <CardContent className="p-6 sm:p-8 flex flex-col h-full">
+                    <h3
+                      className={`text-xl sm:text-2xl font-semibold mb-2 ${
+                        pkg.featured
+                          ? "text-pink-400"
+                          : "text-white"
+                      }`}
+                    >
+                      {pkg.title}
+                    </h3>
 
-                    <div className="text-center mb-6">
-                      <h3
-                        className={`text-xl sm:text-2xl font-medium mb-2 ${
-                          pkg.featured
-                            ? "bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent"
-                            : "text-white"
-                        }`}
-                      >
-                        {pkg.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm mb-4">{pkg.description}</p>
+                    <p className="text-gray-400 mb-4 text-sm sm:text-base flex-grow">{pkg.description}</p>
 
-                      <div className="flex items-baseline justify-center mb-2">
-                        <span className="text-sm text-gray-400">{pkg.currency}</span>
-                        <span
-                          className={`text-3xl sm:text-4xl font-light ml-1 ${
-                            pkg.featured
-                              ? "bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent"
-                              : "text-white"
-                          }`}
-                        >
-                          {pkg.price}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500">Delivery: {pkg.delivery}</p>
+                    <div className="mb-4">
+                      <span className="text-4xl font-bold text-white leading-none">
+                        {pkg.currency}
+                        {pkg.price}
+                      </span>
+                      <span className="text-gray-400 text-sm ml-1">/ package</span>
                     </div>
 
-                    <ul className="space-y-3 mb-6">
-                      {pkg.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start text-sm">
-                          <Check className="h-4 w-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-300">{feature}</span>
+                    <ul className="mb-6 space-y-2 text-gray-300 text-sm sm:text-base">
+                      {pkg.features.map((feature, i) => (
+                        <li key={i} className="flex items-center">
+                          <Check className="w-4 h-4 mr-2 text-cyan-400" />
+                          {feature}
                         </li>
                       ))}
                     </ul>
 
+                    <p className="text-gray-400 text-sm mb-4">
+                      Delivery time: <span className="text-white font-semibold">{pkg.delivery}</span>
+                    </p>
+
                     <Button
-                      className={`w-full ${
-                        pkg.featured
-                          ? "bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white hover:scale-105"
-                          : "bg-white text-black hover:bg-gray-200"
-                      } transition-all duration-300 font-medium rounded-full`}
+                      className={`mt-auto ${
+                        pkg.featured ? "bg-pink-500 hover:bg-pink-600" : "bg-cyan-500 hover:bg-cyan-600"
+                      } text-white font-medium w-full py-3 rounded-full transition-all duration-300`}
                     >
-                      {pkg.featured && <Zap className="h-4 w-4 mr-2" />}
-                      Get Started
+                      Choose Plan
                     </Button>
                   </CardContent>
                 </Card>
@@ -352,15 +332,17 @@ export default function ServicesPage() {
             className="text-center mb-12 sm:mb-16"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 text-white">
-              Our{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Process</span>
+              Our Process{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
+                Simplified
+              </span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-              A proven 4-step approach to transform your digital vision into reality
+              Step-by-step approach to ensure your project’s success
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid sm:grid-cols-4 gap-8">
             {process.map((step, index) => (
               <motion.div
                 key={index}
@@ -368,89 +350,22 @@ export default function ServicesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center group"
+                className="bg-gray-900/80 border border-gray-800 rounded-lg p-6 flex flex-col items-center text-center group hover:border-cyan-400/50 hover:bg-gray-800 transition-all duration-300"
               >
-                <div className="relative mb-6">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto bg-gray-900/80 border border-gray-800 rounded-full flex items-center justify-center group-hover:border-cyan-400/30 transition-all duration-300 group-hover:scale-110">
-                    <step.icon className={`h-6 w-6 sm:h-7 sm:w-7 ${step.color}`} />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-cyan-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xs font-medium">
-                    {step.step}
-                  </div>
+                <div
+                  className={`mb-4 w-14 h-14 rounded-full flex items-center justify-center border-2 ${step.color} border-current text-2xl font-bold select-none`}
+                >
+                  {step.step}
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-medium mb-2 sm:mb-3 text-white group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-pink-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                  {step.title}
-                </h3>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed">{step.description}</p>
+                <step.icon className={`mb-4 ${step.color} w-10 h-10`} />
+
+                <h3 className="text-lg font-semibold mb-2 text-white">{step.title}</h3>
+
+                <p className="text-gray-400 text-sm">{step.description}</p>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <Card className="bg-gray-900/80 border border-gray-800">
-              <CardContent className="p-8 sm:p-12 lg:p-16">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                  <Star className="h-8 w-8 sm:h-10 sm:w-10 text-cyan-400" />
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 text-white">
-                  Ready to{" "}
-                  <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                    Transform Your Business?
-                  </span>
-                </h2>
-
-                <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed">
-                  Join hundreds of businesses who have accelerated their growth with NXT Balkan. Let's create something
-                  extraordinary together.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
-                  >
-                    <Sparkles className="h-5 w-5 mr-2" />
-                    Start Your Journey
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
-                  >
-                    Schedule Consultation
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                </div>
-
-                <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-green-400" />
-                    Free Consultation
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-green-400" />
-                    Professional Quality
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-green-400" />
-                    Fast Delivery
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
       </section>
     </div>
