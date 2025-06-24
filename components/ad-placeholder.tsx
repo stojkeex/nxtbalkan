@@ -19,14 +19,6 @@ export function AdPlaceholder({ variant = "banner", className = "" }: AdPlacehol
       icon: Headphones,
       gradient: "from-purple-600 to-blue-600",
     },
-    square: {
-      title: "Music Streaming",
-      subtitle: "Unlimited Access",
-      description: "Stream millions of tracks",
-      cta: "Try Free",
-      icon: Music,
-      gradient: "from-green-600 to-teal-600",
-    },
     native: {
       title: "Master Your Craft",
       subtitle: "Online Music Production Course",
