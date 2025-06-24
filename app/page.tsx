@@ -78,10 +78,10 @@ export default function HomePage() {
               🎵 Welcome to the Future
             </Badge>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text gradient-text leading-tight tracking-tight">
-              NXT
-              <br />
-              BALKAN
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 gradient-text leading-tight tracking-tight">
+            NXT
+            <br />
+            BALKAN
             </h1>
 
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
@@ -150,8 +150,8 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              Our Mission
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-text">
+            Our Mission
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Bridging traditional Balkan music with the global stage through innovation and passion
@@ -197,8 +197,8 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              What Artists Say
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-text">
+            What Artists Say
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Hear from the talented artists who trust us with their musical journey
@@ -253,8 +253,8 @@ export default function HomePage() {
                     <Star className="h-8 w-8 text-black" />
                   </div>
 
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                    Ready to Join the Revolution?
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-text">
+                  Ready to Join the Revolution?
                   </h2>
 
                   <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
