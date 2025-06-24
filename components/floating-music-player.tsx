@@ -583,11 +583,23 @@ export default function FloatingMusicPlayer() {
   const openPlayer = () => {
     setIsOpen(true)
     setIsMinimized(false)
+    // Dodaj smooth animacijo
+    document.body.style.overflow = "hidden" // Prepreči scroll med animacijo
+    setTimeout(() => {
+      document.body.style.overflow = "auto"
+    }, 500)
   }
 
   const closePlayer = () => {
-    setIsOpen(false)
-    setIsMinimized(false)
+    // Dodaj fade out animacijo
+    const playerElement = document.querySelector('[data-player="main"]')
+    if (playerElement) {
+      playerElement.classList.add("animate-out", "slide-out-to-left-4", "fade-out")
+    }
+    setTimeout(() => {
+      setIsOpen(false)
+      setIsMinimized(false)
+    }, 300)
   }
 
   const minimizePlayer = () => {
@@ -620,12 +632,13 @@ export default function FloatingMusicPlayer() {
       )}
 
       {!isOpen && (
-        <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
+        <div className="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-50">
           <Button
             onClick={openPlayer}
-            className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-black shadow-2xl hover:scale-110 transition-all duration-300"
+            className="w-14 h-20 md:w-16 md:h-24 rounded-r-2xl rounded-l-none bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-black shadow-2xl hover:scale-105 hover:translate-x-2 transition-all duration-300 flex items-center justify-center relative overflow-hidden"
           >
-            <Music className="h-6 w-6 md:h-8 md:w-8" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <Music className="h-6 w-6 md:h-8 md:w-8 relative z-10" />
           </Button>
           {isPlaying && (
             <div className="absolute -top-1 -right-1 w-3 h-3 md:w-4 md:h-4 bg-green-500 rounded-full animate-ping"></div>
@@ -635,10 +648,11 @@ export default function FloatingMusicPlayer() {
 
       {isOpen && (
         <div
+          data-player="main"
           className={`fixed z-50 transition-all duration-500 ease-out ${
             isMinimized
-              ? "bottom-4 right-4 w-72 h-16 md:bottom-6 md:right-6 md:w-80 md:h-20"
-              : "inset-0 md:bottom-6 md:right-6 md:left-auto md:top-auto md:w-96 md:max-h-[80vh] md:inset-auto"
+              ? "bottom-4 left-4 w-72 h-16 md:bottom-6 md:left-6 md:w-80 md:h-20"
+              : "inset-0 md:bottom-6 md:left-6 md:right-auto md:top-auto md:w-96 md:max-h-[80vh] md:inset-auto"
           }`}
         >
           {/* Mobile Full Screen View */}
@@ -1001,7 +1015,7 @@ export default function FloatingMusicPlayer() {
 
           {/* Desktop Floating Player */}
           <Card
-            className={`${isMinimized ? "block" : "hidden md:block"} bg-black/90 backdrop-blur-xl border-gray-800 overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 slide-in-from-right-4`}
+            className={`${isMinimized ? "block" : "hidden md:block"} bg-black/90 backdrop-blur-xl border-gray-800 overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 slide-in-from-left-4 transform transition-all duration-300 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
           >
             <CardContent className="p-0">
               {showDesktopPlaylistSelector && (
