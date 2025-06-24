@@ -216,9 +216,16 @@ export default function FloatingMusicPlayer() {
 
       navigator.mediaSession.setActionHandler("seekto", (details) => {
         console.log("🎵 Media Session: Seek To", details.seekTime, "Duration:", duration)
-        if (audioRef.current && details.seekTime !== undefined && details.seekTime >= 0) {
-          audioRef.current.currentTime = Math.min(details.seekTime, duration)
-          setCurrentTime(details.seekTime)
+        if (
+          audioRef.current &&
+          details.seekTime !== undefined &&
+          details.seekTime >= 0 &&
+          details.seekTime <= duration
+        ) {
+          const seekTime = Math.min(details.seekTime, duration)
+          audioRef.current.currentTime = seekTime
+          setCurrentTime(seekTime)
+          console.log("🎵 Seeked to:", seekTime)
         }
       })
 
@@ -368,6 +375,10 @@ export default function FloatingMusicPlayer() {
     const audio = audioRef.current
     if (!audio) return
 
+    // Resetiraj pozicijo samo pri spremembi pesmi
+    audio.currentTime = 0
+    setCurrentTime(0)
+
     if (currentTrack.fileObject && !currentTrack.audioUrl) {
       const reader = new FileReader()
       reader.onload = (e) => {
@@ -386,14 +397,15 @@ export default function FloatingMusicPlayer() {
       const currentTimeValue = audio.currentTime
       setCurrentTime(currentTimeValue)
 
-      // Popravi Media Session position - posodobi samo če je pesem v teku
-      if ("mediaSession" in navigator && duration > 0) {
+      // Popravi Media Session position - posodobi samo če je pesem v teku in imamo veljavne vrednosti
+      if ("mediaSession" in navigator && duration > 0 && currentTimeValue >= 0 && currentTimeValue <= duration) {
         try {
           navigator.mediaSession.setPositionState({
-            duration: duration,
+            duration: Math.floor(duration),
             playbackRate: audio.playbackRate || 1.0,
-            position: currentTimeValue,
+            position: Math.floor(currentTimeValue),
           })
+          console.log("🎵 Position updated:", Math.floor(currentTimeValue), "/", Math.floor(duration))
         } catch (error) {
           console.log("Position state error:", error)
         }
@@ -431,7 +443,7 @@ export default function FloatingMusicPlayer() {
       audio.removeEventListener("play", handlePlay)
       audio.removeEventListener("pause", handlePause)
     }
-  }, [currentTrack, isPlaying, duration])
+  }, [currentTrack.id])
 
   const handleTrackEnd = useCallback(() => {
     if (repeatMode === 2) {
@@ -445,9 +457,11 @@ export default function FloatingMusicPlayer() {
     if (!audioRef.current) return
 
     if (isPlaying) {
+      console.log("🎵 Pausing at:", audioRef.current.currentTime)
       audioRef.current.pause()
     } else {
-      // Ne resetiraj currentTime, samo nadaljuj predvajanje
+      console.log("🎵 Resuming from:", audioRef.current.currentTime)
+      // Ne spreminjaj currentTime, samo nadaljuj predvajanje
       audioRef.current.play().catch(console.error)
     }
     // State se bo posodobil preko event listenerjev
@@ -457,7 +471,9 @@ export default function FloatingMusicPlayer() {
     const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
     const currentIndex = tracks.findIndex((t) => t.id === currentTrack.id)
     const nextIndex = (currentIndex + 1) % tracks.length
+    console.log("🎵 Next track:", tracks[nextIndex].title)
     setCurrentTrack(tracks[nextIndex])
+    setCurrentTime(0) // Resetiraj pozicijo za novo pesem
     setIsPlaying(true)
   }, [currentTrack.id, currentPlaylist.tracks, isShuffled, shuffledTracks])
 
@@ -465,7 +481,9 @@ export default function FloatingMusicPlayer() {
     const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
     const currentIndex = tracks.findIndex((t) => t.id === currentTrack.id)
     const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1
+    console.log("🎵 Previous track:", tracks[prevIndex].title)
     setCurrentTrack(tracks[prevIndex])
+    setCurrentTime(0) // Resetiraj pozicijo za novo pesem
     setIsPlaying(true)
   }, [currentTrack.id, currentPlaylist.tracks, isShuffled, shuffledTracks])
 
@@ -511,7 +529,9 @@ export default function FloatingMusicPlayer() {
   }
 
   const selectTrack = (track: Track) => {
+    console.log("🎵 Selecting new track:", track.title)
     setCurrentTrack(track)
+    setCurrentTime(0) // Resetiraj samo pri novi pesmi
     setIsPlaying(true)
   }
 
