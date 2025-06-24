@@ -110,18 +110,6 @@ export default function AboutPage() {
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5">
         <div className="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="mb-6 sm:mb-8"
-          >
-            <img
-              src="/nxtbalkancolored2.png"
-              alt="NXT Balkan Logo"
-              className="mx-auto w-48 h-auto sm:w-64 md:w-80 lg:w-96"
-            />
-          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
