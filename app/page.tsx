@@ -74,9 +74,9 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <Badge className="mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold px-4 py-2">
-              🎵 Welcome to the Future
-            </Badge>
+           <Badge className="mb-6 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-semibold px-4 py-2 mx-auto">
+           🎵 Welcome to the Future
+           </Badge>
 
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 gradient-text leading-tight tracking-tight">
             NXT
@@ -248,10 +248,12 @@ export default function HomePage() {
                 {/* Background decoration */}
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-purple-500/5" />
 
-                <div className="relative z-10">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-2xl mb-6">
-                    <Star className="h-8 w-8 text-black" />
-                  </div>
+               <div className="relative z-10">
+               <div className="flex justify-center mb-6"> {/* Dodan flex container za centriranje */}
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-2xl">
+              <Star className="h-8 w-8 text-black" />
+              </div>
+               </div>
 
                   <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-text">
                   Ready to Join the Revolution?
