@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useRef, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -52,7 +54,8 @@ const sampleTracks: Track[] = [
     artist: "¥$, Ye, Ty Dolla $ign",
     album: "VULTURES 1",
     duration: "4:24",
-    cover: "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
+    cover:
+      "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
     audioUrl: "/music/vultures.mp3",
   },
   {
@@ -61,7 +64,8 @@ const sampleTracks: Track[] = [
     artist: "¥$, Ye, Ty Dolla $ign",
     album: "VULTURES 1",
     duration: "4:21",
-    cover: "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
+    cover:
+      "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
     audioUrl: "/music/CARNIVAL.mp3",
   },
   {
@@ -70,7 +74,8 @@ const sampleTracks: Track[] = [
     artist: "Kanye West",
     album: "808's and Heartbreak",
     duration: "3:30",
-    cover: "https://lh3.googleusercontent.com/exflW3HncdenT5gT0RFYTF4PfxoC2UIAjC3gdVO9troE_u8bW7g8tqvqas9x_hozALD5wu_rYbm0k1Jk",
+    cover:
+      "https://lh3.googleusercontent.com/exflW3HncdenT5gT0RFYTF4PfxoC2UIAjC3gdVO9troE_u8bW7g8tqvqas9x_hozALD5wu_rYbm0k1Jk",
     audioUrl: "/music/Heartless.mp3",
   },
 ]
@@ -119,6 +124,157 @@ export default function FloatingMusicPlayer() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const tempAudioRef = useRef<HTMLAudioElement>(null)
 
+  // 🎵 Media Session API Setup
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      // Set metadata for current track
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentTrack.title,
+        artist: currentTrack.artist,
+        album: currentTrack.album,
+        artwork: [
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "96x96",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "128x128",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "256x256",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "384x384",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      })
+
+      // Set playback state
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused"
+
+      // Set action handlers
+      navigator.mediaSession.setActionHandler("play", () => {
+        console.log("🎵 Media Session: Play")
+        togglePlay()
+      })
+
+      navigator.mediaSession.setActionHandler("pause", () => {
+        console.log("🎵 Media Session: Pause")
+        togglePlay()
+      })
+
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        console.log("🎵 Media Session: Previous Track")
+        previousTrack()
+      })
+
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        console.log("🎵 Media Session: Next Track")
+        nextTrack()
+      })
+
+      navigator.mediaSession.setActionHandler("stop", () => {
+        console.log("🎵 Media Session: Stop")
+        setIsPlaying(false)
+        if (audioRef.current) {
+          audioRef.current.pause()
+          audioRef.current.currentTime = 0
+        }
+      })
+
+      // Seek handlers for progress control
+      navigator.mediaSession.setActionHandler("seekbackward", (details) => {
+        console.log("🎵 Media Session: Seek Backward", details.seekOffset)
+        if (audioRef.current) {
+          audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - (details.seekOffset || 10))
+        }
+      })
+
+      navigator.mediaSession.setActionHandler("seekforward", (details) => {
+        console.log("🎵 Media Session: Seek Forward", details.seekOffset)
+        if (audioRef.current) {
+          audioRef.current.currentTime = Math.min(duration, audioRef.current.currentTime + (details.seekOffset || 10))
+        }
+      })
+
+      navigator.mediaSession.setActionHandler("seekto", (details) => {
+        console.log("🎵 Media Session: Seek To", details.seekTime)
+        if (audioRef.current && details.seekTime !== undefined) {
+          audioRef.current.currentTime = details.seekTime
+        }
+      })
+
+      // Update position state for progress bar
+      if (isPlaying && duration > 0) {
+        navigator.mediaSession.setPositionState({
+          duration: duration,
+          playbackRate: 1.0,
+          position: currentTime,
+        })
+      }
+    }
+  }, [currentTrack, isPlaying, currentTime, duration])
+
+  // Update Media Session when track changes
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentTrack.title,
+        artist: currentTrack.artist,
+        album: `${currentTrack.album} • NXT Balkan`,
+        artwork: [
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "96x96",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "128x128",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "256x256",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "384x384",
+            type: "image/png",
+          },
+          {
+            src: currentTrack.cover || "/favicon/favicon-192x192.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      })
+    }
+  }, [currentTrack])
+
   // Handle file uploads with mobile support
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
@@ -128,7 +284,7 @@ export default function FloatingMusicPlayer() {
     let hasValidFiles = false
 
     for (const file of Array.from(files)) {
-      if (!file.type.startsWith("audio/") && !file.name.toLowerCase().endsWith('.mp3')) {
+      if (!file.type.startsWith("audio/") && !file.name.toLowerCase().endsWith(".mp3")) {
         continue
       }
 
@@ -150,9 +306,9 @@ export default function FloatingMusicPlayer() {
         artist: "Unknown Artist",
         album: "Local Files",
         duration: trackDuration,
-        cover: "/placeholder.svg",
+        cover: "/placeholder.svg?height=300&width=300",
         audioUrl: audioUrl,
-        fileObject: audioUrl ? undefined : file
+        fileObject: audioUrl ? undefined : file,
       })
     }
 
@@ -162,15 +318,17 @@ export default function FloatingMusicPlayer() {
       return
     }
 
-    setAllTracks(prev => [...prev, ...newTracks])
-    setPlaylists(prev => prev.map(playlist => 
-      playlist.name === "All Songs" ? {...playlist, tracks: [...playlist.tracks, ...newTracks]} : playlist
-    ))
-    
+    setAllTracks((prev) => [...prev, ...newTracks])
+    setPlaylists((prev) =>
+      prev.map((playlist) =>
+        playlist.name === "All Songs" ? { ...playlist, tracks: [...playlist.tracks, ...newTracks] } : playlist,
+      ),
+    )
+
     if (currentPlaylist.name === "All Songs") {
-      setCurrentPlaylist(prev => ({
+      setCurrentPlaylist((prev) => ({
         ...prev,
-        tracks: [...prev.tracks, ...newTracks]
+        tracks: [...prev.tracks, ...newTracks],
       }))
     }
 
@@ -219,20 +377,51 @@ export default function FloatingMusicPlayer() {
       if (isPlaying) audio.play().catch(console.error)
     }
 
-    const updateTime = () => setCurrentTime(audio.currentTime)
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime)
+
+      // Update Media Session position
+      if ("mediaSession" in navigator && isPlaying && duration > 0) {
+        navigator.mediaSession.setPositionState({
+          duration: duration,
+          playbackRate: 1.0,
+          position: audio.currentTime,
+        })
+      }
+    }
+
     const updateDuration = () => setDuration(audio.duration)
     const handleEnded = () => handleTrackEnd()
+
+    // Enhanced audio event listeners
+    const handlePlay = () => {
+      setIsPlaying(true)
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "playing"
+      }
+    }
+
+    const handlePause = () => {
+      setIsPlaying(false)
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "paused"
+      }
+    }
 
     audio.addEventListener("timeupdate", updateTime)
     audio.addEventListener("loadedmetadata", updateDuration)
     audio.addEventListener("ended", handleEnded)
+    audio.addEventListener("play", handlePlay)
+    audio.addEventListener("pause", handlePause)
 
     return () => {
       audio.removeEventListener("timeupdate", updateTime)
       audio.removeEventListener("loadedmetadata", updateDuration)
       audio.removeEventListener("ended", handleEnded)
+      audio.removeEventListener("play", handlePlay)
+      audio.removeEventListener("pause", handlePause)
     }
-  }, [currentTrack, isPlaying])
+  }, [currentTrack, isPlaying, duration])
 
   const handleTrackEnd = useCallback(() => {
     if (repeatMode === 2) {
@@ -248,12 +437,12 @@ export default function FloatingMusicPlayer() {
     } else {
       audioRef.current?.play().catch(console.error)
     }
-    setIsPlaying(!isPlaying)
+    // State will be updated by audio event listeners
   }
 
   const nextTrack = useCallback(() => {
     const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
-    const currentIndex = tracks.findIndex(t => t.id === currentTrack.id)
+    const currentIndex = tracks.findIndex((t) => t.id === currentTrack.id)
     const nextIndex = (currentIndex + 1) % tracks.length
     setCurrentTrack(tracks[nextIndex])
     setIsPlaying(true)
@@ -261,7 +450,7 @@ export default function FloatingMusicPlayer() {
 
   const previousTrack = useCallback(() => {
     const tracks = isShuffled ? shuffledTracks : currentPlaylist.tracks
-    const currentIndex = tracks.findIndex(t => t.id === currentTrack.id)
+    const currentIndex = tracks.findIndex((t) => t.id === currentTrack.id)
     const prevIndex = currentIndex === 0 ? tracks.length - 1 : currentIndex - 1
     setCurrentTrack(tracks[prevIndex])
     setIsPlaying(true)
@@ -277,7 +466,7 @@ export default function FloatingMusicPlayer() {
     if (!isShuffled) {
       const shuffled = [...currentPlaylist.tracks].sort(() => Math.random() - 0.5)
       setShuffledTracks(shuffled)
-      setCurrentShuffleIndex(shuffled.findIndex(t => t.id === currentTrack.id))
+      setCurrentShuffleIndex(shuffled.findIndex((t) => t.id === currentTrack.id))
     }
     setIsShuffled(!isShuffled)
   }
@@ -321,7 +510,7 @@ export default function FloatingMusicPlayer() {
         tracks: [],
         isCustom: true,
       }
-      setPlaylists(prev => [...prev, newPlaylist])
+      setPlaylists((prev) => [...prev, newPlaylist])
       setNewPlaylistName("")
       setShowCreatePlaylist(false)
       setShowAddToPlaylist(true)
@@ -330,14 +519,16 @@ export default function FloatingMusicPlayer() {
   }
 
   const addTrackToPlaylist = (trackId: number, playlistId: number) => {
-    const track = allTracks.find(t => t.id === trackId)
+    const track = allTracks.find((t) => t.id === trackId)
     if (!track) return
 
-    setPlaylists(prev => prev.map(playlist => 
-      playlist.id === playlistId && !playlist.tracks.some(t => t.id === trackId)
-        ? {...playlist, tracks: [...playlist.tracks, track]}
-        : playlist
-    ))
+    setPlaylists((prev) =>
+      prev.map((playlist) =>
+        playlist.id === playlistId && !playlist.tracks.some((t) => t.id === trackId)
+          ? { ...playlist, tracks: [...playlist.tracks, track] }
+          : playlist,
+      ),
+    )
   }
 
   const selectPlaylist = (playlist: Playlist) => {
@@ -349,10 +540,11 @@ export default function FloatingMusicPlayer() {
     }
   }
 
-  const filteredTracks = allTracks.filter(track => 
-    track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    track.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    track.album.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredTracks = allTracks.filter(
+    (track) =>
+      track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      track.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      track.album.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
   const openPlayer = () => {
@@ -371,9 +563,10 @@ export default function FloatingMusicPlayer() {
 
   return (
     <>
-      <audio 
-        ref={audioRef} 
-        src={currentTrack.audioUrl || (currentTrack.fileObject ? "" : '')} 
+      <audio
+        ref={audioRef}
+        src={currentTrack.audioUrl || (currentTrack.fileObject ? "" : "")}
+        crossOrigin="anonymous"
       />
       <input
         ref={fileInputRef}
@@ -387,7 +580,9 @@ export default function FloatingMusicPlayer() {
       {notification && (
         <div className="fixed bottom-4 left-4 right-4 bg-black/90 text-white p-3 rounded-lg text-center z-50 flex items-center justify-between">
           <span>{notification}</span>
-          <Button onClick={() => setNotification("")} size="sm">OK</Button>
+          <Button onClick={() => setNotification("")} size="sm">
+            OK
+          </Button>
         </div>
       )}
 
@@ -426,7 +621,9 @@ export default function FloatingMusicPlayer() {
                   <ChevronDown className="h-7 w-7" />
                 </Button>
                 <div className="text-center">
-                  <h2 className="text-lg font-semibold gradient-text-neon">NXT Balkan</h2>
+                  <h2 className="text-lg font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                    NXT Balkan
+                  </h2>
                   <p className="text-xs text-gray-400">Music Player</p>
                 </div>
                 <Button
@@ -442,7 +639,9 @@ export default function FloatingMusicPlayer() {
               {showPlaylistSelector && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-20 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
-                    <h3 className="text-xl font-bold gradient-text-neon">Select Playlist</h3>
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                      Select Playlist
+                    </h3>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -504,7 +703,9 @@ export default function FloatingMusicPlayer() {
               {showCreatePlaylist && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
-                    <h3 className="text-xl font-bold gradient-text-neon">Create Playlist</h3>
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                      Create Playlist
+                    </h3>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -542,7 +743,9 @@ export default function FloatingMusicPlayer() {
               {showAddToPlaylist && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 flex flex-col">
                   <div className="flex items-center justify-between p-4 pt-12">
-                    <h3 className="text-xl font-bold gradient-text-neon">Add Songs</h3>
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                      Add Songs
+                    </h3>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -587,7 +790,7 @@ export default function FloatingMusicPlayer() {
                           >
                             <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                               <img
-                                src={track.cover || "/placeholder.svg"}
+                                src={track.cover || "/placeholder.svg?height=48&width=48"}
                                 alt={track.album}
                                 className="w-full h-full object-cover"
                               />
@@ -613,7 +816,7 @@ export default function FloatingMusicPlayer() {
                   <div className="flex justify-center px-8 py-4">
                     <div className="w-72 h-72 rounded-2xl overflow-hidden shadow-2xl">
                       <img
-                        src={currentTrack.cover || "/placeholder.svg"}
+                        src={currentTrack.cover || "/placeholder.svg?height=288&width=288"}
                         alt={currentTrack.album}
                         className="w-full h-full object-cover"
                       />
@@ -621,9 +824,11 @@ export default function FloatingMusicPlayer() {
                   </div>
 
                   <div className="px-8 py-2 text-center">
-                    <h1 className="text-xl font-bold gradient-text-neon mb-1">{currentTrack.title}</h1>
+                    <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-1">
+                      {currentTrack.title}
+                    </h1>
                     <p className="text-base text-gray-300 mb-1">{currentTrack.artist}</p>
-                    <p className="text-sm text-gray-400">{currentTrack.album}</p>
+                    <p className="text-sm text-gray-400">{currentTrack.album} • NXT Balkan</p>
                   </div>
 
                   <div className="px-8 py-3">
@@ -683,11 +888,7 @@ export default function FloatingMusicPlayer() {
                         onClick={toggleRepeat}
                         className={`hover:bg-white/10 text-gray-300 w-14 h-14 ${repeatMode > 0 ? "text-cyan-400" : ""}`}
                       >
-                        {repeatMode === 2 ? (
-                          <Repeat1 className="h-7 w-7" />
-                        ) : (
-                          <Repeat className="h-7 w-7" />
-                        )}
+                        {repeatMode === 2 ? <Repeat1 className="h-7 w-7" /> : <Repeat className="h-7 w-7" />}
                       </Button>
                     </div>
                   </div>
@@ -722,7 +923,7 @@ export default function FloatingMusicPlayer() {
                             </div>
                             <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                               <img
-                                src={track.cover || "/placeholder.svg"}
+                                src={track.cover || "/placeholder.svg?height=48&width=48"}
                                 alt={track.album}
                                 className="w-full h-full object-cover"
                               />
@@ -730,7 +931,9 @@ export default function FloatingMusicPlayer() {
                             <div className="flex-1 min-w-0">
                               <p
                                 className={`text-base font-medium truncate ${
-                                  currentTrack.id === track.id ? "gradient-text-neon" : "text-white"
+                                  currentTrack.id === track.id
+                                    ? "bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+                                    : "text-white"
                                 }`}
                               >
                                 {track.title}
@@ -765,14 +968,16 @@ export default function FloatingMusicPlayer() {
 
           {/* Desktop Floating Player */}
           <Card
-            className={`${isMinimized ? "block" : "hidden md:block"} professional-card hover-card floating-player-glass overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 slide-in-from-right-4`}
+            className={`${isMinimized ? "block" : "hidden md:block"} bg-black/90 backdrop-blur-xl border-gray-800 overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 slide-in-from-right-4`}
           >
             <CardContent className="p-0">
               {showDesktopPlaylistSelector && (
                 <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-30 rounded-lg overflow-hidden">
                   <div className="p-4">
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-bold gradient-text-neon">Select Playlist</h3>
+                      <h3 className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                        Select Playlist
+                      </h3>
                       <Button
                         variant="ghost"
                         size="icon"
@@ -837,14 +1042,16 @@ export default function FloatingMusicPlayer() {
                 <div className="flex items-center p-3 space-x-2 md:p-4 md:space-x-3">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden flex-shrink-0">
                     <img
-                      src={currentTrack.cover || "/placeholder.svg"}
+                      src={currentTrack.cover || "/placeholder.svg?height=48&width=48"}
                       alt={currentTrack.album}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate text-xs md:text-sm gradient-text-neon">{currentTrack.title}</p>
-                    <p className="text-xs text-muted-foreground truncate hidden md:block">{currentTrack.artist}</p>
+                    <p className="font-medium truncate text-xs md:text-sm bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                      {currentTrack.title}
+                    </p>
+                    <p className="text-xs text-gray-400 truncate hidden md:block">{currentTrack.artist}</p>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Button
@@ -880,7 +1087,9 @@ export default function FloatingMusicPlayer() {
               ) : (
                 <div className="space-y-3 p-4 md:space-y-4 md:p-6">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-base md:text-lg font-semibold gradient-text-neon">Music Player</h2>
+                    <h2 className="text-base md:text-lg font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                      NXT Balkan Player
+                    </h2>
                     <div className="flex items-center space-x-1">
                       <Button
                         variant="ghost"
@@ -904,17 +1113,17 @@ export default function FloatingMusicPlayer() {
                   <div className="flex items-center space-x-3 md:space-x-4">
                     <div className="w-12 h-12 md:w-16 md:h-16 rounded-lg overflow-hidden flex-shrink-0">
                       <img
-                        src={currentTrack.cover || "/placeholder.svg"}
+                        src={currentTrack.cover || "/placeholder.svg?height=64&width=64"}
                         alt={currentTrack.album}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm md:text-base font-semibold truncate gradient-text-neon">
+                      <h3 className="text-sm md:text-base font-semibold truncate bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
                         {currentTrack.title}
                       </h3>
-                      <p className="text-xs md:text-sm text-muted-foreground truncate">{currentTrack.artist}</p>
-                      <p className="text-xs text-muted-foreground truncate">{currentTrack.album}</p>
+                      <p className="text-xs md:text-sm text-gray-400 truncate">{currentTrack.artist}</p>
+                      <p className="text-xs text-gray-500 truncate">{currentTrack.album} • NXT Balkan</p>
                     </div>
                   </div>
 
@@ -926,7 +1135,7 @@ export default function FloatingMusicPlayer() {
                       onValueChange={handleProgressChange}
                       className="w-full [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-cyan-400 [&_[role=slider]]:to-purple-500 [&_[role=slider]]:w-3 [&_[role=slider]]:h-3 [&_[role=slider]]:border-0 [&>span:first-child_span]:bg-gradient-to-r [&>span:first-child_span]:from-cyan-400 [&>span:first-child_span]:to-purple-500"
                     />
-                    <div className="flex justify-between text-xs text-muted-foreground">
+                    <div className="flex justify-between text-xs text-gray-400">
                       <span>{formatTime(currentTime)}</span>
                       <span>{formatTime(duration)}</span>
                     </div>
@@ -1001,13 +1210,13 @@ export default function FloatingMusicPlayer() {
                       onValueChange={handleVolumeChange}
                       className="flex-1 [&>span:first-child]:h-1 [&>span:first-child]:bg-white/20 [&_[role=slider]]:bg-white [&_[role=slider]]:w-3 [&_[role=slider]]:h-3 [&_[role=slider]]:border-0 [&>span:first-child_span]:bg-white"
                     />
-                    <span className="text-xs text-muted-foreground w-6 md:w-8">{isMuted ? 0 : volume[0]}</span>
+                    <span className="text-xs text-gray-400 w-6 md:w-8">{isMuted ? 0 : volume[0]}</span>
                   </div>
 
                   <div className="space-y-2 max-h-32 md:max-h-48 overflow-y-auto bg-black/20 rounded-lg p-2 md:p-3 backdrop-blur-sm">
                     <div className="flex items-center justify-between">
                       <h4
-                        className="text-xs md:text-sm font-medium text-muted-foreground cursor-pointer hover:text-cyan-400 transition-colors"
+                        className="text-xs md:text-sm font-medium text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors"
                         onClick={() => setShowDesktopPlaylistSelector(true)}
                       >
                         {currentPlaylist.name} ▼
@@ -1016,7 +1225,7 @@ export default function FloatingMusicPlayer() {
                         variant="ghost"
                         size="icon"
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-6 h-6 hover:bg-white/10 text-muted-foreground"
+                        className="w-6 h-6 hover:bg-white/10 text-gray-400"
                       >
                         <Plus className="h-3 w-3" />
                       </Button>
@@ -1031,7 +1240,7 @@ export default function FloatingMusicPlayer() {
                       >
                         <div className="w-6 h-6 md:w-8 md:h-8 rounded overflow-hidden flex-shrink-0">
                           <img
-                            src={track.cover || "/placeholder.svg"}
+                            src={track.cover || "/placeholder.svg?height=32&width=32"}
                             alt={track.album}
                             className="w-full h-full object-cover"
                           />
@@ -1039,7 +1248,9 @@ export default function FloatingMusicPlayer() {
                         <div className="flex-1 min-w-0">
                           <p
                             className={`text-xs md:text-sm font-medium truncate ${
-                              currentTrack.id === track.id ? "gradient-text-neon" : "text-white"
+                              currentTrack.id === track.id
+                                ? "bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+                                : "text-white"
                             }`}
                           >
                             {track.title}
@@ -1060,7 +1271,7 @@ export default function FloatingMusicPlayer() {
                               ></div>
                             </div>
                           )}
-                          <span className="text-xs text-muted-foreground">{track.duration}</span>
+                          <span className="text-xs text-gray-400">{track.duration}</span>
                         </div>
                       </div>
                     ))}
