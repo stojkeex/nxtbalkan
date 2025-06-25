@@ -78,30 +78,60 @@ const sampleTracks: Track[] = [
       "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
     audioUrl: "/music/35stepeni.mp3",
   },
+  {
+    id: 4,
+    title: "Nema Spavanja",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:42",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/nemaspavanja.mp3",
+  },
+  {
+    id: 5,
+    title: "amsterdam",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "2:48",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/amsterdam.mp3",
+  },
+  {
+    id: 6,
+    title: "  Ego",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:46",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/ego.mp3",
+  },
+  {
+    id: 7,
+    title: "Anxiozno",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:21",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/anxiozno.mp3",
+  },
+  {
+    id: 8,
+    title: "Jblbs",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "2:16",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/jblbs.mp3",
+  },
 ]
 const nemaSpavanja: Track[] = [
   {
     id: 1,
-    title: "Classy",
-    artist: "Corona",
-    album: "Classy",
-    duration: "2:13",
-    cover:
-      "https://images.genius.com/2cc485248f57864a510c384b6e335458.1000x1000x1.jpg",
-    audioUrl: "/music/classy.mp3",
-  },
-  {
-    id: 2,
-    title: "Naše Prvo Leto",
-    artist: "Roki, Buraz007",
-    album: "/",
-    duration: "2:31",
-    cover:
-      "https://i.ytimg.com/vi/LaVp0j98VXg/sddefault.jpg",
-    audioUrl: "/music/naseprvoleto.mp3",
-  },
-  {
-    id: 3,
     title: "35 Stepeni",
     artist: "Devito",
     album: "Nema Spavanja",
@@ -109,6 +139,56 @@ const nemaSpavanja: Track[] = [
     cover:
       "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
     audioUrl: "/music/35stepeni.mp3",
+  },
+  {
+    id: 2,
+    title: "Nema Spavanja",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:42",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/nemaspavanja.mp3",
+  },
+  {
+    id: 3,
+    title: "amsterdam",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "2:48",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/amsterdam.mp3",
+  },
+  {
+    id: 4,
+    title: "  Ego",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:46",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/ego.mp3",
+  },
+  {
+    id: 5,
+    title: "Anxiozno",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:21",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/anxiozno.mp3",
+  },
+  {
+    id: 6,
+    title: "Jblbs",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "2:16",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/jblbs.mp3",
   },
 ]
 const defaultPlaylists: Playlist[] = [
