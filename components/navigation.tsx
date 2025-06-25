@@ -101,9 +101,8 @@ export function Navigation() {
             : "bg-transparent border-b border-transparent"
         }`}
       >
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-24 sm:h-26 md:h-28 lg:h-30 xl:h-32">
-            {/* Logo - Left Side */}
             <Link href="/" className="flex items-center space-x-2 flex-shrink-0" onClick={handleLinkClick}>
               <motion.img
                 src="/nxtbalkancolored2.png"
@@ -114,7 +113,6 @@ export function Navigation() {
               />
             </Link>
 
-            {/* Centered Navigation - Desktop Only */}
             <div className="hidden md:flex items-center justify-center flex-1">
               <div className="flex items-center space-x-8">
                 {navItems.map((item) => (
@@ -141,9 +139,7 @@ export function Navigation() {
               </div>
             </div>
 
-            {/* Right Side - Help Button & Mobile Menu */}
             <div className="flex items-center space-x-4 flex-shrink-0">
-              {/* Help Dropdown - Desktop Only */}
               <div className="relative hidden md:block">
                 <Button
                   variant="ghost"
@@ -166,14 +162,12 @@ export function Navigation() {
                       transition={{ duration: 0.2 }}
                       className="absolute right-0 top-full mt-2 w-64 bg-gray-900/95 backdrop-blur-md border border-gray-700 rounded-2xl shadow-2xl overflow-hidden"
                     >
-                      {/* Find Us Header */}
                       <div className="px-6 py-4 border-b border-gray-700">
                         <h3 className="text-lg font-medium bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
                           Find Us
                         </h3>
                       </div>
 
-                      {/* Social Media Links */}
                       <div className="py-2">
                         <a
                           href="https://instagram.com/nxt.balkan"
@@ -230,7 +224,6 @@ export function Navigation() {
                         </a>
                       </div>
 
-                      {/* Bottom Section */}
                       <div className="border-t border-gray-700 py-2">
                         <Link
                           href="/terms"
@@ -286,7 +279,6 @@ export function Navigation() {
                 </AnimatePresence>
               </div>
 
-              {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
                 size="sm"
@@ -324,7 +316,6 @@ export function Navigation() {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu Overlay - POPRAVLJENO */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -395,36 +386,35 @@ export function Navigation() {
                     </svg>
                     <span>Terms of Service</span>
                   </Link>
-                 <a
-                      href="#"
-                      className="flex items-center justify-center space-x-3 text-lg font-light py-2 px-6 rounded-full text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-300"
-                    >
-                      <svg className="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                        />
-                      </svg>
-                      <span>Donation</span>
-                    </a>
-                    <a
-                      href="#"
-                      className="flex items-center justify-center space-x-3 text-lg font-light py-2 px-6 rounded-full text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-300"
-                    >
-                      <svg className="h-5 w-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
-                      <span>Community</span>
-                    </a>
-                  </div>
-                </motion.div>
+                  <a
+                    href="#"
+                    className="flex items-center justify-center space-x-3 text-lg font-light py-2 px-6 rounded-full text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-300"
+                  >
+                    <svg className="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                      />
+                    </svg>
+                    <span>Donation</span>
+                  </a>
+                  <a
+                    href="#"
+                    className="flex items-center justify-center space-x-3 text-lg font-light py-2 px-6 rounded-full text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-300"
+                  >
+                    <svg className="h-5 w-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span>Community</span>
+                  </a>
+                </div>
 
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -434,7 +424,6 @@ export function Navigation() {
                 >
                   <p>NXT Balkan - Digital Excellence</p>
                 </motion.div>
-                </div>
               </div>
             </div>
           </motion.div>
