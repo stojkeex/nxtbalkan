@@ -381,22 +381,6 @@ export function Navigation() {
                   </motion.div>
                 ))}
 
-                {/* Find Us Section in Mobile Menu */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.1 + navItems.length * 0.08,
-                    duration: 0.3,
-                    type: "spring",
-                    stiffness: 100,
-                  }}
-                  className="w-full text-center"
-                >
-                  <div className="text-lg font-medium bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent mb-4">
-                    Find Us
-                  </div>
-
 
                   {/* Bottom Section */}
                   <div className="space-y-3 border-t border-gray-700 pt-4">
