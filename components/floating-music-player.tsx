@@ -259,7 +259,7 @@ export default function FloatingMusicPlayer() {
       // Set metadata for current track
       navigator.mediaSession.metadata = new MediaMetadata({
         title: `${currentTrack.title} • NXT Balkan`,
-        artist: currentTrack.artist,
+        artist: currentTrack.singer?.name,
         album: currentTrack.album,
         artwork: [
           {
@@ -378,7 +378,7 @@ export default function FloatingMusicPlayer() {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: `${currentTrack.title} • NXT Balkan`,
-        artist: currentTrack.artist,
+        artist: currentTrack.singer?.name,
         album: currentTrack.album,
         artwork: [
           {
@@ -705,7 +705,7 @@ export default function FloatingMusicPlayer() {
   const filteredTracks = allTracks.filter(
     (track) =>
       track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      track.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      track.singer?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       track.album.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
@@ -973,7 +973,7 @@ export default function FloatingMusicPlayer() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-base font-medium truncate text-white">{track.title}</p>
-                              <p className="text-sm text-gray-400 truncate">{track.artist}</p>
+                              <p className="text-sm text-gray-400 truncate">{track.singer?.name}</p>
                             </div>
                             <div className="flex items-center space-x-2">
                               {isInPlaylist && <Check className="h-5 w-5 text-green-400" />}
@@ -1003,7 +1003,7 @@ export default function FloatingMusicPlayer() {
                     <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-1">
                       {currentTrack.title}
                     </h1>
-                    <p className="text-base text-gray-300 mb-1">{currentTrack.artist}</p>
+                    <p className="text-base text-gray-300 mb-1">{currentTrack.singer?.name}</p>
                     <p className="text-sm text-gray-400">{currentTrack.album} • NXT Balkan</p>
                   </div>
 
@@ -1114,7 +1114,7 @@ export default function FloatingMusicPlayer() {
                               >
                                 {track.title}
                               </p>
-                              <p className="text-sm text-gray-400 truncate">{track.artist}</p>
+                              <p className="text-sm text-gray-400 truncate">{track.singer?.name}</p>
                             </div>
                             <div className="flex items-center space-x-2">
                               {currentTrack.id === track.id && isPlaying && (
@@ -1227,7 +1227,7 @@ export default function FloatingMusicPlayer() {
                     <p className="font-medium truncate text-xs md:text-sm bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
                       {currentTrack.title}
                     </p>
-                    <p className="text-xs text-gray-400 truncate hidden md:block">{currentTrack.artist}</p>
+                    <p className="text-xs text-gray-400 truncate hidden md:block">{currentTrack.singer?.name}</p>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Button
@@ -1298,7 +1298,7 @@ export default function FloatingMusicPlayer() {
                       <h3 className="text-sm md:text-base font-semibold truncate bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
                         {currentTrack.title}
                       </h3>
-                      <p className="text-xs md:text-sm text-gray-400 truncate">{currentTrack.artist}</p>
+                      <p className="text-xs md:text-sm text-gray-400 truncate">{currentTrack.singer?.name}</p>
                       <p className="text-xs text-gray-500 truncate">{currentTrack.album} • NXT Balkan</p>
                     </div>
                   </div>
@@ -1431,7 +1431,7 @@ export default function FloatingMusicPlayer() {
                           >
                             {track.title}
                           </p>
-                          <p className="text-xs text-white/70 truncate">{track.artist}</p>
+                          <p className="text-xs text-white/70 truncate">{track.singer?.name}</p>
                         </div>
                         <div className="flex items-center space-x-1 md:space-x-2">
                           {currentTrack.id === track.id && isPlaying && (
