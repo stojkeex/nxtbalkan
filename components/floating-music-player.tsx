@@ -131,7 +131,7 @@ const sampleTracks: Track[] = [
 ]
 const nemaSpavanja: Track[] = [
   {
-    id: 1,
+    id: 3,
     title: "35 Stepeni",
     artist: "Devito",
     album: "Nema Spavanja",
@@ -141,7 +141,7 @@ const nemaSpavanja: Track[] = [
     audioUrl: "/music/35stepeni.mp3",
   },
   {
-    id: 2,
+    id: 4,
     title: "Nema Spavanja",
     artist: "Devito",
     album: "Nema Spavanja",
@@ -151,7 +151,7 @@ const nemaSpavanja: Track[] = [
     audioUrl: "/music/nemaspavanja.mp3",
   },
   {
-    id: 3,
+    id: 5,
     title: "amsterdam",
     artist: "Devito",
     album: "Nema Spavanja",
@@ -161,7 +161,7 @@ const nemaSpavanja: Track[] = [
     audioUrl: "/music/amsterdam.mp3",
   },
   {
-    id: 4,
+    id: 6,
     title: "  Ego",
     artist: "Devito",
     album: "Nema Spavanja",
@@ -171,7 +171,7 @@ const nemaSpavanja: Track[] = [
     audioUrl: "/music/ego.mp3",
   },
   {
-    id: 5,
+    id: 7,
     title: "Anxiozno",
     artist: "Devito",
     album: "Nema Spavanja",
@@ -181,7 +181,7 @@ const nemaSpavanja: Track[] = [
     audioUrl: "/music/anxiozno.mp3",
   },
   {
-    id: 6,
+    id: 8,
     title: "Jblbs",
     artist: "Devito",
     album: "Nema Spavanja",
