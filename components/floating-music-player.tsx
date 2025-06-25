@@ -56,7 +56,7 @@ const sampleTracks: Track[] = [
     duration: "2:13",
     cover:
       "https://images.genius.com/2cc485248f57864a510c384b6e335458.1000x1000x1.jpg",
-    audioUrl: "/music/CORONA.mp3",
+    audioUrl: "/music/classy.mp3",
   },
   {
     id: 2,
