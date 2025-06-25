@@ -485,96 +485,12 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-16 px-6 sm:px-12 bg-black border-t border-gray-800 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-white"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2 h-6 bg-cyan-400 rounded-full"></div>
-                <div className="w-2 h-8 bg-pink-400 rounded-full"></div>
-                <div className="w-2 h-6 bg-cyan-400 rounded-full"></div>
-                <span className="ml-2 font-bold">NXT BALKAN</span>
-              </div>
-              <p className="text-gray-400 text-sm max-w-xs">
-                Transforming businesses through innovative digital solutions and strategic thinking.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-white"
-            >
-              <h3 className="text-lg font-semibold mb-4">Services</h3>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                {services.slice(0, 5).map((service, i) => (
-                  <li key={i}>
-                    <a href="#" className="hover:text-cyan-400 transition-colors">
-                      {service.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-white"
-            >
-              <h3 className="text-lg font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="#" className="hover:text-pink-400 transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-pink-400 transition-colors">Our Team</a></li>
-                <li><a href="#" className="hover:text-pink-400 transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-pink-400 transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-pink-400 transition-colors">Contact</a></li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-white"
-            >
-              <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
-              <div className="flex space-x-3 mb-6">
-                {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                  <a 
-                    key={i} 
-                    href="#" 
-                    className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center hover:bg-gradient-to-br from-cyan-500/10 to-pink-500/10 transition-colors"
-                  >
-                    <Icon className="w-5 h-5 text-gray-300 hover:text-white transition-colors" />
-                  </a>
-                ))}
-              </div>
-              <Button className="w-full bg-gradient-to-r from-cyan-500/10 to-pink-500/10 border border-gray-800 text-white hover:bg-gray-900 font-medium py-3 rounded-lg transition-all duration-300">
-                Subscribe to Newsletter
-              </Button>
-            </motion.div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center">
+      <div className="border-t border-gray-800 mt-12 pt-8 text-center">
             <p className="text-gray-500 text-sm">
               © {new Date().getFullYear()} NXT Balkan. All rights reserved.
             </p>
           </div>
-        </div>
-      </footer>
+        </div
     </div>
   );
 }
