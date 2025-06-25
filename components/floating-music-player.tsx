@@ -79,7 +79,38 @@ const sampleTracks: Track[] = [
     audioUrl: "/music/35stepeni.mp3",
   },
 ]
-
+const nemaSpavanja: Track[] = [
+  {
+    id: 1,
+    title: "Classy",
+    artist: "Corona",
+    album: "Classy",
+    duration: "2:13",
+    cover:
+      "https://images.genius.com/2cc485248f57864a510c384b6e335458.1000x1000x1.jpg",
+    audioUrl: "/music/classy.mp3",
+  },
+  {
+    id: 2,
+    title: "Naše Prvo Leto",
+    artist: "Roki, Buraz007",
+    album: "/",
+    duration: "2:31",
+    cover:
+      "https://i.ytimg.com/vi/LaVp0j98VXg/sddefault.jpg",
+    audioUrl: "/music/naseprvoleto.mp3",
+  },
+  {
+    id: 3,
+    title: "35 Stepeni",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:08",
+    cover:
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/35stepeni.mp3",
+  },
+]
 const defaultPlaylists: Playlist[] = [
   {
     id: 1,
@@ -89,8 +120,8 @@ const defaultPlaylists: Playlist[] = [
   },
   {
     id: 2,
-    name: "Favorites",
-    tracks: [],
+    name: "Nema Spavanja",
+    tracks: nemaSpavanja,
     isCustom: false,
   },
 ]
