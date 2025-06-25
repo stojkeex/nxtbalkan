@@ -100,15 +100,16 @@ export default function Index() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="mb-8 flex justify-center"
           >
-            <div className="w-[200px] h-[80px] sm:w-[300px] sm:h-[120px] relative">
-              <Image
-                src="/nxtbalkancolored2.png"
-                alt="NXT Balkan Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+            <div className="w-[260px] h-[100px] sm:w-[380px] sm:h-[140px] relative">
+           <Image
+            src="/nxtbalkancolored2.png"
+            alt="NXT Balkan Logo"
+           fill
+           className="object-contain"
+           priority
+            />
+           </div>
+
           </motion.div>
 
           <motion.h1
