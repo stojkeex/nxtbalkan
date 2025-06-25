@@ -295,7 +295,7 @@ export default function Index() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900 relative z-10">
+      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -379,7 +379,7 @@ export default function Index() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900 relative z-10">
+      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
