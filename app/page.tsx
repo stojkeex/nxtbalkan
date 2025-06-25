@@ -195,7 +195,7 @@ export default function Index() {
       </section>
 
       {/* Services Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900/50 relative z-10">
+      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
