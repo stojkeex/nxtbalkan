@@ -60,23 +60,23 @@ const sampleTracks: Track[] = [
   },
   {
     id: 2,
-    title: "CARNIVAL",
-    artist: "¥$, Ye, Ty Dolla $ign",
-    album: "VULTURES 1",
-    duration: "4:21",
+    title: "Naše Prvo Leto",
+    artist: "Roki, Buraz007",
+    album: "/",
+    duration: "2:31",
     cover:
-      "https://lh3.googleusercontent.com/Gv6RFeTy0GXha5O_ppV_D-kVlS7MG4vdXMhPfFY30pRaU3TFzDESG_0ORMo5BgdshhRaiZqP1lJfsa4",
-    audioUrl: "/music/CARNIVAL.mp3",
+      "https://i.ytimg.com/vi/LaVp0j98VXg/sddefault.jpg",
+    audioUrl: "/music/naseprvoleto.mp3",
   },
   {
     id: 3,
-    title: "Heartless",
-    artist: "Kanye West",
-    album: "808's and Heartbreak",
-    duration: "3:30",
+    title: "35 Stepeni",
+    artist: "Devito",
+    album: "Nema Spavanja",
+    duration: "3:08",
     cover:
-      "https://lh3.googleusercontent.com/exflW3HncdenT5gT0RFYTF4PfxoC2UIAjC3gdVO9troE_u8bW7g8tqvqas9x_hozALD5wu_rYbm0k1Jk",
-    audioUrl: "/music/Heartless.mp3",
+      "https://i.ytimg.com/vi/8G_EZydZchg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCgwAG5fmJ3vdvDl1Tzrf0aWjZU-Q",
+    audioUrl: "/music/35stepeni.mp3",
   },
 ]
 
