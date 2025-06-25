@@ -8,119 +8,154 @@ import {
   Star, 
   Globe, 
   Activity, 
-  Infinity, 
   ShieldCheck, 
   LayoutDashboard, 
-  Layers, 
+  Rocket,
   Flame, 
   Lightbulb, 
-  Rocket, 
+  Layers, 
+  Settings,
   Code, 
   Database, 
   Graph, 
   PenTool, 
   MessageSquare, 
-  Settings, 
   ChevronDown, 
-  ChevronUp, 
   Mail, 
   Phone, 
   MapPin, 
   Facebook, 
   Twitter, 
   Instagram, 
-  Linkedin, 
-  Youtube,
-  ArrowRight
+  Linkedin,
+  ArrowRight,
+  Award
 } from "lucide-react";
 
-export default function HomePage() {
+export default function Index() {
   const services = [
     {
       icon: Users,
       title: "Community Growth",
-      description: "Tailored strategies to build, engage and scale active digital communities.",
-      detail: "Our community growth services help brands foster meaningful connections with their audience through strategic engagement, content curation, and community management. We create ecosystems where brands and customers coexist and thrive together."
+      description: "Tailored strategies to build, engage and scale active digital communities."
     },
     {
       icon: TrendingUp,
       title: "Performance Marketing",
-      description: "ROI-focused marketing funnels that convert browsers into brand advocates.",
-      detail: "We design and implement high-converting marketing funnels that maximize your return on investment. Our data-driven approach ensures every marketing dollar works harder, smarter, and delivers measurable results."
+      description: "ROI-focused marketing funnels that convert browsers into brand advocates."
     },
     {
       icon: Star,
       title: "Creative Direction",
-      description: "Innovative campaigns with high-end visuals, storytelling and motion design.",
-      detail: "Our creative team crafts visually stunning and user-centric interfaces that captivate audiences and communicate your brand's unique story. From concept to execution, we bring your vision to life with cutting-edge design and production values."
+      description: "Innovative campaigns with high-end visuals, storytelling and motion design."
     },
     {
       icon: Globe,
       title: "Global Brand Strategy",
-      description: "Position your brand on the international stage with targeted messaging.",
-      detail: "We develop comprehensive global brand strategies that resonate across cultures and markets. Our approach ensures consistency while adapting to local nuances, helping your brand expand its reach and influence worldwide."
+      description: "Position your brand on the international stage with targeted messaging."
     },
     {
       icon: Activity,
       title: "Data Intelligence",
-      description: "Actionable insights and analytics that drive informed creative decisions.",
-      detail: "Our data intelligence services transform raw data into strategic insights. We use advanced analytics and visualization tools to identify patterns, predict trends, and guide your decision-making with confidence."
+      description: "Actionable insights and analytics that drive informed creative decisions."
     },
     {
       icon: LayoutDashboard,
       title: "UI/UX Design",
-      description: "Visually captivating and intuitive user experiences across all platforms.",
-      detail: "We create beautiful, functional interfaces that delight users and achieve business goals. Our user-centered design process ensures your digital products are not just aesthetically pleasing but also highly usable and effective."
+      description: "Visually captivating and intuitive user experiences across all platforms."
     },
     {
       icon: ShieldCheck,
       title: "Security & Trust",
-      description: "Top-tier digital protection and seamless compliance frameworks.",
-      detail: "In an increasingly complex digital landscape, we provide robust security solutions and compliance frameworks that protect your assets, build customer trust, and keep your operations running smoothly."
+      description: "Top-tier digital protection and seamless compliance frameworks."
     },
     {
       icon: Rocket,
       title: "Startup Acceleration",
-      description: "Go from idea to MVP and scale fast with our agile build & launch model.",
-      detail: "Our startup acceleration program helps visionary entrepreneurs transform ideas into market-ready products. We provide the expertise, resources, and support needed to navigate the challenging early stages of growth."
+      description: "Go from idea to MVP and scale fast with our agile build & launch model."
     }
   ];
-  const testimonials = [
+
+  const values = [
     {
-      name: "Mark Johnson",
-      role: "CEO, TechVision",
-      text: "NXT Balkan transformed our digital presence from good to exceptional. Their strategic approach and creative execution exceeded our expectations.",
-      company: "TechVision Inc."
+      icon: Lightbulb,
+      title: "Innovation",
+      description: "We embrace cutting-edge technologies and methodologies to deliver solutions that push boundaries and set new standards.",
+      color: "cyan"
     },
     {
-      name: "Sarah Chen",
-      role: "Marketing Director, Global Brands",
-      text: "Working with NXT Balkan has been a game-changer for our marketing efforts. Their data-driven insights have significantly improved our campaign performance.",
-      company: "Global Brands Ltd."
+      icon: Award,
+      title: "Excellence", 
+      description: "We set exceptionally high standards for ourselves and our work, constantly striving for perfection in every detail.",
+      color: "purple"
     },
     {
-      name: "Alex Rodriguez",
-      role: "Founder, StartupX",
-      text: "From concept to launch, NXT Balkan was our ideal partner. Their startup acceleration services helped us navigate the complex journey with confidence.",
-      company: "StartupX Ventures"
+      icon: Users,
+      title: "Collaboration",
+      description: "We believe in the power of collective intelligence and work closely with our clients to achieve shared goals.",
+      color: "amber"
     }
   ];
-  const technologies = [
-    { name: "Web Development", icon: Code },
-    { name: "Data Analytics", icon: Database },
-    { name: "AI Integration", icon: Graph },
-    { name: "Design Systems", icon: PenTool },
-    { name: "Content Strategy", icon: MessageSquare },
-    { name: "DevOps", icon: Settings }
+
+  const features = [
+    {
+      icon: Lightbulb,
+      title: "Future-Forward Thinking",
+      description: "We don't just react to trends; we anticipate them. Our forward-thinking approach ensures your digital presence remains relevant and impactful.",
+      color: "cyan"
+    },
+    {
+      icon: Layers,
+      title: "Holistic Integration",
+      description: "We connect all digital touchpoints to create a seamless ecosystem that works in harmony.",
+      color: "purple"
+    },
+    {
+      icon: Rocket,
+      title: "Accelerated Growth",
+      description: "We implement agile methodologies that accelerate your growth trajectory with rapid adaptation.",
+      color: "pink"
+    },
+    {
+      icon: Settings,
+      title: "Sustainable Solutions",
+      description: "We build solutions that evolve with your business needs, ensuring longevity and adaptability.",
+      color: "amber"
+    }
+  ];
+
+  const processSteps = [
+    {
+      icon: Lightbulb,
+      title: "Discovery",
+      description: "We dive deep into your business, goals, and audience to understand the core challenges and opportunities."
+    },
+    {
+      icon: LayoutDashboard,
+      title: "Strategy",
+      description: "We develop a comprehensive digital strategy that aligns with your business objectives and market position."
+    },
+    {
+      icon: PenTool,
+      title: "Design",
+      description: "Our design team creates visually stunning and user-centric interfaces that delight and engage."
+    },
+    {
+      icon: Rocket,
+      title: "Implementation",
+      description: "We bring your vision to life with cutting-edge technology and best practices in development."
+    }
   ];
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      {/* Hero Section with Parallax Effect */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 bg-gradient-to-tr from-[#0a0a0a] via-black to-[#050505] overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10"></div>
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 bg-gradient-to-tr from-black via-gray-900 to-black overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-pink-500/5"></div>
+        
+        {/* Floating Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 15 }).map((_, i) => (
             <motion.div
               key={i}
               className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"
@@ -129,139 +164,99 @@ export default function HomePage() {
                 height: `${Math.random() * 100 + 50}px`,
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.3
               }}
-              initial={{ scale: 0 }}
+              initial={{ scale: 0, opacity: 0 }}
               animate={{ 
                 scale: [1, 1.5, 1],
                 opacity: [0.1, 0.3, 0.1]
               }}
               transition={{
-                duration: Math.random() * 10 + 10,
+                duration: Math.random() * 8 + 8,
                 repeat: Infinity,
                 delay: Math.random() * 5
               }}
-            ></motion.div>
+            />
           ))}
         </div>
-        <motion.div
-          className="max-w-7xl mx-auto w-full text-center space-y-8"
-        >
-          <motion.img
-            src="/nxtbalkancolored2.png"
-            alt="NXT Balkan Logo"
+
+        <motion.div className="max-w-7xl mx-auto w-full text-center space-y-8 relative z-10">
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-            className="mx-auto w-64 sm:w-80 md:w-96 lg:w-[450px] drop-shadow-[0_0_30px_rgba(0,255,255,0.1)]"
-          />
+            transition={{ duration: 1.2, delay: 0.3 }}
+            className="mb-8"
+          >
+            <div className="w-64 sm:w-80 md:w-96 lg:w-[450px] h-32 mx-auto bg-gradient-to-r from-cyan-400 to-pink-400 rounded-lg flex items-center justify-center">
+              <span className="text-black text-2xl font-bold">NXT BALKAN</span>
+            </div>
+          </motion.div>
+
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.3, delay: 0.6, ease: "easeOut" }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extralight tracking-wide"
+            transition={{ duration: 1.3, delay: 0.6 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-wide"
           >
             Next-Gen <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Digital Leadership</span>
           </motion.h1>
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.9, ease: "easeOut" }}
+            transition={{ duration: 1.1, delay: 0.9 }}
             className="text-gray-300 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl"
           >
             We transform businesses into cutting-edge digital powerhouses that thrive on innovation, performance, and connection.
           </motion.p>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 1.2, ease: "easeOut" }}
+            transition={{ duration: 1.1, delay: 1.2 }}
             className="flex flex-col sm:flex-row justify-center items-center gap-4"
           >
-            <Button className="bg-black/30 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-10 py-5 rounded-full text-xl transition-all duration-300 shadow-lg hover:shadow-cyan-500/20 animate-pulse">
+            <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium px-10 py-6 rounded-full text-lg transition-all duration-300 shadow-lg">
               Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button variant="outline" className="bg-black/20 border border-white/10 hover:border-pink-400/40 text-white font-medium px-10 py-5 rounded-full text-xl transition-all duration-300">
+            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 font-medium px-10 py-6 rounded-full text-lg transition-all duration-300">
               Learn More <ChevronDown className="ml-2 w-5 h-5" />
             </Button>
           </motion.div>
         </motion.div>
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"
-              style={{
-                width: `${Math.random() * 100 + 50}px`,
-                height: `${Math.random() * 100 + 50}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.3
-              }}
-              initial={{ scale: 0 }}
-              animate={{ 
-                scale: [1, 1.5, 1],
-                opacity: [0.1, 0.3, 0.1]
-              }}
-              transition={{
-                duration: Math.random() * 10 + 10,
-                repeat: Infinity,
-                delay: Math.random() * 5
-              }}
-            ></motion.div>
-          ))}
-        </div>
       </section>
+
       {/* Values Section */}
-      <section className="py-32 px-6 sm:px-12 bg-black/90">
+      <section className="py-24 px-6 sm:px-12 bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-20"
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
               Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Values</span>
             </h2>
-            <p className="text-gray-400 text-lg sm:text-xl mt-4">
+            <p className="text-gray-400 text-lg sm:text-xl">
               Guiding principles that shape our approach and define our success.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {[
-              {
-                icon: Users,
-                title: "Innovation",
-                description: "We embrace cutting-edge technologies and methodologies to deliver solutions that push boundaries and set new standards.",
-                color: "from-cyan-500"
-              },
-              {
-                icon: Award,
-                title: "Excellence",
-                description: "We set exceptionally high standards for ourselves and our work, constantly striving for perfection in every detail.",
-                color: "from-purple-500"
-              },
-              {
-                icon: Users,
-                title: "Collaboration",
-                description: "We believe in the power of collective intelligence and work closely with our clients to achieve shared goals.",
-                color: "from-amber-500"
-              }
-            ].map((value, i) => (
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {values.map((value, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.9, delay: i * 0.1 }}
+                transition={{ duration: 0.8, delay: i * 0.1 }}
                 className="text-center"
               >
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-{value.color}/20 to-{value.color}/40 flex items-center justify-center flex-shrink-0">
-                  <value.icon className={`w-8 h-8 text-${value.color.split('-')[1]}-400 animate-pulse`} />
+                <div className={`w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-${value.color}-500/20 to-${value.color}-500/40 flex items-center justify-center`}>
+                  <value.icon className={`w-8 h-8 text-${value.color}-400`} />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">
+                <h3 className="text-xl font-semibold mb-4 text-white">
                   {value.title}
                 </h3>
                 <p className="text-gray-300">
@@ -272,61 +267,56 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* Services Section with Expandable Cards */}
-      <section className="py-32 px-6 sm:px-12 bg-black">
+
+      {/* Services Section */}
+      <section className="py-24 px-6 sm:px-12 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-20"
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
               Premium <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Services</span>
             </h2>
-            <p className="text-gray-400 text-lg sm:text-xl mt-4">
+            <p className="text-gray-400 text-lg sm:text-xl">
               Built for visionary brands shaping the future.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.9, delay: i * 0.1 }}
-                className="relative"
+                transition={{ duration: 0.8, delay: i * 0.1 }}
               >
-                <div className="Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:border-cyan-400/30 transition-all duration-300 rounded-3xl h-full shadow-xl">
-                  <CardContent className="p-8 text-center">
-                    <div className="mb-6 w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                      <service.icon className="w-8 h-8 text-cyan-400" />
+                <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:border-cyan-400/30 transition-all duration-300 rounded-2xl h-full">
+                  <CardContent className="p-6 text-center">
+                    <div className="mb-4 w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
+                      <service.icon className="w-6 h-6 text-cyan-400" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-4 text-white">
+                    <h3 className="text-lg font-semibold mb-3 text-white">
                       {service.title}
                     </h3>
-                    <p className="text-gray-300 text-base">
+                    <p className="text-gray-300 text-sm">
                       {service.description}
                     </p>
                   </CardContent>
-                </div>
+                </Card>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-      {/* Motion Divider */}
-      <motion.div
-        className="h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
-        initial={{ width: 0 }}
-        whileInView={{ width: "100%" }}
-        transition={{ duration: 1.5 }}
-      />
+
       {/* Innovation Section */}
-      <section className="py-28 px-6 sm:px-12 bg-black">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-24 px-6 sm:px-12 bg-gray-900">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -334,7 +324,7 @@ export default function HomePage() {
             transition={{ duration: 1 }}
             className="text-center mb-12"
           >
-            <Flame className="w-12 h-12 text-pink-500 mx-auto mb-6 animate-pulse" />
+            <Flame className="w-10 h-10 text-pink-500 mx-auto mb-4" />
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
               We <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">Reimagine</span> What's Possible
             </h2>
@@ -342,46 +332,20 @@ export default function HomePage() {
               Our mission is simple: create stunning, scalable, and strategic digital ecosystems.
             </p>
           </motion.div>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          >
-            {[
-              {
-                icon: Lightbulb,
-                title: "Future-Forward Thinking",
-                description: "We don't just react to trends; we anticipate them. Our forward-thinking approach ensures your digital presence remains relevant and impactful in an ever-changing landscape.",
-                color: "from-cyan-500"
-              },
-              {
-                icon: Layers,
-                title: "Holistic Integration",
-                description: "We connect all digital touchpoints to create a seamless ecosystem that works in harmony. From strategy to execution, we ensure every element supports your overarching goals.",
-                color: "from-purple-500"
-              },
-              {
-                icon: Rocket,
-                title: "Accelerated Growth",
-                description: "We implement agile methodologies that accelerate your growth trajectory. Our iterative approach allows for rapid adaptation and continuous improvement.",
-                color: "from-pink-500"
-              },
-              {
-                icon: Settings,
-                title: "Sustainable Solutions",
-                description: "We build solutions that evolve with your business needs. Our forward-thinking architecture ensures longevity and adaptability in a rapidly changing digital world.",
-                color: "from-amber-500"
-              }
-            ].map((item, i) => (
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {features.map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.9, delay: i * 0.2 }}
-                className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-xl"
+                transition={{ duration: 0.8, delay: i * 0.1 }}
+                className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-{item.color}/20 to-{item.color}/40 flex items-center justify-center flex-shrink-0">
-                    <item.icon className={`w-6 h- text-${item.color.split('-')[1]}-400 animate-pulse`} />
+                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br from-${item.color}-500/20 to-${item.color}-500/40 flex items-center justify-center flex-shrink-0`}>
+                    <item.icon className={`w-6 h-6 text-${item.color}-400`} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-3 text-white">
@@ -394,11 +358,12 @@ export default function HomePage() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
+
       {/* CTA Section */}
-      <section className="py-32 px-6 sm:px-12 bg-black text-center">
+      <section className="py-24 px-6 sm:px-12 bg-black text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -406,14 +371,12 @@ export default function HomePage() {
           transition={{ duration: 1 }}
           className="max-w-4xl mx-auto"
         >
-          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:border-pink-400/20 text-white font-medium px-10 py-14 relative z-10">
-            <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10 opacity-50"></div>
-            <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-gradient-to-br from-pink-500/10 to-cyan-500/10 opacity-50"></div>
+          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:border-pink-400/20 transition-all duration-300 rounded-2xl p-12 relative overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"></div>
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500/10 to-cyan-500/10"></div>
             
             <div className="relative z-10">
-              <div className="mb-6">
-                <Star className="w-10 h-10 mx-auto text-cyan-400 animate-spin-slow" />
-              </div>
+              <Star className="w-8 h-8 mx-auto text-cyan-400 mb-4" />
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
                 Build Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Digital Legacy</span>
               </h2>
@@ -421,74 +384,55 @@ export default function HomePage() {
                 We merge strategy, design, and technology into unforgettable digital experiences.
               </p>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                <Button className="bg-gradient-to-r from-cyan-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-10 py-5 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-cyan-500/20 animate-bounce">
-                  Let’s Talk <ArrowRight className="ml-2 w-5 h-5" />
+                <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium px-8 py-4 rounded-full text-lg transition-all duration-300">
+                  Let's Talk <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-                <Button variant="outline" className="bg-black/20 border border-white/10 hover:border-pink-400/40 text-white font-medium px-10 py-5 rounded-full text-lg transition-all duration-300">
-                  Request a Consultation <ChevronDown className="ml-2 w-5 h-5" />
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 font-medium px-8 py-4 rounded-full text-lg transition-all duration-300">
+                  Request Consultation <ChevronDown className="ml-2 w-5 h-5" />
                 </Button>
               </div>
             </div>
           </Card>
         </motion.div>
       </section>
+
       {/* Process Section */}
-      <section className="py-32 px-6 sm:px-12 bg-black">
+      <section className="py-24 px-6 sm:px-12 bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-20"
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
               Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Process</span>
             </h2>
-            <p className="text-gray-400 text-lg sm:text-xl mt-4">
+            <p className="text-gray-400 text-lg sm:text-xl">
               A structured yet flexible approach to deliver exceptional results.
             </p>
           </motion.div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Lightbulb,
-                title: "Discovery",
-                description: "We dive deep into your business, goals, and audience to understand the core challenges and opportunities."
-              },
-              {
-                icon: LayoutDashboard,
-                title: "Strategy",
-                description: "We develop a comprehensive digital strategy that aligns with your business objectives and market position."
-              },
-              {
-                icon: PenTool,
-                title: "Design",
-                description: "Our design team creates visually stunning and user-centric interfaces that delight and engage."
-              },
-              {
-                icon: Rocket,
-                title: "Implementation",
-                description: "We bring your vision to life with cutting-edge technology and best practices in development."
-              }
-            ].map((step, i) => (
+            {processSteps.map((step, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, delay: i * 0.2 }}
-                className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 shadow-xl"
+                className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6"
               >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center flex-shrink-0">
-                    <step.icon className="w-6 h-6 text-cyan-400" />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
+                    <step.icon className="w-5 h-5 text-cyan-400" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-white">
+                  <h3 className="text-lg font-semibold text-white">
                     {step.title}
                   </h3>
                 </div>
-                <p className="text-gray-300">
+                <p className="text-gray-300 text-sm">
                   {step.description}
                 </p>
               </motion.div>
@@ -496,36 +440,38 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       {/* Contact Section */}
-      <section className="py-32 px-6 sm:px-12 bg-black">
+      <section className="py-24 px-6 sm:px-12 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="text-center mb-20"
+            className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-light">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
               Get in <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Touch</span>
             </h2>
-            <p className="text-gray-400 text-lg sm:text-xl mt-4">
+            <p className="text-gray-400 text-lg sm:text-xl">
               Let's discuss how we can help you achieve your digital vision.
             </p>
           </motion.div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 shadow-xl"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-8"
             >
-              <h3 className="text-2xl font-semibold mb-6 text-white mb-6">Contact Information</h3>
+              <h3 className="text-2xl font-semibold mb-6 text-white">Contact Information</h3>
               
-              <div className="space-y-6 text-left">
+              <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
                     <MapPin className="w-6 h-6 text-cyan-400" />
                   </div>
                   <div>
@@ -535,7 +481,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center">
                     <Mail className="w-6 h-6 text-pink-400" />
                   </div>
                   <div>
@@ -545,7 +491,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
                     <Phone className="w-6 h-6 text-cyan-400" />
                   </div>
                   <div>
@@ -555,12 +501,13 @@ export default function HomePage() {
                 </div>
               </div>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.4 }}
-              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 shadow-xl"
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-8"
             >
               <h3 className="text-2xl font-semibold mb-6 text-white">Send Us a Message</h3>
               <form className="space-y-4">
@@ -569,7 +516,7 @@ export default function HomePage() {
                   <input
                     type="text"
                     id="name"
-                    className="w-full bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300 p-3"
+                    className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -578,7 +525,7 @@ export default function HomePage() {
                   <input
                     type="email"
                     id="email"
-                    className="w-full bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300 p-3"
+                    className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -587,11 +534,11 @@ export default function HomePage() {
                   <textarea
                     id="message"
                     rows={4}
-                    className="w-full bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300 p-3"
+                    className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 transition-all duration-300"
                     placeholder="Tell us about your project"
-                  ></textarea>
+                  />
                 </div>
-                <Button className="w-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10 hover:border-cyan-400/40 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300">
+                <Button className="w-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium py-3 rounded-lg transition-all duration-300">
                   Send Message <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </form>
@@ -599,31 +546,35 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       {/* Footer */}
-      <footer className="py-16 px-6 sm:px-12 bg-black/90 border-t border-white/5">
+      <footer className="py-16 px-6 sm:px-12 bg-gray-900 border-t border-white/10">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9 }}
+              transition={{ duration: 0.8 }}
               className="text-white"
             >
-              <img src="/nxtbalkancolored2.png" alt="NXT Balkan Logo" className="w-40 h-auto mb-4" />
-              <p className="text-gray-500 max-w-xs">
+              <div className="w-32 h-8 bg-gradient-to-r from-cyan-400 to-pink-400 rounded flex items-center justify-center mb-4">
+                <span className="text-black text-sm font-bold">NXT BALKAN</span>
+              </div>
+              <p className="text-gray-400 text-sm max-w-xs">
                 We transform businesses into cutting-edge digital powerhouses that thrive on innovation, performance, and connection.
               </p>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
               className="text-white"
             >
               <h3 className="text-lg font-semibold mb-4">Services</h3>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-400 text-sm">
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">Community Growth</a></li>
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">Performance Marketing</a></li>
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">Creative Direction</a></li>
@@ -631,15 +582,16 @@ export default function HomePage() {
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">Data Intelligence</a></li>
               </ul>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
               className="text-white"
             >
               <h3 className="text-lg font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-400 text-sm">
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">About Us</a></li>
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">Our Process</a></li>
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">Careers</a></li>
@@ -647,36 +599,38 @@ export default function HomePage() {
                 <li><a href="#" className="hover:text-cyan-400 transition-colors">Contact Us</a></li>
               </ul>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.6 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
               className="text-white"
             >
               <h3 className="text-lg font-semibold mb-4">Connect</h3>
-              <div className="flex space-x-4 mb-6">
-                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
-                  <Facebook className="w-5 h-5 text-gray-300 hover:text-cyan-400" />
+              <div className="flex space-x-3 mb-4">
+                <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
+                  <Facebook className="w-4 h-4 text-gray-300 hover:text-cyan-400" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
-                  <Twitter className="w-5 h-5 text-gray-300 hover:text-cyan-400" />
+                <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
+                  <Twitter className="w-4 h-4 text-gray-300 hover:text-cyan-400" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
-                  <Instagram className="w-5 h-5 text-gray-300 hover:text-cyan-400" />
+                <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
+                  <Instagram className="w-4 h-4 text-gray-300 hover:text-cyan-400" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
-                  <Linkedin className="w-5 h-5 text-gray-300 hover:text-cyan-400" />
+                <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-cyan-500/20 transition-colors">
+                  <Linkedin className="w-4 h-4 text-gray-300 hover:text-cyan-400" />
                 </a>
               </div>
-              <Button className="bg-black/10 border border-white/10 hover:border-cyan-400/40 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300">
-                Subscribe to Newsletter <ChevronDown className="ml-2 w-5 h-5" />
+              <Button className="bg-black/20 border border-white/10 hover:border-cyan-400/40 text-white font-medium px-4 py-2 rounded-lg text-sm transition-all duration-300">
+                Subscribe to Newsletter
               </Button>
             </motion.div>
           </div>
-          <div className="border-t border-white/5 mt-16 pt-8 text-center">
+
+          <div className="border-t border-white/10 mt-12 pt-8 text-center">
             <p className="text-gray-500 text-sm">
-              © 2023 NXT Balkan. All rights reserved.
+              © 2024 NXT Balkan. All rights reserved.
             </p>
           </div>
         </div>
