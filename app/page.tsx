@@ -485,11 +485,14 @@ export default function Index() {
         </div>
       </section>
 
-      <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-            <p className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} NXT Balkan. All rights reserved.
-            </p>
+        <footer className="py-8 px-6 sm:px-12 bg-black border-t border-gray-800 relative z-10">
+        <div className="max-w-7xl mx-auto text-center">
+         <p className="text-gray-500 text-sm">
+          © {new Date().getFullYear()} NXT Balkan. All rights reserved.
+           </p>
           </div>
+         </footer>
+
         </div
     </div>
   );
