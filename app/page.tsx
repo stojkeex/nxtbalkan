@@ -2,17 +2,18 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Users, TrendingUp, Star, Globe, Activity,
-  ShieldCheck, LayoutDashboard, Rocket, Flame,
-  Lightbulb, Layers, Settings, Code, Database,
-  Graph, PenTool, MessageSquare, ChevronDown,
-  Mail, Phone, MapPin, Facebook, Twitter,
+import { 
+  Users, TrendingUp, Star, Globe, Activity, 
+  ShieldCheck, LayoutDashboard, Rocket, Flame, 
+  Lightbulb, Layers, Settings, Code, Database, 
+  Graph, PenTool, MessageSquare, ChevronDown, 
+  Mail, Phone, MapPin, Facebook, Twitter, 
   Instagram, Linkedin, ArrowRight, Award
 } from "lucide-react";
 import Image from "next/image";
 
 export default function Index() {
+  // Data
   const services = [
     { icon: Users, title: "Community Growth", description: "Tailored strategies to build and scale active digital communities." },
     { icon: TrendingUp, title: "Performance Marketing", description: "ROI-focused marketing that converts browsers into buyers." },
@@ -24,6 +25,27 @@ export default function Index() {
     { icon: Rocket, title: "Startup Acceleration", description: "From idea to MVP with our agile launch model." }
   ];
 
+  const values = [
+    { icon: Lightbulb, title: "Innovation", description: "Cutting-edge solutions that push boundaries and set standards.", color: "cyan" },
+    { icon: Award, title: "Excellence", description: "Exceptionally high standards in every detail of our work.", color: "pink" },
+    { icon: Users, title: "Collaboration", description: "Collective intelligence to achieve shared goals.", color: "purple" }
+  ];
+
+  const features = [
+    { icon: Lightbulb, title: "Future Vision", description: "We anticipate trends to keep your digital presence impactful.", color: "cyan" },
+    { icon: Layers, title: "Holistic Approach", description: "Seamless integration of all digital touchpoints.", color: "pink" },
+    { icon: Rocket, title: "Rapid Growth", description: "Agile methodologies for accelerated adaptation.", color: "purple" },
+    { icon: Settings, title: "Sustainability", description: "Solutions that evolve with your business needs.", color: "cyan" }
+  ];
+
+  const processSteps = [
+    { icon: Lightbulb, title: "Discovery", description: "Deep dive into your business and audience needs." },
+    { icon: LayoutDashboard, title: "Strategy", description: "Comprehensive plan aligned with your objectives." },
+    { icon: PenTool, title: "Design", description: "Stunning, user-centric interfaces that engage." },
+    { icon: Rocket, title: "Build", description: "Implementation with cutting-edge technology." }
+  ];
+
+  // Animation variants
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -41,29 +63,29 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      {/* Background particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        {[...Array(25)].map((_, i) => (
+      {/* Floating particles background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"
             style={{
-              width: `${Math.random() * 80 + 50}px`,
-              height: `${Math.random() * 80 + 50}px`,
+              width: `${Math.random() * 100 + 50}px`,
+              height: `${Math.random() * 100 + 50}px`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: [1, 1.4, 1],
+            animate={{ 
+              scale: [1, 1.5, 1],
               opacity: [0.1, 0.3, 0.1],
-              x: `${Math.random() * 80 - 40}px`,
-              y: `${Math.random() * 80 - 40}px`
+              x: `${Math.random() * 100 - 50}px`,
+              y: `${Math.random() * 100 - 50}px`
             }}
             transition={{
               duration: Math.random() * 10 + 10,
               repeat: Infinity,
-              delay: Math.random() * 3
+              delay: Math.random() * 5
             }}
           />
         ))}
@@ -71,29 +93,30 @@ export default function Index() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 bg-black z-10">
-        <div className="max-w-7xl mx-auto w-full text-center space-y-10 relative z-10">
+        <div className="max-w-7xl mx-auto w-full text-center space-y-8 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="mb-10 flex justify-center"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mb-8 flex justify-center"
           >
             <div className="w-[380px] h-[200px] sm:w-[530px] sm:h-[250px] relative">
-              <Image
-                src="/nxtbalkancolored2.png"
-                alt="NXT Balkan Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+           <Image
+            src="/nxtbalkancolored2.png"
+            alt="NXT Balkan Logo"
+           fill
+           className="object-contain"
+           priority
+            />
+           </div>
+
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className="text-5xl sm:text-6xl md:text-7xl font-light tracking-tight leading-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight"
           >
             Next-Gen <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Digital</span> Innovation
           </motion.h1>
@@ -101,19 +124,19 @@ export default function Index() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="text-gray-400 max-w-3xl mx-auto text-xl sm:text-2xl"
+            transition={{ duration: 0.8, delay: 0.9 }}
+            className="text-gray-400 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl"
           >
-            Crafting bold, performant, emotion-driven digital experiences.
+            We craft digital experiences that blend innovation, performance, and connection to transform your business.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.3 }}
-            className="flex flex-col sm:flex-row justify-center items-center gap-5 pt-8"
+            transition={{ duration: 0.8, delay: 1.2 }}
+            className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-6"
           >
-            <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium px-8 py-5 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-pink-500/20">
+            <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium px-8 py-5 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-cyan-500/20">
               Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 font-medium px-8 py-5 rounded-full text-lg transition-all duration-300">
@@ -122,9 +145,11 @@ export default function Index() {
           </motion.div>
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-black z-0"></div>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black z-0"></div>
       </section>
-            {/* Values Section */}
+
+      {/* Values Section */}
       <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -134,26 +159,22 @@ export default function Index() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-light mb-4">
-              Core <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-semibold">Values</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Core <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Values</span>
             </h2>
             <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              The principles that drive our mission and relationships.
+              The principles that drive our work and define our relationships.
             </p>
           </motion.div>
 
-          <motion.div
+          <motion.div 
             variants={container}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-10"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
-            {[
-              { icon: Lightbulb, title: "Innovation", description: "Solutions that push boundaries.", color: "cyan" },
-              { icon: Award, title: "Excellence", description: "Attention to every detail.", color: "pink" },
-              { icon: Users, title: "Collaboration", description: "Unified teamwork fuels results.", color: "purple" }
-            ].map((value, i) => (
+            {values.map((value, i) => (
               <motion.div
                 key={i}
                 variants={item}
@@ -162,18 +183,20 @@ export default function Index() {
                 <div className={`w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-${value.color}-500/10 to-${value.color}-500/20 flex items-center justify-center`}>
                   <value.icon className={`w-8 h-8 text-${value.color}-400`} />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">
+                <h3 className="text-xl font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">
                   {value.title}
                 </h3>
-                <p className="text-gray-400">{value.description}</p>
+                <p className="text-gray-400">
+                  {value.description}
+                </p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Services / Expertise Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black via-gray-900/80 to-black relative z-10">
+      {/* Services Section */}
+      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900/50 relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -182,11 +205,11 @@ export default function Index() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-light mb-4">
-              Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-semibold">Expertise</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Expertise</span>
             </h2>
             <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              Specialized digital services to grow your brand.
+              Specialized services designed for digital transformation.
             </p>
           </motion.div>
 
@@ -198,14 +221,21 @@ export default function Index() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {services.map((service, i) => (
-              <motion.div key={i} variants={item}>
-                <Card className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-pink-500/30 transition-all duration-300 rounded-xl h-full group hover:shadow-lg hover:shadow-pink-500/10">
+              <motion.div
+                key={i}
+                variants={item}
+              >
+                <Card className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 rounded-xl h-full group hover:shadow-lg hover:shadow-cyan-500/10">
                   <CardContent className="p-6">
                     <div className="mb-4 w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/10 to-pink-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors">
                       <service.icon className="w-6 h-6 text-cyan-400 group-hover:text-pink-400 transition-colors" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-3 text-white">{service.title}</h3>
-                    <p className="text-gray-400 text-sm">{service.description}</p>
+                    <h3 className="text-lg font-semibold mb-3 text-white">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      {service.description}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -213,117 +243,95 @@ export default function Index() {
           </motion.div>
         </div>
       </section>
-            {/* Testimonials Section */}
+
+      {/* Features Section */}
       <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }} 
-            transition={{ duration: 0.8 }} 
-            className="text-4xl font-light text-white mb-16"
-          >
-            What <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-semibold">Clients Say</span>
-          </motion.h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[...Array(3)].map((_, i) => (
-              <motion.div 
-                key={i} 
-                initial={{ opacity: 0, y: 30 }} 
-                whileInView={{ opacity: 1, y: 0 }} 
-                viewport={{ once: true }} 
-                transition={{ duration: 0.5, delay: i * 0.2 }}
-                className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-6 rounded-xl"
-              >
-                <p className="text-gray-300 mb-4">"Their creativity and precision transformed our online presence!"</p>
-                <div className="text-pink-400 font-semibold">Client {i + 1}</div>
-                <div className="text-sm text-gray-500">Company {i + 1}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Tech Stack Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black via-gray-950 to-black">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-light text-white mb-12">
-            Powered By <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400 font-semibold">Technology</span>
-          </h2>
-          <div className="flex flex-wrap justify-center items-center gap-10 text-white text-3xl">
-            {['Next.js', 'Tailwind CSS', 'Vercel', 'Framer Motion', 'Lucide Icons', 'OpenAI', 'TypeScript'].map((tech, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, scale: 0.8 }} 
-                whileInView={{ opacity: 1, scale: 1 }} 
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="px-6 py-4 bg-gray-900/50 border border-gray-800 rounded-lg backdrop-blur-sm shadow-md hover:shadow-cyan-500/10 transition-all"
-              >
-                {tech}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Animated Stats Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black text-white text-center">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-light mb-16">
-            Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-semibold">Impact</span>
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-            {[{label: 'Clients', val: 120}, {label: 'Projects', val: 340}, {label: 'Awards', val: 15}, {label: 'Countries', val: 22}].map(({label, val}, i) => (
-              <motion.div 
-                key={i} 
-                initial={{ opacity: 0, y: 20 }} 
-                whileInView={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.5, delay: i * 0.2 }}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <Flame className="w-10 h-10 text-pink-500 mx-auto mb-4" />
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Why <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400 font-medium">Choose Us</span>
+            </h2>
+            <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto">
+              We combine strategy, creativity, and technology to deliver exceptional results.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            {features.map((item, i) => (
+              <motion.div
+                key={i}
+                variants={item}
+                className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all duration-300"
               >
-                <div className="text-5xl font-bold text-pink-400">{val}+</div>
-                <div className="mt-2 text-gray-400">{label}</div>
+                <div className="flex items-start gap-4">
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br from-${item.color}-500/10 to-${item.color}-500/20 flex items-center justify-center flex-shrink-0`}>
+                    <item.icon className={`w-6 h-6 text-${item.color}-400`} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-3 text-white">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-400">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Floating CTA Section */}
-      <section className="relative py-32 bg-gradient-to-br from-cyan-950 via-black to-pink-950 text-white overflow-hidden">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }} 
-          whileInView={{ opacity: 1, scale: 1 }} 
+      {/* CTA Section */}
+      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center relative z-10"
+          className="max-w-4xl mx-auto"
         >
-          <h2 className="text-5xl font-light mb-6">
-            Launch With <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400 font-semibold">Us</span>
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">Let’s craft the future together. Schedule your first consultation today.</p>
-          <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 px-10 py-5 text-lg font-medium rounded-full">
-            Book a Call
-          </Button>
+          <Card className="bg-gradient-to-br from-gray-900 to-black backdrop-blur-sm border border-gray-800 rounded-2xl p-8 sm:p-12 relative overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10 animate-pulse"></div>
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500/10 to-cyan-500/10 animate-pulse"></div>
+            
+            <div className="relative z-10 text-center">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10 flex items-center justify-center">
+                <Rocket className="w-8 h-8 text-cyan-400" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+                Ready to <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Elevate</span> Your Brand?
+              </h2>
+              <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+                Let's create something extraordinary together. Our team is ready to bring your vision to life.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-cyan-500/20">
+                  Get Started <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 font-medium px-8 py-4 rounded-full text-lg transition-all duration-300">
+                  Learn More
+                </Button>
+              </div>
+            </div>
+          </Card>
         </motion.div>
-        <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-24 h-24 rounded-full bg-gradient-to-br from-cyan-400/10 to-pink-500/10"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-              }}
-              animate={{ y: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
-              transition={{
-                duration: 10 + Math.random() * 10,
-                repeat: Infinity,
-                delay: Math.random() * 5
-              }}
-            />
-          ))}
-        </div>
       </section>
-            {/* Process Section */}
+
+      {/* Process Section */}
       <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -333,8 +341,8 @@ export default function Index() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-light mb-4">
-              Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-semibold">Process</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Process</span>
             </h2>
             <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
               A clear, structured approach to deliver exceptional results.
@@ -348,20 +356,15 @@ export default function Index() {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
-            {[
-              { icon: Lightbulb, title: "Discovery", description: "Deep dive into your business and audience needs." },
-              { icon: LayoutDashboard, title: "Strategy", description: "Comprehensive plan aligned with your objectives." },
-              { icon: PenTool, title: "Design", description: "Stunning, user-centric interfaces that engage." },
-              { icon: Rocket, title: "Build", description: "Implementation with cutting-edge technology." }
-            ].map((step, i) => (
+            {processSteps.map((step, i) => (
               <motion.div
                 key={i}
                 variants={item}
                 className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 hover:border-pink-400/30 transition-all duration-300 group"
               >
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/10 to-pink-500/10 flex items-center justify-center group-hover:bg-pink-500/20 transition-colors">
-                    <step.icon className="w-6 h-6 text-pink-400 group-hover:text-cyan-400 transition-colors" />
+                    <step.icon className="w-5 h-5 text-pink-400 group-hover:text-cyan-400 transition-colors" />
                   </div>
                   <h3 className="text-lg font-semibold text-white">
                     {step.title}
@@ -376,5 +379,183 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Let's <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Connect</span>
+            </h2>
+            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
+              Get in touch to discuss your project or learn more about our services.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-8"
+            >
+              <h3 className="text-2xl font-semibold mb-6 text-white">Contact Info</h3>
+              
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/10 to-cyan-500/20 flex items-center justify-center">
+                    <MapPin className="w-6 h-6 text-cyan-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-medium mb-1">Location</h4>
+                    <p className="text-gray-400">123 Digital Avenue, Tech District, NY 10001</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500/10 to-pink-500/20 flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-pink-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-medium mb-1">Email</h4>
+                    <p className="text-gray-400">contact@nxtbalkan.com</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/10 to-cyan-500/20 flex items-center justify-center">
+                    <Phone className="w-6 h-6 text-cyan-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-medium mb-1">Phone</h4>
+                    <p className="text-gray-400">+1 (555) 123-4567</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-8"
+            >
+              <h3 className="text-2xl font-semibold mb-6 text-white">Send a Message</h3>
+              <form className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-gray-400 mb-2">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all duration-300"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-gray-400 mb-2">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all duration-300"
+                    placeholder="Your email"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block text-gray-400 mb-2">Message</label>
+                  <textarea
+                    id="message"
+                    rows={4}
+                    className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all duration-300"
+                    placeholder="Tell us about your project"
+                  />
+                </div>
+                <Button className="w-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium py-3 rounded-lg transition-all duration-300">
+                  Send Message <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </form>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
 
+// Testimonials
+<section className="py-24 bg-black text-white text-center">
+  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">What Our Clients Say</h2>
+  <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl shadow hover:shadow-cyan-500/10 transition">
+      <p className="text-gray-400">"Their creativity and strategic vision helped us double our revenue in 6 months."</p>
+      <p className="mt-4 text-cyan-400 font-medium">— Elena D., TechFounder</p>
+    </div>
+    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl shadow hover:shadow-pink-500/10 transition">
+      <p className="text-gray-400">"The UX overhaul was a game changer. Engagement went through the roof."</p>
+      <p className="mt-4 text-pink-400 font-medium">— Mark T., Product Manager</p>
+    </div>
+    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl shadow hover:shadow-cyan-500/10 transition">
+      <p className="text-gray-400">"Best digital agency we've ever worked with. Period."</p>
+      <p className="mt-4 text-cyan-400 font-medium">— Amina R., COO</p>
+    </div>
+  </div>
+</section>
+
+// Partners
+<section className="py-24 bg-black text-white text-center">
+  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400">Trusted By</h2>
+  <div className="mt-12 flex flex-wrap items-center justify-center gap-12 max-w-5xl mx-auto">
+    <img src="/partner1.png" alt="Partner 1" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
+    <img src="/partner2.png" alt="Partner 2" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
+    <img src="/partner3.png" alt="Partner 3" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
+    <img src="/partner4.png" alt="Partner 4" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
+  </div>
+</section>
+
+// Awards
+<section className="py-24 bg-black text-white text-center">
+  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">Industry Recognition</h2>
+  <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
+      <p className="text-pink-400 font-bold text-xl mb-2">🏆 Best UX Design 2024</p>
+      <p className="text-gray-400 text-sm">European Design Conference</p>
+    </div>
+    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
+      <p className="text-cyan-400 font-bold text-xl mb-2">🏆 Digital Agency of the Year</p>
+      <p className="text-gray-400 text-sm">Startup World Awards</p>
+    </div>
+    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
+      <p className="text-pink-400 font-bold text-xl mb-2">🏆 Innovation in Tech</p>
+      <p className="text-gray-400 text-sm">Balkan Tech Summit</p>
+    </div>
+    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
+      <p className="text-cyan-400 font-bold text-xl mb-2">🏆 Creative Excellence</p>
+      <p className="text-gray-400 text-sm">Global Digital Awards</p>
+    </div>
+  </div>
+</section>
+
+// FAQ
+<section className="py-24 bg-black text-white text-center">
+  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">Frequently Asked Questions</h2>
+  <div className="mt-12 max-w-4xl mx-auto text-left space-y-8">
+    <div>
+      <h3 className="text-xl font-medium text-pink-400">How long does a typical project take?</h3>
+      <p className="text-gray-400 mt-2">Most projects take between 4 to 12 weeks depending on the scope and complexity.</p>
+    </div>
+    <div>
+      <h3 className="text-xl font-medium text-cyan-400">What industries do you specialize in?</h3>
+      <p className="text-gray-400 mt-2">We work with tech startups, e-commerce brands, fintech, education, and more.</p>
+    </div>
+    <div>
+      <h3 className="text-xl font-medium text-pink-400">Do you offer post-launch support?</h3>
+      <p className="text-gray-400 mt-2">Yes, we offer ongoing maintenance, performance optimization, and growth strategy.</p>
+    </div>
+  </div>
+</section>
+
+}
