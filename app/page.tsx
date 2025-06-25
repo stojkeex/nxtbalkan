@@ -10,6 +10,7 @@ import {
   Mail, Phone, MapPin, Facebook, Twitter, 
   Instagram, Linkedin, ArrowRight, Award
 } from "lucide-react";
+import Image from "next/image";
 
 export default function Index() {
   // Data
@@ -97,12 +98,16 @@ export default function Index() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mb-8"
+            className="mb-8 flex justify-center"
           >
-            <div className="inline-flex items-center gap-2">
-              <div className="w-2 h-8 bg-cyan-400 rounded-full"></div>
-              <div className="w-2 h-12 bg-pink-400 rounded-full"></div>
-              <div className="w-2 h-8 bg-cyan-400 rounded-full"></div>
+            <div className="w-[200px] h-[80px] sm:w-[300px] sm:h-[120px] relative">
+              <Image
+                src="/nxtbalkancolored2.png"
+                alt="NXT Balkan Logo"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
           </motion.div>
 
