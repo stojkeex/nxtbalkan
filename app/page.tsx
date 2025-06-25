@@ -100,7 +100,7 @@ export default function Index() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="mb-8 flex justify-center"
           >
-            <div className="w-[260px] h-[100px] sm:w-[380px] sm:h-[140px] relative">
+            <div className="w-[380px] h-[200px] sm:w-[530px] sm:h-[250px] relative">
            <Image
             src="/nxtbalkancolored2.png"
             alt="NXT Balkan Logo"
