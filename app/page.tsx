@@ -101,15 +101,14 @@ export default function Index() {
             className="mb-8 flex justify-center"
           >
             <div className="w-[380px] h-[200px] sm:w-[530px] sm:h-[250px] relative">
-           <Image
-            src="/nxtbalkancolored2.png"
-            alt="NXT Balkan Logo"
-           fill
-           className="object-contain"
-           priority
-            />
-           </div>
-
+              <Image
+                src="/nxtbalkancolored2.png"
+                alt="NXT Balkan Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </motion.div>
 
           <motion.h1
@@ -485,77 +484,193 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              What Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Clients Say</span>
+            </h2>
+            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
+              Hear from businesses that have transformed with our solutions.
+            </p>
+          </motion.div>
 
-// Testimonials
-<section className="py-24 bg-black text-white text-center">
-  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">What Our Clients Say</h2>
-  <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl shadow hover:shadow-cyan-500/10 transition">
-      <p className="text-gray-400">"Their creativity and strategic vision helped us double our revenue in 6 months."</p>
-      <p className="mt-4 text-cyan-400 font-medium">— Elena D., TechFounder</p>
-    </div>
-    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl shadow hover:shadow-pink-500/10 transition">
-      <p className="text-gray-400">"The UX overhaul was a game changer. Engagement went through the roof."</p>
-      <p className="mt-4 text-pink-400 font-medium">— Mark T., Product Manager</p>
-    </div>
-    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl shadow hover:shadow-cyan-500/10 transition">
-      <p className="text-gray-400">"Best digital agency we've ever worked with. Period."</p>
-      <p className="mt-4 text-cyan-400 font-medium">— Amina R., COO</p>
-    </div>
-  </div>
-</section>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl hover:shadow-cyan-500/10 hover:shadow-lg transition"
+            >
+              <p className="text-gray-400">"Their creativity and strategic vision helped us double our revenue in 6 months."</p>
+              <p className="mt-4 text-cyan-400 font-medium">— Elena D., TechFounder</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl hover:shadow-pink-500/10 hover:shadow-lg transition"
+            >
+              <p className="text-gray-400">"The UX overhaul was a game changer. Engagement went through the roof."</p>
+              <p className="mt-4 text-pink-400 font-medium">— Mark T., Product Manager</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl hover:shadow-cyan-500/10 hover:shadow-lg transition"
+            >
+              <p className="text-gray-400">"Best digital agency we've ever worked with. Period."</p>
+              <p className="mt-4 text-cyan-400 font-medium">— Amina R., COO</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-// Partners
-<section className="py-24 bg-black text-white text-center">
-  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400">Trusted By</h2>
-  <div className="mt-12 flex flex-wrap items-center justify-center gap-12 max-w-5xl mx-auto">
-    <img src="/partner1.png" alt="Partner 1" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
-    <img src="/partner2.png" alt="Partner 2" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
-    <img src="/partner3.png" alt="Partner 3" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
-    <img src="/partner4.png" alt="Partner 4" className="h-12 grayscale hover:grayscale-0 transition duration-300" />
-  </div>
-</section>
+      {/* Partners Section */}
+      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Trusted <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400 font-medium">By</span>
+            </h2>
+            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
+              We partner with industry leaders and innovative startups.
+            </p>
+          </motion.div>
 
-// Awards
-<section className="py-24 bg-black text-white text-center">
-  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">Industry Recognition</h2>
-  <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
-      <p className="text-pink-400 font-bold text-xl mb-2">🏆 Best UX Design 2024</p>
-      <p className="text-gray-400 text-sm">European Design Conference</p>
-    </div>
-    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
-      <p className="text-cyan-400 font-bold text-xl mb-2">🏆 Digital Agency of the Year</p>
-      <p className="text-gray-400 text-sm">Startup World Awards</p>
-    </div>
-    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
-      <p className="text-pink-400 font-bold text-xl mb-2">🏆 Innovation in Tech</p>
-      <p className="text-gray-400 text-sm">Balkan Tech Summit</p>
-    </div>
-    <div className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl">
-      <p className="text-cyan-400 font-bold text-xl mb-2">🏆 Creative Excellence</p>
-      <p className="text-gray-400 text-sm">Global Digital Awards</p>
-    </div>
-  </div>
-</section>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-wrap items-center justify-center gap-12"
+          >
+            <Image src="/partner1.png" alt="Partner 1" width={160} height={60} className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300" />
+            <Image src="/partner2.png" alt="Partner 2" width={160} height={60} className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300" />
+            <Image src="/partner3.png" alt="Partner 3" width={160} height={60} className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300" />
+            <Image src="/partner4.png" alt="Partner 4" width={160} height={60} className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300" />
+          </motion.div>
+        </div>
+      </section>
 
-// FAQ
-<section className="py-24 bg-black text-white text-center">
-  <h2 className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">Frequently Asked Questions</h2>
-  <div className="mt-12 max-w-4xl mx-auto text-left space-y-8">
-    <div>
-      <h3 className="text-xl font-medium text-pink-400">How long does a typical project take?</h3>
-      <p className="text-gray-400 mt-2">Most projects take between 4 to 12 weeks depending on the scope and complexity.</p>
-    </div>
-    <div>
-      <h3 className="text-xl font-medium text-cyan-400">What industries do you specialize in?</h3>
-      <p className="text-gray-400 mt-2">We work with tech startups, e-commerce brands, fintech, education, and more.</p>
-    </div>
-    <div>
-      <h3 className="text-xl font-medium text-pink-400">Do you offer post-launch support?</h3>
-      <p className="text-gray-400 mt-2">Yes, we offer ongoing maintenance, performance optimization, and growth strategy.</p>
-    </div>
-  </div>
-</section>
+      {/* Awards Section */}
+      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Industry <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Recognition</span>
+            </h2>
+            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
+              Our work has been recognized by leading industry organizations.
+            </p>
+          </motion.div>
 
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"
+          >
+            {[
+              { title: "🏆 Best UX Design 2024", description: "European Design Conference", color: "pink" },
+              { title: "🏆 Digital Agency of the Year", description: "Startup World Awards", color: "cyan" },
+              { title: "🏆 Innovation in Tech", description: "Balkan Tech Summit", color: "pink" },
+              { title: "🏆 Creative Excellence", description: "Global Digital Awards", color: "cyan" }
+            ].map((award, i) => (
+              <motion.div
+                key={i}
+                variants={item}
+                className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl"
+              >
+                <p className={`text-${award.color}-400 font-bold text-xl mb-2`}>{award.title}</p>
+                <p className="text-gray-400 text-sm">{award.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
+              Frequently <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Asked Questions</span>
+            </h2>
+            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
+              Answers to common questions about our services and process.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto space-y-8"
+          >
+            {[
+              { 
+                question: "How long does a typical project take?", 
+                answer: "Most projects take between 4 to 12 weeks depending on the scope and complexity.",
+                color: "pink"
+              },
+              { 
+                question: "What industries do you specialize in?", 
+                answer: "We work with tech startups, e-commerce brands, fintech, education, and more.",
+                color: "cyan"
+              },
+              { 
+                question: "Do you offer post-launch support?", 
+                answer: "Yes, we offer ongoing maintenance, performance optimization, and growth strategy.",
+                color: "pink"
+              }
+            ].map((faq, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="border-b border-gray-800 pb-6"
+              >
+                <h3 className={`text-xl font-medium text-${faq.color}-400`}>{faq.question}</h3>
+                <p className="text-gray-400 mt-2">{faq.answer}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
 }
