@@ -1,432 +1,428 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
-import {
-  Users,
-  Star,
-  Activity,
-  Rocket,
-  Globe,
-  ShieldCheck,
-  LayoutDashboard,
-  Lightbulb,
-  Flame,
-  MessageCircle,
-  Heart,
+// Since the request specified a single file, all components,
+// animations, and data are defined here. In a real-world project,
+// this would be split into multiple files for better organization.
+
+import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Users, Star, Activity, Rocket, Globe, ShieldCheck, LayoutDashboard, 
+  Lightbulb, Flame, ArrowRight
 } from "lucide-react";
 
-export default function AboutPage() {
-  const teamMembers = [
-    { name: "Ana Novak", role: "Founder & CEO", description: "Visionary leader driving innovation and growth.", imgSrc: "/team/ana.jpg" },
-    { name: "Marko Kranjc", role: "Creative Director", description: "Crafts stunning campaigns with storytelling & design.", imgSrc: "/team/marko.jpg" },
-    { name: "Sara Petrovic", role: "Head of Marketing", description: "Expert in scaling brands through data-driven strategies.", imgSrc: "/team/sara.jpg" },
-    { name: "Luka Zupan", role: "Lead Developer", description: "Builds scalable and performant digital platforms.", imgSrc: "/team/luka.jpg" },
-  ];
+//============================================================================
+// DATA STRUCTURES (in English)
+//============================================================================
 
-  const coreValues = [
-    {
-      icon: Users,
-      title: "Community First",
-      description:
-        "Building engaged, loyal communities that amplify your brand’s voice and foster genuine connections.",
-    },
-    {
-      icon: Activity,
-      title: "Data-Driven",
-      description:
-        "Using actionable insights and analytics to power strategic decisions and maximize ROI.",
-    },
-    {
-      icon: Star,
-      title: "Innovative",
-      description:
-        "Pushing creative boundaries to deliver standout, memorable digital experiences.",
-    },
-    {
-      icon: Rocket,
-      title: "Growth-Focused",
-      description:
-        "Helping startups and established brands scale rapidly with agile, proven strategies.",
-    },
-    {
-      icon: Globe,
-      title: "Global Reach",
-      description:
-        "Positioning brands on the international stage with tailored, impactful messaging.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Security & Trust",
-      description:
-        "Prioritizing digital protection and seamless compliance to safeguard your business.",
-    },
-    {
-      icon: LayoutDashboard,
-      title: "UI/UX Excellence",
-      description:
-        "Crafting intuitive and visually captivating user experiences across platforms.",
-    },
-    {
-      icon: Lightbulb,
-      title: "Creative Direction",
-      description:
-        "Leading innovative campaigns blending storytelling, motion design, and visual flair.",
-    },
-  ];
+const teamMembers = [
+    { name: "Ana Novak", role: "Founder & CEO", description: "Visionary leader driving innovation and growth.", imgSrc: "https://placehold.co/200x200/1e1b4b/ffffff?text=AN" },
+    { name: "Marko Kranjc", role: "Creative Director", description: "Crafts stunning campaigns with storytelling & design.", imgSrc: "https://placehold.co/200x200/1e1b4b/ffffff?text=MK" },
+    { name: "Sara Petrovic", role: "Head of Marketing", description: "Expert in scaling brands through data-driven strategies.", imgSrc: "https://placehold.co/200x200/1e1b4b/ffffff?text=SP" },
+    { name: "Luka Zupan", role: "Lead Developer", description: "Builds scalable and performant digital platforms.", imgSrc: "https://placehold.co/200x200/1e1b4b/ffffff?text=LZ" },
+];
 
-  const testimonials = [
-    {
-      name: "Eva K.",
-      role: "CEO, InnovateX",
-      quote:
-        "NXT Balkan transformed our digital presence — their team is creative, reliable, and results-driven.",
-      imgSrc: "/testimonials/eva.jpg",
-    },
-    {
-      name: "Matej S.",
-      role: "Founder, ScaleUp",
-      quote:
-        "The strategic insights and execution blew us away. Our growth accelerated in months, not years.",
-      imgSrc: "/testimonials/matej.jpg",
-    },
-    {
-      name: "Jana P.",
-      role: "CMO, BrightTech",
-      quote:
-        "A true partner in creativity and data-driven marketing — couldn’t recommend more.",
-      imgSrc: "/testimonials/jana.jpg",
-    },
-  ];
+const coreValues = [
+    { icon: Users, title: "Community First", description: "Building engaged, loyal communities that amplify your brand’s voice and foster genuine connections." },
+    { icon: Activity, title: "Data-Driven", description: "Using actionable insights and analytics to power strategic decisions and maximize ROI." },
+    { icon: Star, title: "Innovative", description: "Pushing creative boundaries to deliver standout, memorable digital experiences." },
+    { icon: Rocket, title: "Growth-Focused", description: "Helping startups and established brands scale rapidly with agile, proven strategies." },
+];
 
-  const partners = [
-    { name: "TechWave", logo: "/partners/techwave.png" },
-    { name: "FutureLabs", logo: "/partners/futurelabs.png" },
-    { name: "GlobalReach", logo: "/partners/globalreach.png" },
-    { name: "BrightSolutions", logo: "/partners/brightsolutions.png" },
-  ];
+const partners = [
+    { name: "TechWave", logo: "https://placehold.co/160x60/ffffff/000000?text=TechWave" },
+    { name: "FutureLabs", logo: "https://placehold.co/160x60/ffffff/000000?text=FutureLabs" },
+    { name: "GlobalReach", logo: "https://placehold.co/160x60/ffffff/000000?text=GlobalReach" },
+    { name: "BrightSolutions", logo: "https://placehold.co/160x60/ffffff/000000?text=BrightSolutions" },
+];
 
-  const stories = [
-    {
-      title: "How We Helped Scale a Startup to Series A",
-      excerpt:
-        "Discover the strategy and execution behind a rapid growth story that took a startup from idea to funding in less than a year.",
-      imgSrc: "/stories/startup-scale.jpg",
-    },
-    {
-      title: "Rebranding a Global Tech Leader",
-      excerpt:
-        "See how we crafted a fresh brand identity and digital presence for an international tech company.",
-      imgSrc: "/stories/rebranding.jpg",
-    },
-    {
-      title: "Driving Engagement Through Community Building",
-      excerpt:
-        "Learn about our approach to creating and nurturing digital communities that boost loyalty and sales.",
-      imgSrc: "/stories/community-building.jpg",
-    },
-  ];
 
-  const cardVariants = {
-    offscreen: { opacity: 0, y: 30, scale: 0.97 },
-    onscreen: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { type: "spring", bounce: 0.25, duration: 0.7 },
-    },
-    hover: {
-      scale: 1.02,
-      y: -3,
-      transition: { duration: 0.25, ease: "easeInOut" },
-      boxShadow: "0 10px 20px rgba(255, 105, 180, 0.25)", // mehkejša roza senca
-      borderRadius: "2rem", // poudarimo ovalnost tudi med hoverjem
-    },
-  };
+//============================================================================
+// HELPER COMPONENTS (reused from HomePage for consistency)
+//============================================================================
 
-  return (
-    <div
-      className="min-h-screen bg-black text-white px-6 sm:px-12 pt-40 pb-16 max-w-7xl mx-auto space-y-28"
-      // pt-40 = več prostora od vrha, da ni blizu navbarja
-    >
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="text-center max-w-3xl mx-auto"
-      >
-        <h1 className="text-5xl sm:text-6xl font-extralight tracking-wide mb-4">
-          About{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">
-            NXT Balkan
-          </span>
-        </h1>
-        <p className="text-gray-400 text-lg leading-relaxed max-w-xl mx-auto">
-          We are a pioneering digital agency dedicated to transforming brands into next-generation leaders through innovation, creativity, and technology.
-        </p>
-      </motion.div>
+// Starry Sky Background Component
+const StarrySky = () => {
+    const stars = useMemo(() => {
+        return Array.from({ length: 150 }).map((_, i) => ({
+            id: i,
+            x: `${Math.random() * 100}%`,
+            y: `${Math.random() * 100}%`,
+            size: `${Math.random() * 2 + 1}px`,
+            duration: Math.random() * 2 + 2,
+            delay: Math.random() * 3,
+        }));
+    }, []);
 
-      {/* Our Journey */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
+    return (
+        <div className="absolute inset-0 z-0">
+            {stars.map(star => (
+                <motion.div
+                    key={star.id}
+                    className="absolute rounded-full bg-white"
+                    style={{
+                        top: star.y,
+                        left: star.x,
+                        width: star.size,
+                        height: star.size,
+                    }}
+                    animate={{
+                        opacity: [0.3, 1, 0.3],
+                    }}
+                    transition={{
+                        duration: star.duration,
+                        delay: star.delay,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                />
+            ))}
+            <ShootingStar />
+        </div>
+    );
+};
+
+// Shooting Star Component
+const ShootingStar = () => {
+    const [isAnimating, setIsAnimating] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsAnimating(true);
+            setTimeout(() => setIsAnimating(false), 4500); 
+        }, 15000); 
+
+        return () => clearInterval(interval);
+    }, []);
+    
+    const path = useMemo(() => {
+        const startX = Math.random() * 100;
+        const startY = -10;
+        const endX = startX - (Math.random() * 40 + 20);
+        const endY = 110;
+        return { startX, startY, endX, endY };
+    }, [isAnimating]);
+
+    return (
+        <AnimatePresence>
+            {isAnimating && (
+                <motion.div
+                    className="absolute rounded-full bg-white" 
+                    style={{
+                        top: `${path.startY}%`,
+                        left: `${path.startX}%`,
+                        width: '3px', 
+                        height: '3px',
+                        filter: 'blur(1px)', 
+                    }}
+                    initial={{ x: 0, y: 0, opacity: 0 }}
+                    animate={{ 
+                        x: `calc(${path.endX - path.startX}vw)`, 
+                        y: `calc(${path.endY - path.startY}vh)`,
+                        opacity: [0, 1, 0.5, 0] 
+                    }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 4.5, ease: [0.6, -0.05, 0.01, 0.99] }}
+                />
+            )}
+        </AnimatePresence>
+    );
+}
+
+// Celestial Bodies Component
+const CelestialBodies = () => {
+    const bodies = useMemo(() => [
+        { 
+            id: 'galaxy', 
+            style: { top: '15%', left: '10%', width: '200px', height: '200px', opacity: 0.1, filter: 'blur(10px)' },
+            animate: { rotate: 360, x: 50, y: 20 },
+            transition: { duration: 240, repeat: Infinity, ease: "linear", repeatType: "mirror" },
+            svg: (
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 50,50 m -40,0 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0" fill="none" stroke="white" strokeWidth="1"/>
+                    <path d="M 50,50 m -20,0 a 20,20 0 1,0 40,0 a 20,20 0 1,0 -40,0" fill="white"/>
+                    <path d="M 50,50 m -30,0 a 30,30 0 0,1 0,60" fill="none" stroke="white" strokeWidth="1" strokeDasharray="2 2"/>
+                </svg>
+            )
+        },
+        { 
+            id: 'planet1', 
+            style: { top: '70%', left: '80%', width: '80px', height: '80px', opacity: 0.2, filter: 'blur(3px)' },
+            animate: { x: -100, y: -50 },
+            transition: { duration: 180, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+            svg: (
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="rgba(255, 255, 255, 0.3)"/>
+                    <ellipse cx="50" cy="50" rx="48" ry="20" fill="none" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2" transform="rotate(-30 50 50)"/>
+                </svg>
+            )
+        },
+        { 
+            id: 'moon', 
+            style: { top: '30%', left: '75%', width: '25px', height: '25px', opacity: 0.4 },
+            animate: { x: -40, y: 60 },
+            transition: { duration: 150, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+            svg: (
+                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="50" fill="rgba(200, 200, 200, 0.8)"/>
+                    <circle cx="35" cy="35" r="10" fill="rgba(255, 255, 255, 0.3)"/>
+                    <circle cx="65" cy="60" r="5" fill="rgba(255, 255, 255, 0.2)"/>
+                 </svg>
+            )
+        }
+    ], []);
+
+    return(
+        <>
+            {bodies.map(body => (
+                <motion.div
+                    key={body.id}
+                    className="absolute will-change-transform"
+                    style={body.style}
+                    animate={body.animate}
+                    transition={body.transition}
+                >
+                    {body.svg}
+                </motion.div>
+            ))}
+        </>
+    )
+}
+
+const SectionHeader = ({ title, subtitle, gradientText }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
-        className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-10 sm:p-14 shadow-lg max-w-4xl mx-auto text-center"
-      >
-        <h2 className="text-4xl font-light mb-6">
-          Our{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
-            Journey
-          </span>
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
+    >
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-4">
+            {title} <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">{gradientText}</span>
         </h2>
-        <p className="text-gray-300 text-base leading-relaxed mb-4 max-w-xl mx-auto">
-          Founded in 2017, NXT Balkan has evolved from a small startup to a digital powerhouse, collaborating with visionary brands worldwide. Our expertise spans community growth, performance marketing, creative direction, global brand strategy, and more.
-        </p>
-        <p className="text-gray-300 text-base leading-relaxed mb-4 max-w-xl mx-auto">
-          We build strong relationships and craft innovative solutions that drive real impact, helping businesses thrive in an ever-changing digital landscape.
-        </p>
-        <p className="text-gray-300 text-base leading-relaxed max-w-xl mx-auto">
-          Our passion lies in merging creativity with data-driven strategies, delivering scalable, engaging, and memorable digital experiences that resonate with audiences.
-        </p>
-      </motion.section>
+        <p className="text-base md:text-xl text-gray-400">{subtitle}</p>
+    </motion.div>
+);
 
-      {/* Vision & Mission (dvostolpec) */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-10 shadow-lg flex flex-col items-center text-center"
-        >
-          <Flame className="w-12 h-12 text-pink-500 mb-6" />
-          <h3 className="text-3xl font-light mb-4">
-            Our{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
-              Vision
-            </span>
-          </h3>
-          <p className="text-gray-300 leading-relaxed max-w-md">
-            To be the premier digital transformation partner that empowers brands globally to innovate, grow, and inspire with cutting-edge technology and creativity.
-          </p>
-        </motion.div>
+//============================================================================
+// MAIN "ABOUT US" PAGE COMPONENT
+//============================================================================
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-10 shadow-lg flex flex-col items-center text-center"
-        >
-          <Lightbulb className="w-12 h-12 text-cyan-400 mb-6" />
-          <h3 className="text-3xl font-light mb-4">
-            Our{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">
-              Mission
-            </span>
-          </h3>
-          <p className="text-gray-300 leading-relaxed max-w-md">
-            To deliver innovative, data-driven digital solutions that help businesses scale, engage audiences, and build lasting digital legacies.
-          </p>
-        </motion.div>
-      </section>
+export default function AboutPage() {
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 } 
+        }
+    };
 
-      {/* Core Values */}
-      <section>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-4xl text-center font-light mb-14"
-        >
-          Our{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">
-            Core Values
-          </span>
-        </motion.h2>
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        show: { 
+            opacity: 1, 
+            y: 0, 
+            transition: { duration: 0.6, ease: "easeOut" }
+        }
+    };
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          {coreValues.map(({ icon: Icon, title, description }, i) => (
-            <motion.div
-              key={i}
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true }}
-              whileHover="hover"
-              variants={cardVariants}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-7 shadow-lg h-full flex flex-col items-center text-center cursor-pointer select-none">
-                <div className="mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/30 to-pink-500/30">
-                  <Icon className="w-8 h-8 text-cyan-400" />
+    return (
+        <div className="bg-black text-white font-sans overflow-x-hidden antialiased">
+            
+            {/* Background elements from HomePage */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <StarrySky />
+                <CelestialBodies />
+                <motion.div
+                    className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
+                    animate={{ x: [0, 100, -50, 0], y: [0, -50, 100, 0] }}
+                    transition={{ duration: 40, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" }}
+                />
+                <motion.div
+                    className="absolute bottom-[-20%] right-[-20%] w-[700px] h-[700px] bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
+                    animate={{ x: [0, -100, 50, 0], y: [0, 50, -100, 0] }}
+                    transition={{ duration: 45, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" }}
+                />
+            </div>
+            
+            <main className="relative z-10 pt-24 md:pt-32 pb-16 md:pb-24">
+                {/* Header Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="text-center px-6"
+                >
+                    <h1 className="text-4xl sm:text-6xl md:text-7xl font-light tracking-tighter">
+                        The Story of <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">NXT Balkan</span>
+                    </h1>
+                    <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
+                        We are a pioneering digital agency dedicated to transforming brands into next-generation leaders through innovation, creativity, and technology.
+                    </p>
+                </motion.div>
+
+                {/* Main Content Sections */}
+                <div className="mt-20 md:mt-32 space-y-20 md:space-y-32 px-6">
+                    {/* Our Journey Section */}
+                    <motion.section 
+                        variants={itemVariants}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true, amount: 0.3 }}
+                        className="max-w-4xl mx-auto bg-gray-900/50 border border-gray-800 rounded-3xl p-8 md:p-12 text-center backdrop-blur-sm"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-light mb-6">
+                            Our <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400">Journey</span>
+                        </h2>
+                        <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto">
+                            Founded in 2017, NXT Balkan has evolved from a small startup to a digital powerhouse. Our passion lies in merging creativity with data-driven strategies to deliver scalable, engaging, and memorable digital experiences that resonate with audiences worldwide.
+                        </p>
+                    </motion.section>
+
+                    {/* Vision & Mission Section */}
+                    <section className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                        <motion.div
+                            variants={itemVariants}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, amount: 0.3 }}
+                            className="bg-gray-900/50 border border-gray-800 rounded-3xl p-8 md:p-10 flex flex-col items-center text-center backdrop-blur-sm"
+                        >
+                            <Flame className="w-12 h-12 text-pink-500 mb-6"/>
+                            <h3 className="text-2xl md:text-3xl font-light mb-4">Our Vision</h3>
+                            <p className="text-gray-400 leading-relaxed">
+                                To be the premier digital transformation partner that empowers brands globally to innovate, grow, and inspire.
+                            </p>
+                        </motion.div>
+                        <motion.div
+                            variants={itemVariants}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, amount: 0.3 }}
+                            className="bg-gray-900/50 border border-gray-800 rounded-3xl p-8 md:p-10 flex flex-col items-center text-center backdrop-blur-sm"
+                        >
+                            <Lightbulb className="w-12 h-12 text-cyan-400 mb-6"/>
+                            <h3 className="text-2xl md:text-3xl font-light mb-4">Our Mission</h3>
+                            <p className="text-gray-400 leading-relaxed">
+                                To deliver innovative, data-driven digital solutions that help businesses scale and build lasting digital legacies.
+                            </p>
+                        </motion.div>
+                    </section>
+                    
+                    {/* Core Values Section */}
+                    <section>
+                        <SectionHeader title="Our Core" gradientText="Values" subtitle="The principles that drive our work and define our relationships."/>
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, amount: 0.2 }}
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto"
+                        >
+                            {coreValues.map((value, i) => (
+                                <motion.div
+                                    key={i}
+                                    variants={itemVariants}
+                                    className="group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 h-full transition-all duration-300 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2 will-change-transform text-center"
+                                >
+                                    <div className="relative z-10 flex flex-col items-center">
+                                        <div className="mb-6 w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                                            <value.icon className="w-7 h-7 text-cyan-400" />
+                                        </div>
+                                        <h3 className="text-xl font-semibold mb-3 text-white">
+                                            {value.title}
+                                        </h3>
+                                        <p className="text-gray-400 text-sm">
+                                            {value.description}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </section>
+
+                    {/* Team Section */}
+                    <section>
+                        <SectionHeader title="Meet the" gradientText="Team" subtitle="The architects of digital excellence. A blend of creativity, strategy, and technical prowess." />
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, amount: 0.2 }}
+                            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto"
+                        >
+                            {teamMembers.map((member, i) => (
+                                <motion.div
+                                    key={i}
+                                    variants={itemVariants}
+                                    className="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 text-center will-change-transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-pink-500/10"
+                                >
+                                    <img
+                                        src={member.imgSrc}
+                                        alt={member.name}
+                                        className="w-32 h-32 rounded-full mx-auto mb-4 border-2 border-cyan-400/50"
+                                        loading="lazy"
+                                    />
+                                    <h3 className="text-xl font-semibold text-white">{member.name}</h3>
+                                    <p className="text-cyan-400 mb-2">{member.role}</p>
+                                    <p className="text-gray-400 text-sm">{member.description}</p>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </section>
+                    
+                    {/* Partners Section */}
+                    <section>
+                         <SectionHeader title="Trusted By" gradientText="Innovators" subtitle="We are proud to collaborate with industry leaders and visionary startups." />
+                         <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 1 }}
+                            className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8 max-w-4xl mx-auto"
+                         >
+                            {partners.map((partner, i) => (
+                                <motion.div
+                                    key={i}
+                                    whileHover={{ scale: 1.1 }}
+                                    className="filter grayscale hover:grayscale-0 transition-all duration-300"
+                                >
+                                    <img src={partner.logo} alt={partner.name} className="h-10 md:h-12" loading="lazy" />
+                                </motion.div>
+                            ))}
+                         </motion.div>
+                    </section>
+
+                    {/* CTA Section */}
+                    <section id="contact" className="pt-12">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.8 }}
+                            className="max-w-5xl mx-auto bg-gradient-to-br from-cyan-500/10 via-black to-pink-500/10 border border-gray-800 rounded-3xl p-8 sm:p-16 text-center relative overflow-hidden"
+                        >
+                            <div className="absolute -top-20 -left-20 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl" />
+                            <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-pink-500/10 rounded-full blur-3xl" />
+                            <div className="relative z-10">
+                                <h2 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-6">
+                                    Ready to build the <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">future?</span>
+                                </h2>
+                                <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+                                    Let's connect and discuss how we can elevate your brand to the next level.
+                                </p>
+                                <motion.button
+                                    whileHover={{ scale: 1.05, boxShadow: '0px 0px 30px rgba(217, 70, 239, 0.5)' }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="bg-gradient-to-r from-pink-500 to-cyan-500 text-white font-semibold px-10 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl transition-all duration-300 shadow-lg"
+                                >
+                                    Schedule a Consultation
+                                </motion.button>
+                            </div>
+                        </motion.div>
+                    </section>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
-                <p className="text-gray-300 text-sm">{description}</p>
-              </Card>
-            </motion.div>
-          ))}
+            </main>
         </div>
-      </section>
-
-      {/* Team Section */}
-      <section>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-4xl text-center font-light mb-14"
-        >
-          Meet the{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
-            Team
-          </span>
-        </motion.h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
-          {teamMembers.map(({ name, role, description, imgSrc }, i) => (
-            <motion.div
-              key={i}
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true }}
-              whileHover="hover"
-              variants={cardVariants}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-6 shadow-lg cursor-pointer select-none flex flex-col items-center text-center">
-                <img
-                  src={imgSrc}
-                  alt={name}
-                  className="rounded-full w-32 h-32 object-cover mb-4 border-2 border-cyan-400"
-                  loading="lazy"
-                />
-                <h3 className="text-lg font-semibold text-white">{name}</h3>
-                <p className="text-cyan-400 text-sm font-medium mb-2">{role}</p>
-                <p className="text-gray-300 text-xs">{description}</p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Stories Section */}
-      <section>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-4xl text-center font-light mb-14"
-        >
-          Success{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
-            Stories
-          </span>
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
-          {stories.map(({ title, excerpt, imgSrc }, i) => (
-            <motion.div
-              key={i}
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true }}
-              whileHover="hover"
-              variants={cardVariants}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-5 shadow-lg cursor-pointer select-none flex flex-col">
-                <img
-                  src={imgSrc}
-                  alt={title}
-                  className="rounded-xl mb-5 object-cover h-48 w-full"
-                  loading="lazy"
-                />
-                <h3 className="text-lg font-semibold mb-2 text-white">{title}</h3>
-                <p className="text-gray-300 text-sm flex-grow">{excerpt}</p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Partners Section */}
-      <section>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-4xl text-center font-light mb-14"
-        >
-          Our{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">
-            Partners
-          </span>
-        </motion.h2>
-
-        <div className="flex flex-wrap justify-center gap-14 max-w-5xl mx-auto items-center">
-          {partners.map(({ name, logo }, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.85 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="w-36 h-20 flex items-center justify-center filter grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
-              title={name}
-            >
-              <img src={logo} alt={name} className="max-h-16 object-contain" loading="lazy" />
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="text-4xl text-center font-light mb-14"
-        >
-          What Our{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-cyan-400 font-medium">
-            Clients Say
-          </span>
-        </motion.h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-7xl mx-auto">
-          {testimonials.map(({ name, role, quote, imgSrc }, i) => (
-            <motion.div
-              key={i}
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true }}
-              whileHover="hover"
-              variants={cardVariants}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Card className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-[2rem] p-7 shadow-lg cursor-pointer select-none flex flex-col items-center text-center">
-                <img
-                  src={imgSrc}
-                  alt={name}
-                  className="rounded-full w-20 h-20 object-cover mb-4 border-2 border-pink-500"
-                  loading="lazy"
-                />
-                <p className="text-gray-300 italic mb-4">"{quote}"</p>
-                <h4 className="text-white font-semibold">{name}</h4>
-                <p className="text-pink-500 text-sm">{role}</p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-    </div>
-  );
+    );
 }
