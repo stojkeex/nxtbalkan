@@ -1,25 +1,27 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Navigation } from "@/components/navigation";
-import { ThemeProvider } from "@/components/theme-provider";
-import { CustomCursor } from "@/components/custom-cursor";
-import { LoadingScreen } from "@/components/loading-screen";
-import { NotificationToasts } from "@/components/notification-toasts";
-import { LiveSupportSystem } from "@/components/live-support-system";
-import { ScrollToTop } from "@/components/scroll-to-top";
-import Script from "next/script";
-import { PremiumOffer } from "@/components/PremiumOffer";
-import FloatingMusicPlayer from "@/components/floating-music-player";
-import { PushNotificationManager } from "@/components/push-notification-manager";
-import { IOSPWAPrompt } from "@/components/ios-pwa-prompt";
-import { motion } from "framer-motion";
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import { Navigation } from "@/components/navigation"
+import { ThemeProvider } from "@/components/theme-provider"
+import { CustomCursor } from "@/components/custom-cursor"
+import { LoadingScreen } from "@/components/loading-screen"
+import { NotificationToasts } from "@/components/notification-toasts"
+import { LiveSupportSystem } from "@/components/live-support-system"
+import { ScrollToTop } from "@/components/scroll-to-top"
+import Script from "next/script"
+import Head from "next/head"
+import { PremiumOffer } from "@/components/PremiumOffer"
+import FloatingMusicPlayer from "@/components/floating-music-player"
+import { PushNotificationManager } from "@/components/push-notification-manager"
+import { IOSPWAPrompt } from "@/components/ios-pwa-prompt"
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "NXT Balkan - Revolutionizing Balkan Music",
   description: "Music production, artist management, and promotion agency specializing in Balkan music.",
+  generator: "v0.dev",
   icons: {
     icon: [
       { url: "/favicon/favicon.ico", sizes: "any" },
@@ -42,85 +44,52 @@ export const metadata: Metadata = {
     title: "NXT Balkan",
     statusBarStyle: "black-translucent",
   },
-  openGraph: {
-    type: "website",
-    url: "https://nxtbalkan.com/",
-    title: "NXT Balkan - Revolutionizing Balkan Music",
-    description: "Music production, artist management, and promotion agency specializing in Balkan music.",
-    images: [{ url: "https://nxtbalkan.com/images/og-image.jpg" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "NXT Balkan - Revolutionizing Balkan Music",
-    description: "Music production, artist management, and promotion agency specializing in Balkan music.",
-    images: ["https://nxtbalkan.com/images/og-image.jpg"],
-  },
-};
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-black text-white relative overflow-x-hidden`}>
-        {/* ANIMIRANO OZADJE */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-          {[...Array(30)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"
-              style={{
-                width: `${Math.random() * 100 + 50}px`,
-                height: `${Math.random() * 100 + 50}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.1, 0.3, 0.1],
-                x: `${Math.random() * 100 - 50}px`,
-                y: `${Math.random() * 100 - 50}px`,
-              }}
-              transition={{
-                duration: Math.random() * 10 + 10,
-                repeat: Infinity,
-                delay: Math.random() * 5,
-              }}
-            />
-          ))}
-          {/* Gradient blobs */}
-          <motion.div
-            className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-cyan-500/5 to-pink-500/10 blur-3xl"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, 50, 0],
-              opacity: [0.1, 0.15, 0.1],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-pink-500/5 to-cyan-500/10 blur-3xl"
-            animate={{
-              x: [0, -100, 0],
-              y: [0, -50, 0],
-              opacity: [0.1, 0.15, 0.1],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        </div>
+      <Head>
+        {/* Primary Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="msapplication-TileColor" content="#000000" />
+        <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
 
+        {/* PWA Meta Tags */}
+        <meta name="application-name" content="NXT Balkan" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="NXT Balkan" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://nxtbalkan.com/" />
+        <meta property="og:title" content="NXT Balkan - Revolutionizing Balkan Music" />
+        <meta
+          property="og:description"
+          content="Music production, artist management, and promotion agency specializing in Balkan music."
+        />
+        <meta property="og:image" content="https://nxtbalkan.com/images/og-image.jpg" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://nxtbalkan.com/" />
+        <meta property="twitter:title" content="NXT Balkan - Revolutionizing Balkan Music" />
+        <meta
+          property="twitter:description"
+          content="Music production, artist management, and promotion agency specializing in Balkan music."
+        />
+        <meta property="twitter:image" content="https://nxtbalkan.com/images/og-image.jpg" />
+      </Head>
+
+      <body className={`${inter.className} bg-black text-white`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          {/* Service Worker Registration for Push Notifications */}
           <Script id="register-sw" strategy="afterInteractive">
             {`
               if ('serviceWorker' in navigator) {
@@ -137,12 +106,17 @@ export default function RootLayout({
             `}
           </Script>
 
+          {/* Client-side protection scripts */}
           <Script id="disable-devtools" strategy="afterInteractive">
             {`
+              // Disable right click
               document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
               });
+              
+              // Disable keyboard shortcuts
               document.addEventListener('keydown', function(e) {
+                // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
                 if (
                   e.key === 'F12' ||
                   (e.ctrlKey && e.shiftKey && e.key === 'I') ||
@@ -153,30 +127,40 @@ export default function RootLayout({
                   e.preventDefault();
                 }
               });
+              
+              // Anti-devtools detection (basic)
               function detectDevTools() {
                 if(window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
                   document.body.innerHTML = '<h1 style="color:white;text-align:center;margin-top:50px;">Developer tools are not allowed</h1>';
                   window.location.reload();
                 }
               }
+              
               setInterval(detectDevTools, 1000);
             `}
           </Script>
 
+          {/* Visual deterrent overlay */}
           <div id="protection-overlay" className="fixed inset-0 pointer-events-none z-[99999] select-none" />
+
+          {/* Content */}
           <CustomCursor />
           <ScrollToTop />
           <Navigation />
-          <main className="relative z-10">{children}</main>
+          <main>{children}</main>
           <LoadingScreen />
           <PremiumOffer />
           <NotificationToasts />
           <LiveSupportSystem />
           <FloatingMusicPlayer />
+
+          {/* Push Notification Manager - skrit, deluje v ozadju */}
           <PushNotificationManager />
+
+          {/* iOS PWA Prompt */}
           <IOSPWAPrompt />
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }
