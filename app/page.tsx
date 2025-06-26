@@ -4,7 +4,7 @@
 // animations, and data are defined here. In a real-world project,
 // this would be split into multiple files for better organization.
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { 
   Users, TrendingUp, Star, Globe, Activity, ShieldCheck, LayoutDashboard, 
@@ -156,6 +156,157 @@ const faqItems = [
 // HELPER COMPONENTS
 //============================================================================
 
+// NEW: Celestial Bodies Component
+const CelestialBodies = () => {
+    const bodies = useMemo(() => [
+        // Subtle Galaxy
+        { 
+            id: 'galaxy', 
+            style: { top: '15%', left: '10%', width: '200px', height: '200px', opacity: 0.1, filter: 'blur(10px)' },
+            animate: { rotate: 360, x: 50, y: 20 },
+            transition: { duration: 240, repeat: Infinity, ease: "linear", repeatType: "mirror" },
+            svg: (
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 50,50 m -40,0 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0" fill="none" stroke="white" strokeWidth="1"/>
+                    <path d="M 50,50 m -20,0 a 20,20 0 1,0 40,0 a 20,20 0 1,0 -40,0" fill="white"/>
+                    <path d="M 50,50 m -30,0 a 30,30 0 0,1 0,60" fill="none" stroke="white" strokeWidth="1" strokeDasharray="2 2"/>
+                </svg>
+            )
+        },
+        // Distant Planet
+        { 
+            id: 'planet1', 
+            style: { top: '70%', left: '80%', width: '80px', height: '80px', opacity: 0.2, filter: 'blur(3px)' },
+            animate: { x: -100, y: -50 },
+            transition: { duration: 180, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+            svg: (
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="rgba(255, 255, 255, 0.3)"/>
+                    <ellipse cx="50" cy="50" rx="48" ry="20" fill="none" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2" transform="rotate(-30 50 50)"/>
+                </svg>
+            )
+        },
+        // Small Moon
+        { 
+            id: 'moon', 
+            style: { top: '30%', left: '75%', width: '25px', height: '25px', opacity: 0.4 },
+            animate: { x: -40, y: 60 },
+            transition: { duration: 150, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+            svg: (
+                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="50" fill="rgba(200, 200, 200, 0.8)"/>
+                    <circle cx="35" cy="35" r="10" fill="rgba(255, 255, 255, 0.3)"/>
+                    <circle cx="65" cy="60" r="5" fill="rgba(255, 255, 255, 0.2)"/>
+                 </svg>
+            )
+        }
+    ], []);
+
+    return(
+        <>
+            {bodies.map(body => (
+                <motion.div
+                    key={body.id}
+                    className="absolute will-change-transform"
+                    style={body.style}
+                    animate={body.animate}
+                    transition={body.transition}
+                >
+                    {body.svg}
+                </motion.div>
+            ))}
+        </>
+    )
+}
+
+// Starry Sky Background Component
+const StarrySky = () => {
+    const stars = useMemo(() => {
+        return Array.from({ length: 150 }).map((_, i) => ({
+            id: i,
+            x: `${Math.random() * 100}%`,
+            y: `${Math.random() * 100}%`,
+            size: `${Math.random() * 2 + 1}px`,
+            duration: Math.random() * 2 + 2,
+            delay: Math.random() * 3,
+        }));
+    }, []);
+
+    return (
+        <div className="absolute inset-0 z-0">
+            {stars.map(star => (
+                <motion.div
+                    key={star.id}
+                    className="absolute rounded-full bg-white"
+                    style={{
+                        top: star.y,
+                        left: star.x,
+                        width: star.size,
+                        height: star.size,
+                    }}
+                    animate={{
+                        opacity: [0.3, 1, 0.3],
+                    }}
+                    transition={{
+                        duration: star.duration,
+                        delay: star.delay,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                />
+            ))}
+            <ShootingStar />
+        </div>
+    );
+};
+
+// Shooting Star Component
+const ShootingStar = () => {
+    const [isAnimating, setIsAnimating] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsAnimating(true);
+            setTimeout(() => setIsAnimating(false), 4500); // Upočasnjeno trajanje
+        }, 15000); 
+
+        return () => clearInterval(interval);
+    }, []);
+    
+    const path = useMemo(() => {
+        const startX = Math.random() * 100;
+        const startY = -10;
+        const endX = startX - (Math.random() * 40 + 20);
+        const endY = 110;
+        return { startX, startY, endX, endY };
+    }, [isAnimating]);
+
+    return (
+        <AnimatePresence>
+            {isAnimating && (
+                <motion.div
+                    className="absolute rounded-full bg-white" 
+                    style={{
+                        top: `${path.startY}%`,
+                        left: `${path.startX}%`,
+                        width: '3px', 
+                        height: '3px',
+                        filter: 'blur(1px)', 
+                    }}
+                    initial={{ x: 0, y: 0, opacity: 0 }}
+                    animate={{ 
+                        x: `calc(${path.endX - path.startX}vw)`, 
+                        y: `calc(${path.endY - path.startY}vh)`,
+                        opacity: [0, 1, 0.5, 0] 
+                    }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 4.5, ease: [0.6, -0.05, 0.01, 0.99] }} // Upočasnjeno
+                />
+            )}
+        </AnimatePresence>
+    );
+}
+
 const SectionHeader = ({ title, subtitle, gradientText }) => (
     <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -246,7 +397,6 @@ export default function HomePage() {
     const isMobile = useIsMobile();
     const heroRef = useRef(null);
 
-    // OPTIMIZATION: Conditionally apply scroll-based animations only on non-mobile devices
     const { scrollYProgress: heroScrollYProgress } = useScroll({
         target: heroRef,
         offset: ["start start", "end start"],
@@ -271,11 +421,10 @@ export default function HomePage() {
         hidden: { opacity: 0 },
         show: {
             opacity: 1,
-            transition: { staggerChildren: 0.1 } // OPTIMIZATION: Reduced stagger for faster appearance
+            transition: { staggerChildren: 0.1 } 
         }
     };
 
-    // OPTIMIZATION: Switched from spring to a simpler tween for better performance on mobile
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
         show: { 
@@ -289,15 +438,9 @@ export default function HomePage() {
         <div className="bg-black text-white font-sans overflow-x-hidden antialiased">
             
             <div className="fixed inset-0 z-0 pointer-events-none">
-                <div 
-                    className="absolute inset-0" 
-                    style={{
-                        backgroundImage: `radial-gradient(circle at center, rgba(128, 128, 128, 0.1) 1px, transparent 1px)`,
-                        backgroundSize: '30px 30px'
-                    }}
-                />
+                <StarrySky />
+                <CelestialBodies />
                 <motion.div
-                    // OPTIMIZATION: Reduced blur and opacity on mobile
                     className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
                     animate={{
                         x: [0, 100, -50, 0],
@@ -312,7 +455,6 @@ export default function HomePage() {
                     }}
                 />
                 <motion.div
-                    // OPTIMIZATION: Reduced blur and opacity on mobile
                     className="absolute bottom-[-20%] right-[-20%] w-[700px] h-[700px] bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
                     animate={{
                         x: [0, -100, 50, 0],
@@ -386,7 +528,6 @@ export default function HomePage() {
                     </motion.div>
                 </motion.div>
 
-                {/* OPTIMIZATION: Removed the scroll indicator animation which can be taxing */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -399,8 +540,7 @@ export default function HomePage() {
                 </motion.div>
             </motion.section>
 
-
-            <main className="relative z-10 bg-black">
+            <main className="relative z-10">
                 <section id="services" className="py-24 sm:py-32 px-6 sm:px-12">
                     <SectionHeader 
                         title="Our Core" 
@@ -419,7 +559,6 @@ export default function HomePage() {
                             <motion.div
                                 key={i}
                                 variants={itemVariants}
-                                // OPTIMIZATION: Added will-change to hint browser about upcoming transform
                                 className="group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 h-full transition-all duration-300 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2 will-change-transform"
                             >
                                 <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br from-${service.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}/>
@@ -440,7 +579,7 @@ export default function HomePage() {
                     </motion.div>
                 </section>
 
-                <section id="about" className="py-24 sm:py-32 px-6 sm:px-12 bg-gray-900/30">
+                <section id="about" className="py-24 sm:py-32 px-6 sm:px-12">
                     <SectionHeader
                         title="Your Strategic"
                         gradientText="Partner"
@@ -543,7 +682,7 @@ export default function HomePage() {
                     </div>
                 </section>
                 
-                <section className="py-24 sm:py-32 px-6 sm:px-12 bg-gray-900/30">
+                <section className="py-24 sm:py-32 px-6 sm:px-12">
                     <SectionHeader
                         title="What Our"
                         gradientText="Clients Say"
@@ -642,7 +781,6 @@ const FAQItem = ({ item }) => {
 
     return (
         <motion.div 
-            // OPTIMIZATION: Added will-change to hint browser about upcoming changes
             className="border border-gray-800 rounded-2xl overflow-hidden will-change-transform"
             animate={{ borderColor: isOpen ? "rgba(45, 212, 191, 0.5)" : "rgb(31 41 55)" }}
         >
