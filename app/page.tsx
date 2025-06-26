@@ -322,7 +322,7 @@ export default function HomePage() {
                     className="relative z-10 flex justify-center items-center w-[280px] h-[140px] sm:w-[450px] sm:h-[225px] md:w-[550px] md:h-[275px] mb-8"
                 >
                     <img
-                        src="/"
+                        src="/nxtbalkancolored2.png"
                         alt="NXT Balkan Logo"
                         className="w-full h-full object-contain"
                     />
