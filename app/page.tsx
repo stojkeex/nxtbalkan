@@ -322,7 +322,7 @@ export default function HomePage() {
                     className="relative z-10 flex justify-center items-center w-[280px] h-[140px] sm:w-[450px] sm:h-[225px] md:w-[550px] md:h-[275px] mb-8"
                 >
                     <img
-                        src="/D23C1779-DD4E-427A-82C3-1558F3198EAE.webp"
+                        src="/"
                         alt="NXT Balkan Logo"
                         className="w-full h-full object-contain"
                     />
@@ -330,7 +330,7 @@ export default function HomePage() {
                 
                 <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-10 text-center">
                     <AnimatedTextWord 
-                        text="Scalable Digital Solutions for the Leaders of Tomorrow"
+                        text="Balkan Future"
                         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter max-w-5xl mx-auto"
                     />
 
