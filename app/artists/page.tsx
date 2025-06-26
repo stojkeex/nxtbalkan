@@ -1,399 +1,497 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import {
-  ExternalLink,
-  Globe,
-  Users,
-  TrendingUp,
-  Award,
-  Star,
-  ArrowRight,
-  Sparkles,
-  Heart,
-  Share2,
-  Zap,
-  Target,
-} from "lucide-react"
+// Since the request specified a single file, all components,
+// animations, and data are defined here. In a real-world project,
+// this would be split into multiple files for better organization.
 
-export default function PortfolioPage() {
-  const projects = [
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { 
+  ExternalLink, Globe, Users, TrendingUp, Award, Star, ArrowRight, 
+  Sparkles, Heart, Share2, Zap, Target 
+} from "lucide-react";
+
+//============================================================================
+// DATA STRUCTURES (Content from the provided file)
+//============================================================================
+
+const projects = [
     {
       id: 1,
       name: "E-Commerce Revolution",
       category: "Web Development",
-      description:
-        "Complete digital transformation for a leading retail brand, resulting in 300% increase in online sales and enhanced user experience.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: {
-        increase: "+300%",
-        users: "50K+",
-        conversion: "8.5%",
-        timeline: "3 months",
-      },
+      description: "Complete digital transformation for a leading retail brand, resulting in a 300% increase in online sales and an enhanced user experience.",
+      image: "https://placehold.co/600x400/1e1b4b/ffffff?text=Project+1",
+      stats: { increase: "+300%", users: "50K+", conversion: "8.5%", timeline: "3 months" },
       technologies: ["Next.js", "Shopify", "Analytics"],
       featured: true,
-      completed: true,
     },
     {
       id: 2,
       name: "Brand Identity Redesign",
       category: "Brand Strategy",
-      description:
-        "Complete brand overhaul for a tech startup, including logo design, visual identity, and marketing materials that increased brand recognition by 250%.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: {
-        increase: "+250%",
-        users: "25K+",
-        conversion: "12.3%",
-        timeline: "6 weeks",
-      },
+      description: "Complete brand overhaul for a tech startup, increasing brand recognition by 250%.",
+      image: "https://placehold.co/600x400/1e1b4b/ffffff?text=Project+2",
+      stats: { increase: "+250%", users: "25K+", conversion: "12.3%", timeline: "6 weeks" },
       technologies: ["Figma", "Adobe Suite", "Brand Guidelines"],
       featured: false,
-      completed: true,
     },
     {
       id: 3,
-      name: "Social Media Campaign",
+      name: "Viral Social Media Campaign",
       category: "Digital Marketing",
-      description:
-        "Multi-platform social media strategy that generated viral content and increased follower engagement by 400% across all channels.",
-      image: "/placeholder.svg?height=400&width=400",
-      stats: {
-        increase: "+400%",
-        users: "100K+",
-        conversion: "15.2%",
-        timeline: "2 months",
-      },
+      description: "A multi-platform social media strategy that generated viral content and increased follower engagement by 400%.",
+      image: "https://placehold.co/600x400/1e1b4b/ffffff?text=Project+3",
+      stats: { increase: "+400%", users: "100K+", conversion: "15.2%", timeline: "2 months" },
       technologies: ["Meta Ads", "TikTok", "Analytics"],
       featured: false,
-      completed: true,
     },
-  ]
+    {
+      id: 4,
+      name: "FinTech Mobile App UX",
+      category: "Web Development",
+      description: "Crafting a seamless and secure mobile banking experience, boosting user retention by 50%.",
+      image: "https://placehold.co/600x400/1e1b4b/ffffff?text=Project+4",
+      stats: { increase: "+50%", users: "150K+", retention: "25%", timeline: "4 months" },
+      technologies: ["Figma", "React Native", "UX Research"],
+      featured: false,
+    },
+     {
+      id: 5,
+      name: "SaaS Platform Rebranding",
+      category: "Brand Strategy",
+      description: "A complete rebranding for a B2B SaaS company to attract enterprise clients.",
+      image: "https://placehold.co/600x400/1e1b4b/ffffff?text=Project+5",
+      stats: { increase: "+75% leads", users: "N/A", "deal size": "+40%", timeline: "3 months" },
+      technologies: ["Brand Architecture", "Content Strategy", "Webflow"],
+      featured: false,
+    },
+];
 
-  const categories = [
-    { name: "All", count: "3", active: true },
-    { name: "Web Development", count: "1", active: false },
-    { name: "Brand Strategy", count: "1", active: false },
-    { name: "Digital Marketing", count: "1", active: false },
-    { name: "E-Commerce", count: "1", active: false },
-    { name: "Mobile Apps", count: "0", active: false },
-  ]
+const categories = [
+    { name: "All", count: "5" },
+    { name: "Web Development", count: "2" },
+    { name: "Brand Strategy", count: "2" },
+    { name: "Digital Marketing", count: "1" },
+];
 
-  const stats = [
+const stats = [
     { label: "Projects Completed", value: "200+", icon: Target, color: "text-cyan-400" },
     { label: "Client Satisfaction", value: "99%", icon: Heart, color: "text-pink-400" },
     { label: "Awards Won", value: "25+", icon: Award, color: "text-orange-400" },
     { label: "Countries Served", value: "50+", icon: Globe, color: "text-purple-400" },
-  ]
+];
 
-  return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5">
-        <div className="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <Badge className="mb-6 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-medium px-4 py-2 text-sm">
-              Our Work
-            </Badge>
+//============================================================================
+// HELPER COMPONENTS (reused for consistency)
+//============================================================================
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mb-6 px-4">
-              <span className="text-white">Our</span>
-              <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent font-medium">
-                Portfolio
-              </span>
-            </h1>
+const StarrySky = () => {
+    const stars = useMemo(() => {
+        return Array.from({ length: 150 }).map((_, i) => ({
+            id: i,
+            x: `${Math.random() * 100}%`,
+            y: `${Math.random() * 100}%`,
+            size: `${Math.random() * 2 + 1}px`,
+            duration: Math.random() * 2 + 2,
+            delay: Math.random() * 3,
+        }));
+    }, []);
 
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8 px-4">
-              Discover the exceptional projects that showcase our expertise in digital transformation, brand
-              development, and strategic innovation.
-            </p>
+    return (
+        <div className="absolute inset-0 z-0">
+            {stars.map(star => (
+                <motion.div
+                    key={star.id}
+                    className="absolute rounded-full bg-white"
+                    style={{ top: star.y, left: star.x, width: star.size, height: star.size }}
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: star.duration, delay: star.delay, repeat: Infinity, ease: "easeInOut" }}
+                />
+            ))}
+            <ShootingStar />
+        </div>
+    );
+};
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
-              >
-                <Sparkles className="h-5 w-5 mr-2" />
-                View All Projects
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
-              >
-                Start Your Project
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
+const ShootingStar = () => {
+    const [isAnimating, setIsAnimating] = useState(false);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsAnimating(true);
+            setTimeout(() => setIsAnimating(false), 4500);
+        }, 15000);
+        return () => clearInterval(interval);
+    }, []);
+    
+    const path = useMemo(() => {
+        const startX = Math.random() * 100;
+        const startY = -10;
+        const endX = startX - (Math.random() * 40 + 20);
+        const endY = 110;
+        return { startX, startY, endX, endY };
+    }, [isAnimating]);
+
+    return (
+        <AnimatePresence>
+            {isAnimating && (
+                <motion.div
+                    className="absolute rounded-full bg-white" 
+                    style={{ top: `${path.startY}%`, left: `${path.startX}%`, width: '3px', height: '3px', filter: 'blur(1px)' }}
+                    initial={{ x: 0, y: 0, opacity: 0 }}
+                    animate={{ x: `calc(${path.endX - path.startX}vw)`, y: `calc(${path.endY - path.startY}vh)`, opacity: [0, 1, 0.5, 0] }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 4.5, ease: [0.6, -0.05, 0.01, 0.99] }}
+                />
+            )}
+        </AnimatePresence>
+    );
+}
+
+const CelestialBodies = () => {
+    const bodies = useMemo(() => [
+        { 
+            id: 'galaxy', 
+            style: { top: '15%', left: '10%', width: '200px', height: '200px', opacity: 0.1, filter: 'blur(10px)' },
+            animate: { rotate: 360, x: 50, y: 20 },
+            transition: { duration: 240, repeat: Infinity, ease: "linear", repeatType: "mirror" },
+            svg: (
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 50,50 m -40,0 a 40,40 0 1,0 80,0 a 40,40 0 1,0 -80,0" fill="none" stroke="white" strokeWidth="1"/>
+                    <path d="M 50,50 m -20,0 a 20,20 0 1,0 40,0 a 20,20 0 1,0 -40,0" fill="white"/>
+                </svg>
+            )
+        },
+        { 
+            id: 'planet1', 
+            style: { top: '70%', left: '80%', width: '80px', height: '80px', opacity: 0.2, filter: 'blur(3px)' },
+            animate: { x: -100, y: -50 },
+            transition: { duration: 180, repeat: Infinity, ease: "easeInOut", repeatType: "mirror" },
+            svg: (
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="rgba(255, 255, 255, 0.3)"/>
+                    <ellipse cx="50" cy="50" rx="48" ry="20" fill="none" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2" transform="rotate(-30 50 50)"/>
+                </svg>
+            )
+        },
+    ], []);
+
+    return(
+        <>
+            {bodies.map(body => (
+                <motion.div
+                    key={body.id}
+                    className="absolute will-change-transform"
+                    style={body.style}
+                    animate={body.animate}
+                    transition={body.transition}
+                >
+                    {body.svg}
+                </motion.div>
+            ))}
+        </>
+    )
+}
+
+const SectionHeader = ({ title, subtitle, gradientText }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
+    >
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-4">
+            {title} <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">{gradientText}</span>
+        </h2>
+        <p className="text-base md:text-xl text-gray-400">{subtitle}</p>
+    </motion.div>
+);
+
+const AnimatedTitle = ({ text, gradientText }) => (
+     <motion.h1
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="text-4xl sm:text-6xl md:text-7xl font-light tracking-tighter"
+     >
+        {text} <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">{gradientText}</span>
+    </motion.h1>
+);
+
+const TiltCard = ({ children, className, variants }) => {
+    const ref = useRef(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseX = useSpring(x, { stiffness: 300, damping: 30, restDelta: 0.001 });
+    const mouseY = useSpring(y, { stiffness: 300, damping: 30, restDelta: 0.001 });
+
+    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
+    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
+    
+    const glowX = useTransform(mouseX, [-0.5, 0.5], ["-100%", "100%"]);
+    const glowY = useTransform(mouseY, [-0.5, 0.5], ["-100%", "100%"]);
+
+
+    const handleMouseMove = (e) => {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const { width, height, left, top } = rect;
+        const mouseXVal = e.clientX - left;
+        const mouseYVal = e.clientY - top;
+        const xPct = mouseXVal / width - 0.5;
+        const yPct = mouseYVal / height - 0.5;
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+            }}
+            variants={variants}
+            className="relative will-change-transform"
+        >
+             <div className="absolute inset-0 bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl" />
+
+             <motion.div
+                className="absolute inset-0 rounded-3xl pointer-events-none"
+                style={{
+                    opacity: useTransform(mouseX, (v) => Math.abs(v) > 0.1 || Math.abs(y.get()) > 0.1 ? 1 : 0),
+                    background: useTransform(
+                        [glowX, glowY],
+                        ([latestX, latestY]) => `radial-gradient(400px at ${latestX} ${latestY}, rgba(255, 255, 255, 0.1), transparent)`
+                    ),
+                }}
+            />
+            <div 
+                style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
+                className={`w-full h-full p-6 md:p-8 ${className}`}
+            >
+                {children}
             </div>
-          </motion.div>
-        </div>
-      </section>
+        </motion.div>
+    )
+}
 
-      {/* Stats Section */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                  <stat.icon className={`h-6 w-6 sm:h-8 sm:w-8 ${stat.color}`} />
-                </div>
-                <div className="text-2xl sm:text-3xl md:text-4xl font-light bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-sm sm:text-base text-gray-400 uppercase tracking-wider">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+//============================================================================
+// MAIN "ARTIST/PORTFOLIO" PAGE COMPONENT
+//============================================================================
 
-      {/* Category Filter */}
-      <section className="py-8 px-4 sm:px-6 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            {categories.map((category, index) => (
-              <Button
-                key={index}
-                variant={category.active ? "default" : "outline"}
-                size="sm"
-                className={`${
-                  category.active
-                    ? "bg-gradient-to-r from-cyan-500 to-pink-500 text-white hover:scale-105"
-                    : "border-gray-600 text-gray-300 hover:bg-white hover:text-black"
-                } transition-all duration-300 font-medium rounded-full`}
-              >
-                {category.name}
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  {category.count}
-                </Badge>
-              </Button>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+export default function ArtistPage() {
+    const [activeCategory, setActiveCategory] = useState("All");
+    const [filteredProjects, setFilteredProjects] = useState(projects);
+    
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+        }
+    };
+    
+    const cardVariants = {
+        hidden: { opacity: 0, y: 40, scale: 0.95 },
+        show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 50, damping: 15 } }
+    };
 
-      {/* Projects Grid */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className={`group ${project.featured ? "md:col-span-2 lg:col-span-1" : ""}`}
-              >
-                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 h-full overflow-hidden group-hover:scale-105">
-                  <CardContent className="p-0">
-                    {/* Project Image */}
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={project.image || "/placeholder.svg"}
-                        alt={project.name}
-                        className={`w-full ${project.featured ? "h-80" : "h-64"} object-cover group-hover:scale-110 transition-transform duration-500`}
-                      />
-
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <Button
-                          size="lg"
-                          className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-black transition-all duration-300 rounded-full"
+    const handleFilter = (category) => {
+        setActiveCategory(category);
+        if (category === "All") {
+            setFilteredProjects(projects);
+        } else {
+            setFilteredProjects(projects.filter(p => p.category === category));
+        }
+    }
+    
+    return (
+        <div className="bg-black text-white font-sans overflow-x-hidden antialiased">
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <StarrySky />
+                <CelestialBodies />
+            </div>
+            
+            <main className="relative z-10">
+                {/* Hero Section */}
+                <section className="min-h-[80vh] flex items-center justify-center px-6 text-center">
+                     <div className="space-y-6">
+                        <AnimatedTitle text="Our Digital" gradientText="Showcase" />
+                        <motion.p
+                           initial={{ opacity: 0, y: 20 }}
+                           animate={{ opacity: 1, y: 0 }}
+                           transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+                           className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto"
                         >
-                          <ExternalLink className="h-5 w-5 mr-2" />
-                          View Project
-                        </Button>
-                      </div>
-
-                      {/* Badges */}
-                      <div className="absolute top-4 left-4 flex gap-2">
-                        <Badge className="bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-medium">
-                          {project.category}
-                        </Badge>
-                        {project.completed && (
-                          <Badge className="bg-green-500 text-white">
-                            <Star className="h-3 w-3 mr-1" />
-                            Completed
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* Featured badge */}
-                      {project.featured && (
-                        <div className="absolute top-4 right-4">
-                          <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-medium">
-                            <Sparkles className="h-3 w-3 mr-1" />
-                            Featured
-                          </Badge>
-                        </div>
-                      )}
+                           Discover the exceptional projects that highlight our expertise in digital transformation, brand development, and strategic innovation.
+                        </motion.p>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 pt-4"
+                        >
+                            <motion.button
+                                whileHover={{ scale: 1.05, boxShadow: '0px 0px 20px rgba(45, 212, 191, 0.5)' }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center"
+                            >
+                                Start Your Project <ArrowRight className="w-5 h-5" />
+                            </motion.button>
+                        </motion.div>
                     </div>
-
-                    {/* Project Info */}
-                    <div className="p-6">
-                      <div className="mb-4">
-                        <h3
-                          className={`text-lg sm:text-xl font-medium mb-2 ${
-                            project.featured
-                              ? "bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent"
-                              : "text-white"
-                          }`}
-                        >
-                          {project.name}
-                        </h3>
-                        <p className="text-gray-400 text-sm leading-relaxed">{project.description}</p>
-                      </div>
-
-                      {/* Stats Grid */}
-                      <div className="grid grid-cols-2 gap-3 mb-4">
-                        <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                          <div className="text-sm font-medium text-white">{project.stats.increase}</div>
-                          <div className="text-xs text-gray-400">Growth</div>
-                        </div>
-                        <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                          <div className="text-sm font-medium text-white">{project.stats.users}</div>
-                          <div className="text-xs text-gray-400">Users</div>
-                        </div>
-                        <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                          <div className="text-sm font-medium text-white">{project.stats.conversion}</div>
-                          <div className="text-xs text-gray-400">Conversion</div>
-                        </div>
-                        <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-                          <div className="text-sm font-medium text-white">{project.stats.timeline}</div>
-                          <div className="text-xs text-gray-400">Timeline</div>
-                        </div>
-                      </div>
-
-                      {/* Technologies */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.map((tech, techIndex) => (
-                          <Badge key={techIndex} variant="secondary" className="text-xs">
-                            {tech}
-                          </Badge>
+                </section>
+                
+                 {/* Stats Section */}
+                <section className="py-16 md:py-24 px-6">
+                    <motion.div 
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true, amount: 0.2 }}
+                        className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
+                    >
+                        {stats.map((stat, index) => (
+                            <motion.div
+                                key={index}
+                                variants={cardVariants}
+                                className="text-center"
+                            >
+                                <stat.icon className={`h-10 w-10 mx-auto mb-4 ${stat.color}`} />
+                                <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 mb-2">
+                                    {stat.value}
+                                </div>
+                                <div className="text-sm text-gray-400 uppercase tracking-wider">{stat.label}</div>
+                            </motion.div>
                         ))}
-                      </div>
+                    </motion.div>
+                </section>
 
-                      {/* Actions */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="text-gray-400 hover:text-white hover:bg-gray-800 p-2"
-                          >
-                            <Heart className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="text-gray-400 hover:text-white hover:bg-gray-800 p-2"
-                          >
-                            <Share2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-gray-600 text-gray-300 hover:bg-white hover:text-black transition-all duration-300 rounded-full"
+                 {/* Category Filter */}
+                <section className="py-8 px-6 sticky top-0 z-20 bg-black/50 backdrop-blur-md">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            className="flex flex-wrap justify-center gap-3"
                         >
-                          View Details
-                          <ExternalLink className="h-3 w-3 ml-1" />
-                        </Button>
-                      </div>
+                            {categories.map((category, index) => (
+                            <button
+                                key={index}
+                                onClick={() => handleFilter(category.name)}
+                                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                                activeCategory === category.name
+                                    ? "bg-gradient-to-r from-cyan-500 to-pink-500 text-white shadow-lg shadow-cyan-500/20"
+                                    : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/80 hover:text-white"
+                                }`}
+                            >
+                                {category.name}
+                                <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${activeCategory === category.name ? 'bg-white/20' : 'bg-gray-700'}`}>
+                                    {category.count}
+                                </span>
+                            </button>
+                            ))}
+                        </motion.div>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                </section>
+                
+                {/* Projects Grid */}
+                <section id="projects" className="py-16 md:py-24 px-6">
+                    <motion.div 
+                        layout
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+                    >
+                        <AnimatePresence>
+                            {filteredProjects.map((project, index) => (
+                                <motion.div
+                                    key={project.id}
+                                    layout
+                                    variants={cardVariants}
+                                    initial="hidden"
+                                    animate="show"
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    transition={{ type: "spring", stiffness: 50, damping: 15 }}
+                                    className={`group ${project.featured ? "md:col-span-2 lg:col-span-2" : "md:col-span-1"}`}
+                                >
+                                    <TiltCard className="h-full">
+                                        <div className="flex flex-col h-full">
+                                            <div className="relative mb-4">
+                                                <img src={project.image} alt={project.name} className="w-full h-64 object-cover rounded-2xl" />
+                                                <div className="absolute inset-0 bg-black/20 rounded-2xl" />
+                                                <div className="absolute top-4 left-4 flex gap-2">
+                                                    <span className="px-3 py-1 text-xs font-semibold rounded-full bg-cyan-500/20 text-cyan-300 backdrop-blur-sm">{project.category}</span>
+                                                    {project.featured && <span className="px-3 py-1 text-xs font-semibold rounded-full bg-pink-500/20 text-pink-300 backdrop-blur-sm">Featured</span>}
+                                                </div>
+                                            </div>
+                                            <h3 className="text-xl font-semibold mb-2 text-white">{project.name}</h3>
+                                            <p className="text-gray-400 text-sm mb-4 flex-grow">{project.description}</p>
+                                            
+                                            <div className="grid grid-cols-2 gap-3 mb-4 text-center">
+                                                {Object.entries(project.stats).map(([key, value]) => (
+                                                    <div key={key} className="bg-white/5 p-2 rounded-lg">
+                                                        <div className="text-lg font-bold text-white">{value}</div>
+                                                        <div className="text-xs text-gray-400 capitalize">{key}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className="flex flex-wrap gap-2 mt-auto">
+                                                {project.technologies.map((tech, i) => (
+                                                    <span key={i} className="px-2 py-1 text-xs rounded bg-gray-800/80 text-gray-300">{tech}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </TiltCard>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
+                </section>
+
+                {/* CTA Section */}
+                <section id="contact" className="py-16 md:py-24 px-6">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="max-w-5xl mx-auto bg-gradient-to-br from-cyan-500/10 via-black to-pink-500/10 border border-gray-800 rounded-3xl p-8 sm:p-16 text-center relative overflow-hidden"
+                    >
+                        <div className="absolute -top-20 -left-20 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl" />
+                        <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-pink-500/10 rounded-full blur-3xl" />
+                        <div className="relative z-10">
+                            <h2 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-6">
+                                Ready to create your <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">masterpiece?</span>
+                            </h2>
+                            <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+                                Let's connect and discuss how we can turn your vision into our next success story.
+                            </p>
+                            <motion.button
+                                whileHover={{ scale: 1.05, boxShadow: '0px 0px 30px rgba(217, 70, 239, 0.5)' }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-gradient-to-r from-pink-500 to-cyan-500 text-white font-semibold px-10 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl transition-all duration-300 shadow-lg"
+                            >
+                                Schedule a Consultation
+                            </motion.button>
+                        </div>
+                    </motion.div>
+                </section>
+            </main>
         </div>
-      </section>
-
-      {/* Start Your Project CTA */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <Card className="bg-gray-900/80 border border-gray-800">
-              <CardContent className="p-8 sm:p-12 lg:p-16">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                  <Zap className="h-8 w-8 sm:h-10 sm:w-10 text-cyan-400" />
-                </div>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 text-white">
-                  Ready to{" "}
-                  <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                    Start Your Project?
-                  </span>
-                </h2>
-
-                <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed">
-                  Join hundreds of businesses who have transformed their digital presence with NXT Balkan. Let's create
-                  something extraordinary together.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
-                  >
-                    <Target className="h-5 w-5 mr-2" />
-                    Start Your Project
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
-                  >
-                    View Our Process
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                </div>
-
-                <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 text-yellow-400" />
-                    Award-Winning Results
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-green-400" />
-                    Proven Growth
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-purple-400" />
-                    Expert Team
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-    </div>
-  )
+    );
 }
