@@ -223,16 +223,34 @@ const AnimatedTextWord = ({ text, className }) => {
     );
 };
 
+// Hook to check if the device is mobile
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+  return isMobile;
+};
+
 //============================================================================
 // MAIN PAGE COMPONENT
 //============================================================================
 
 export default function HomePage() {
 
+    const isMobile = useIsMobile();
     const heroRef = useRef(null);
+
+    // OPTIMIZATION: Conditionally apply scroll-based animations only on non-mobile devices
     const { scrollYProgress: heroScrollYProgress } = useScroll({
         target: heroRef,
         offset: ["start start", "end start"],
+        enabled: !isMobile
     });
 
     const logoY = useTransform(heroScrollYProgress, [0, 1], ["0%", "50%"]);
@@ -253,17 +271,17 @@ export default function HomePage() {
         hidden: { opacity: 0 },
         show: {
             opacity: 1,
-            transition: { staggerChildren: 0.15 }
+            transition: { staggerChildren: 0.1 } // OPTIMIZATION: Reduced stagger for faster appearance
         }
     };
 
+    // OPTIMIZATION: Switched from spring to a simpler tween for better performance on mobile
     const itemVariants = {
-        hidden: { opacity: 0, y: 30, scale: 0.98 },
+        hidden: { opacity: 0, y: 20 },
         show: { 
             opacity: 1, 
             y: 0, 
-            scale: 1,
-            transition: { type: "spring", stiffness: 100, damping: 12 }
+            transition: { duration: 0.6, ease: "easeOut" }
         }
     };
     
@@ -279,7 +297,8 @@ export default function HomePage() {
                     }}
                 />
                 <motion.div
-                    className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-[150px] opacity-30"
+                    // OPTIMIZATION: Reduced blur and opacity on mobile
+                    className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
                     animate={{
                         x: [0, 100, -50, 0],
                         y: [0, -50, 100, 0],
@@ -293,7 +312,8 @@ export default function HomePage() {
                     }}
                 />
                 <motion.div
-                    className="absolute bottom-[-20%] right-[-20%] w-[700px] h-[700px] bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full blur-[150px] opacity-30"
+                    // OPTIMIZATION: Reduced blur and opacity on mobile
+                    className="absolute bottom-[-20%] right-[-20%] w-[700px] h-[700px] bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
                     animate={{
                         x: [0, -100, 50, 0],
                         y: [0, 50, -100, 0],
@@ -313,12 +333,12 @@ export default function HomePage() {
                 ref={heroRef}
                 id="home"
                 className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 z-10 overflow-hidden"
-                style={{ opacity: backgroundOpacity }}
+                style={!isMobile ? { opacity: backgroundOpacity } : {}}
             >
                 <div className="absolute inset-0 bg-black/50 z-0"/>
                 
                 <motion.div 
-                    style={{ y: logoY }}
+                    style={!isMobile ? { y: logoY } : {}}
                     className="relative z-10 flex justify-center items-center w-[280px] h-[140px] sm:w-[450px] sm:h-[225px] md:w-[550px] md:h-[275px] mb-8"
                 >
                     <img
@@ -328,7 +348,7 @@ export default function HomePage() {
                     />
                 </motion.div>
                 
-                <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-10 text-center">
+                <motion.div style={!isMobile ? { y: textY, opacity: textOpacity } : {}} className="relative z-10 text-center">
                     <AnimatedTextWord 
                         text="Balkan Future"
                         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter max-w-5xl mx-auto"
@@ -337,7 +357,7 @@ export default function HomePage() {
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.5, type: "spring" }}
+                        transition={{ duration: 0.8, delay: 1.5 }}
                         className="text-gray-300 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl mt-8"
                     >
                         We build bridges between your vision and digital reality. Driving your growth with innovative strategies and cutting-edge technology.
@@ -346,7 +366,7 @@ export default function HomePage() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.8, type: "spring" }}
+                        transition={{ duration: 0.8, delay: 1.8 }}
                         className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 pt-10"
                     >
                         <motion.button
@@ -366,18 +386,15 @@ export default function HomePage() {
                     </motion.div>
                 </motion.div>
 
+                {/* OPTIMIZATION: Removed the scroll indicator animation which can be taxing */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 2.2, type: "spring" }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1.5, delay: 2.5 }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2"
                 >
                     <div className="w-6 h-10 border-2 border-gray-500 rounded-full flex justify-center items-start p-1">
-                        <motion.div
-                            className="w-1.5 h-3 bg-gray-400 rounded-full"
-                            animate={{ y: [0, 10, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        />
+                        <div className="w-1.5 h-3 bg-gray-400 rounded-full" />
                     </div>
                 </motion.div>
             </motion.section>
@@ -402,7 +419,8 @@ export default function HomePage() {
                             <motion.div
                                 key={i}
                                 variants={itemVariants}
-                                className="group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 h-full transition-all duration-300 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2"
+                                // OPTIMIZATION: Added will-change to hint browser about upcoming transform
+                                className="group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 h-full transition-all duration-300 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2 will-change-transform"
                             >
                                 <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br from-${service.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}/>
                                 
@@ -463,7 +481,7 @@ export default function HomePage() {
                            <motion.div 
                                 key={i}
                                 variants={itemVariants}
-                                className={`group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 md:p-8 transition-all duration-300 hover:border-${item.color}-400/50 hover:shadow-2xl hover:shadow-${item.color}-500/10 hover:-translate-y-2`}
+                                className={`group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 md:p-8 transition-all duration-300 hover:border-${item.color}-400/50 hover:shadow-2xl hover:shadow-${item.color}-500/10 hover:-translate-y-2 will-change-transform`}
                             >
                                <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br from-${item.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}/>
                                
@@ -479,7 +497,6 @@ export default function HomePage() {
                     </motion.div>
                 </section>
 
-                {/* ======================= PROCESS SECTION (FIXED) ======================= */}
                 <section id="process" className="py-24 sm:py-32 px-6 sm:px-12">
                      <SectionHeader
                         title="Our Proven"
@@ -488,7 +505,6 @@ export default function HomePage() {
                     />
                     <div className="max-w-7xl mx-auto">
                         <div className="relative">
-                            {/* The vertical timeline bar */}
                             <div className="absolute left-4 md:left-1/2 top-0 w-px h-full -translate-x-1/2 bg-gradient-to-b from-cyan-500/20 via-pink-500/20 to-transparent" />
 
                             {processSteps.map((step, index) => (
@@ -499,20 +515,17 @@ export default function HomePage() {
                                     viewport={{ once: true, amount: 0.5 }}
                                     className="relative mb-12"
                                 >
-                                    {/* The dot on the timeline */}
                                     <div className="absolute left-4 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 rounded-full bg-black border-2 border-pink-500 z-10">
                                         <div className="w-3 h-3 rounded-full bg-pink-500"/>
                                     </div>
-                                    
-                                    {/* Flex container to position the card left or right on desktop */}
                                     <div className={`md:flex ${index % 2 !== 0 ? 'md:justify-end' : 'md:justify-start'}`}>
                                         <div className="ml-12 md:ml-0 md:w-5/12">
                                             <motion.div 
                                                 variants={{
-                                                    hidden: { opacity: 0, x: index % 2 !== 0 ? 100 : -100 },
+                                                    hidden: { opacity: 0, x: isMobile ? -20 : (index % 2 !== 0 ? 100 : -100) },
                                                     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
                                                 }}
-                                                className="p-6 bg-gray-900/50 border border-gray-800 rounded-2xl shadow-lg w-full"
+                                                className="p-6 bg-gray-900/50 border border-gray-800 rounded-2xl shadow-lg w-full will-change-transform"
                                             >
                                                 <div className="flex items-center gap-4 mb-3">
                                                     <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-cyan-500/10 to-pink-500/10 rounded-lg flex items-center justify-center">
@@ -595,7 +608,7 @@ export default function HomePage() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, amount: 0.5 }}
-                        transition={{ duration: 0.8, type: "spring" }}
+                        transition={{ duration: 0.8 }}
                         className="max-w-5xl mx-auto bg-gradient-to-br from-cyan-500/10 via-black to-pink-500/10 border border-gray-800 rounded-3xl p-8 sm:p-16 text-center relative overflow-hidden"
                     >
                         <div className="absolute -top-20 -left-20 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl" />
@@ -629,7 +642,8 @@ const FAQItem = ({ item }) => {
 
     return (
         <motion.div 
-            className="border border-gray-800 rounded-2xl overflow-hidden"
+            // OPTIMIZATION: Added will-change to hint browser about upcoming changes
+            className="border border-gray-800 rounded-2xl overflow-hidden will-change-transform"
             animate={{ borderColor: isOpen ? "rgba(45, 212, 191, 0.5)" : "rgb(31 41 55)" }}
         >
             <button
