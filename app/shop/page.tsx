@@ -1,697 +1,405 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import {
-  ShoppingBag,
-  Star,
-  Eye,
-  Heart,
-  Truck,
-  Shield,
-  RotateCcw,
-  CreditCard,
-  Sparkles,
-  Crown,
-  ArrowRight,
-  X,
-  MessageCircle,
-  Instagram,
-  Mail,
-  Check,
-} from "lucide-react"
-import { useState } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { 
+  ShoppingBag, Star, Eye, Heart, Truck, Shield, RotateCcw, CreditCard, 
+  Sparkles, HandMetal, ArrowRight, X, MessageCircle, Instagram, Mail, Check 
+} from "lucide-react";
 
-export default function ShopPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All")
-  const [selectedProduct, setSelectedProduct] = useState<any>(null)
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false)
-  const [selectedSize, setSelectedSize] = useState("")
-  const [selectedColor, setSelectedColor] = useState("")
+//============================================================================
+// DATA STRUCTURES
+//============================================================================
 
-  const products = [
+const products = [
     {
       id: 1,
       name: "NXT Balkan Premium T-Shirt",
       price: 29.99,
-      originalPrice: 39.99,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "https://placehold.co/600x600/1e1b4b/ffffff?text=T-Shirt",
       category: "Apparel",
       rating: 4.9,
       reviews: 156,
-      description:
-        "Premium quality t-shirt featuring the iconic NXT Balkan logo with modern design elements. Made from 100% organic cotton for maximum comfort and durability. Perfect for showcasing your connection to digital excellence and innovation.",
-      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-      features: ["100% Organic Cotton", "Pre-shrunk fabric", "Reinforced seams", "Machine washable", "Unisex fit"],
+      description: "Premium quality t-shirt featuring the iconic NXT Balkan logo.",
+      sizes: ["XS", "S", "M", "L", "XL"],
       colors: ["Black", "White", "Navy"],
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      discount: 25,
     },
     {
       id: 2,
       name: "NXT Balkan Premium Hoodie",
       price: 59.99,
-      originalPrice: 79.99,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "https://placehold.co/600x600/1e1b4b/ffffff?text=Hoodie",
       category: "Apparel",
       rating: 4.8,
       reviews: 89,
-      description:
-        "Cozy premium hoodie with the signature NXT Balkan design. Perfect for casual wear or professional events. Features a spacious front pocket and adjustable drawstring hood. Made with high-quality cotton blend for ultimate comfort.",
-      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-      features: [
-        "80% Cotton, 20% Polyester",
-        "Fleece-lined interior",
-        "Kangaroo pocket",
-        "Adjustable drawstring",
-        "Ribbed cuffs and hem",
-      ],
+      description: "Cozy premium hoodie with the signature NXT Balkan design.",
+      sizes: ["S", "M", "L", "XL"],
       colors: ["Black", "Gray", "Navy"],
-      inStock: true,
-      isNew: true,
-      isBestseller: false,
-      discount: 25,
     },
     {
       id: 3,
       name: "NXT Balkan Limited Edition Cap",
       price: 24.99,
-      originalPrice: 34.99,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "https://placehold.co/600x600/1e1b4b/ffffff?text=Cap",
       category: "Accessories",
       rating: 4.7,
       reviews: 67,
-      description:
-        "Stylish cap with embroidered NXT Balkan logo. Adjustable fit for maximum comfort. Perfect accessory to complete your professional look. High-quality construction ensures long-lasting wear.",
+      description: "Stylish cap with embroidered NXT Balkan logo.",
       sizes: ["One Size"],
-      features: ["Embroidered logo", "Adjustable strap", "Curved brim", "Cotton blend", "One size fits all"],
-      colors: ["Black", "White", "Navy"],
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      isLimited: true,
-      discount: 29,
+      colors: ["Black", "White"],
     },
     {
       id: 4,
       name: "NXT Balkan Laptop Sleeve",
       price: 39.99,
-      originalPrice: 49.99,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "https://placehold.co/600x600/1e1b4b/ffffff?text=Sleeve",
       category: "Tech",
       rating: 4.9,
       reviews: 124,
-      description:
-        "Premium laptop sleeve with NXT Balkan branding. Padded interior protects your device while showcasing your professional style. Perfect for business meetings, conferences, or daily use.",
-      sizes: ["13 inch", "15 inch", "17 inch"],
-      features: ["Padded protection", "Water-resistant", "Zipper closure", "Slim profile", "Premium materials"],
+      description: "Premium laptop sleeve with NXT Balkan branding.",
+      sizes: ["13 inch", "15 inch"],
       colors: ["Black", "Gray"],
-      inStock: true,
-      isNew: true,
-      isBestseller: true,
-      discount: 20,
     },
-  ]
+];
 
-  const categories = [
+const categories = [
     { name: "All", count: products.length },
     { name: "Apparel", count: products.filter((p) => p.category === "Apparel").length },
     { name: "Accessories", count: products.filter((p) => p.category === "Accessories").length },
     { name: "Tech", count: products.filter((p) => p.category === "Tech").length },
-  ]
+];
 
-  const features = [
+const features = [
     { icon: Truck, title: "Free Shipping", description: "On orders over €50" },
     { icon: RotateCcw, title: "Easy Returns", description: "30-day return policy" },
-    { icon: Shield, title: "Secure Payment", description: "Direct contact ordering" },
-    { icon: CreditCard, title: "Multiple Payment", description: "Cards, PayPal, Crypto" },
-  ]
+    { icon: Shield, title: "Secure Payment", description: "Encrypted and safe" },
+    { icon: CreditCard, title: "Multiple Payments", description: "Cards, PayPal, Crypto" },
+];
 
-  const filteredProducts =
-    selectedCategory === "All" ? products : products.filter((product) => product.category === selectedCategory)
+//============================================================================
+// HELPER COMPONENTS
+//============================================================================
 
-  const handleViewProduct = (product: any) => {
-    setSelectedProduct(product)
-    setSelectedSize(product.sizes[0])
-    setSelectedColor(product.colors[0])
-  }
+const StarrySky = ({ count = 150 }) => {
+    const stars = useMemo(() => Array.from({ length: count }).map((_, i) => ({
+        id: i, x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%`,
+        size: `${Math.random() * 2 + 1}px`, duration: Math.random() * 2 + 2, delay: Math.random() * 3,
+    })), [count]);
+    return (
+        <div className="absolute inset-0 z-0">
+            {stars.map(star => (
+                <motion.div key={star.id} className="absolute rounded-full bg-white"
+                    style={{ top: star.y, left: star.x, width: star.size, height: star.size }}
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: star.duration, delay: star.delay, repeat: Infinity, ease: "easeInOut" }}/>
+            ))}
+        </div>
+    );
+};
 
-  const handleBuyProduct = () => {
-    setShowPurchaseModal(true)
-  }
+const AnimatedTitle = ({ text, gradientText }) => (
+     <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="text-4xl sm:text-6xl md:text-7xl font-light tracking-tighter">
+        {text} <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">{gradientText}</span>
+    </motion.h1>
+);
 
-  const generateWhatsAppMessage = () => {
-    if (!selectedProduct) return ""
-    return `Hi! I'm interested in purchasing the ${selectedProduct.name} (€${selectedProduct.price}) in size ${selectedSize} and color ${selectedColor}. Can you help me with the order?`
-  }
+const TiltCard = ({ children, className }) => {
+    const ref = useRef(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const mouseX = useSpring(x, { stiffness: 300, damping: 30 });
+    const mouseY = useSpring(y, { stiffness: 300, damping: 30 });
+    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7.5deg", "-7.5deg"]);
+    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7.5deg", "7.5deg"]);
+    
+    const handleMouseMove = (e) => {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        x.set((e.clientX - rect.left) / rect.width - 0.5);
+        y.set((e.clientY - rect.top) / rect.height - 0.5);
+    };
+    const handleMouseLeave = () => { x.set(0); y.set(0); };
 
-  const generateEmailMessage = () => {
-    if (!selectedProduct) return ""
-    return `Subject: Order Inquiry - ${selectedProduct.name}&body=Hi,%0D%0A%0D%0AI'm interested in purchasing:%0D%0A%0D%0AProduct: ${selectedProduct.name}%0D%0APrice: €${selectedProduct.price}%0D%0ASize: ${selectedSize}%0D%0AColor: ${selectedColor}%0D%0A%0D%0ACan you help me with the order process?%0D%0A%0D%0AThank you!`
-  }
+    return (
+        <motion.div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            className={`relative will-change-transform h-full ${className}`}>
+            <div style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
+                className="w-full h-full">
+                {children}
+            </div>
+        </motion.div>
+    );
+}
 
+//============================================================================
+// MODAL COMPONENTS
+//============================================================================
+
+const ProductModal = ({ product, onClose }) => {
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
+  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gradient-to-br from-cyan-500/5 via-black to-pink-500/5">
-        <div className="max-w-7xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <Badge className="mb-6 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-medium px-4 py-2 text-sm">
-              Official Store
-            </Badge>
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light mb-6 px-4">
-              <span className="text-white">NXT Balkan</span>
-              <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent font-medium">
-                Store
-              </span>
-            </h1>
-
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8 px-4">
-              Discover our exclusive collection of premium merchandise that represents digital excellence and
-              innovation. Wear your passion for quality and style.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
-              >
-                <ShoppingBag className="h-5 w-5 mr-2" />
-                Shop Now
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
-              >
-                Size Guide
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                  <feature.icon className="h-6 w-6 sm:h-8 sm:w-8 text-cyan-400" />
-                </div>
-                <div className="text-sm sm:text-base font-medium text-white mb-1">{feature.title}</div>
-                <div className="text-xs sm:text-sm text-gray-400">{feature.description}</div>
-              </motion.div>
-            ))}
+    <motion.div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
+        className="bg-gray-900 border border-gray-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-6">
+            <h2 className="text-2xl font-medium bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">Product Details</h2>
+            <button onClick={onClose} className="text-gray-400 hover:text-white"><X className="h-5 w-5" /></button>
           </div>
-        </div>
-      </section>
-
-      {/* Category Filter */}
-      <section className="py-8 px-4 sm:px-6 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center gap-3 mb-4"
-          >
-            {categories.map((category, index) => (
-              <Button
-                key={index}
-                variant={selectedCategory === category.name ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(category.name)}
-                className={`${
-                  selectedCategory === category.name
-                    ? "bg-gradient-to-r from-cyan-500 to-pink-500 text-white hover:scale-105"
-                    : "border-gray-600 text-gray-300 hover:bg-white hover:text-black"
-                } transition-all duration-300 font-medium rounded-full`}
-              >
-                {category.name}
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  {category.count}
-                </Badge>
-              </Button>
-            ))}
-          </motion.div>
-
-          <div className="text-center text-gray-400 text-sm">
-            Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""}
-          </div>
-        </div>
-      </section>
-
-      {/* Products Grid */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-            {filteredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group cursor-pointer"
-                onClick={() => handleViewProduct(product)}
-              >
-                <Card className="bg-gray-900/80 border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 h-full overflow-hidden group-hover:scale-105">
-                  <CardContent className="p-0">
-                    {/* Product Image */}
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={product.image || "/placeholder.svg"}
-                        alt={product.name}
-                        className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-black transition-all duration-300 rounded-full"
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-black transition-all duration-300 rounded-full"
-                          >
-                            <Heart className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Badges */}
-                      <div className="absolute top-3 left-3 flex flex-col gap-2">
-                        {product.isNew && (
-                          <Badge className="bg-green-500 text-white font-medium">
-                            <Sparkles className="h-3 w-3 mr-1" />
-                            New
-                          </Badge>
-                        )}
-                        {product.isBestseller && (
-                          <Badge className="bg-orange-500 text-white font-medium">
-                            <Crown className="h-3 w-3 mr-1" />
-                            Bestseller
-                          </Badge>
-                        )}
-                        {product.isLimited && <Badge className="bg-red-500 text-white font-medium">Limited</Badge>}
-                      </div>
-
-                      {/* Discount badge */}
-                      {product.discount && (
-                        <div className="absolute top-3 right-3">
-                          <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-medium">
-                            -{product.discount}%
-                          </Badge>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="p-4 sm:p-6">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="text-xs">
-                          {product.category}
-                        </Badge>
-                        <div className="flex items-center gap-1">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="text-xs text-gray-400">
-                            {product.rating} ({product.reviews})
-                          </span>
-                        </div>
-                      </div>
-
-                      <h3 className="text-lg font-medium mb-2 text-white line-clamp-2 group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-pink-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                        {product.name}
-                      </h3>
-
-                      {/* Colors */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-xs text-gray-400">Colors:</span>
-                        <div className="flex gap-1">
-                          {product.colors.slice(0, 3).map((color, colorIndex) => (
-                            <div
-                              key={colorIndex}
-                              className={`w-4 h-4 rounded-full border border-gray-600 ${
-                                color === "Black"
-                                  ? "bg-black"
-                                  : color === "White"
-                                    ? "bg-white"
-                                    : color === "Navy"
-                                      ? "bg-blue-900"
-                                      : color === "Gray"
-                                        ? "bg-gray-500"
-                                        : "bg-red-500"
-                              }`}
-                            />
-                          ))}
-                          {product.colors.length > 3 && (
-                            <div className="text-xs text-gray-400">+{product.colors.length - 3}</div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Price */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg font-medium text-white">€{product.price}</span>
-                          {product.originalPrice && (
-                            <span className="text-sm text-gray-400 line-through">€{product.originalPrice}</span>
-                          )}
-                        </div>
-                        <Button
-                          size="sm"
-                          className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white hover:scale-105 transition-all duration-300 rounded-full"
-                        >
-                          View Details
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-32 px-4 sm:px-6 bg-gradient-to-r from-cyan-500/5 to-pink-500/5">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <Card className="bg-gray-900/80 border border-gray-800">
-              <CardContent className="p-8 sm:p-12 lg:p-16">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-pink-500/20 flex items-center justify-center">
-                  <ShoppingBag className="h-8 w-8 sm:h-10 sm:w-10 text-cyan-400" />
+          <div className="grid md:grid-cols-2 gap-8">
+            <img src={product.image} alt={product.name} className="w-full h-96 object-cover rounded-xl" />
+            <div className="space-y-6">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-cyan-500/20 text-cyan-300">{product.category}</span>
+                  <div className="flex items-center gap-1"><Star className="h-4 w-4 fill-yellow-400 text-yellow-400" /><span>{product.rating} ({product.reviews} reviews)</span></div>
                 </div>
-
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 text-white">
-                  Join the{" "}
-                  <span className="bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                    NXT Family
-                  </span>
-                </h2>
-
-                <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed">
-                  Every purchase supports our mission of digital excellence and innovation. Wear your passion, showcase
-                  your style, and be part of the movement.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium px-8 py-4 text-lg rounded-full transition-all duration-300 shadow-lg shadow-cyan-500/20"
-                  >
-                    <Sparkles className="h-5 w-5 mr-2" />
-                    Browse All Products
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-gray-600 text-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-lg rounded-full"
-                  >
-                    Size Guide
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                </div>
-
-                <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <Truck className="h-4 w-4 text-green-400" />
-                    Free Shipping €50+
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <RotateCcw className="h-4 w-4 text-blue-400" />
-                    30-Day Returns
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-purple-400" />
-                    Secure Ordering
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Product Modal */}
-      {selectedProduct && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="bg-gray-900 border border-gray-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-          >
-            <div className="p-6">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-medium bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                  Product Details
-                </h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setSelectedProduct(null)}
-                  className="text-gray-400 hover:text-white"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
+                <h3 className="text-3xl font-medium text-white mb-2">{product.name}</h3>
+                <div className="flex items-center gap-3"><span className="text-3xl font-light text-white">€{product.price}</span></div>
               </div>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Product Image */}
-                <div className="relative">
-                  <img
-                    src={selectedProduct.image || "/placeholder.svg"}
-                    alt={selectedProduct.name}
-                    className="w-full h-96 object-cover rounded-xl"
-                  />
-                  {selectedProduct.isLimited && (
-                    <Badge className="absolute top-4 left-4 bg-red-500 text-white font-medium">Limited Edition</Badge>
-                  )}
+              <p className="text-gray-300 leading-relaxed">{product.description}</p>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
+                <div className="flex flex-wrap gap-2">
+                  {product.sizes.map((size) => <button key={size} onClick={() => setSelectedSize(size)} className={`px-4 py-2 text-sm rounded-full transition-colors ${selectedSize === size ? 'bg-cyan-500 text-white' : 'bg-gray-800 hover:bg-gray-700'}`}>{size}</button>)}
                 </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Color</label>
+                <div className="flex gap-3">
+                  {product.colors.map((color) => <button key={color} onClick={() => setSelectedColor(color)} className={`w-8 h-8 rounded-full border-2 ${selectedColor === color ? "border-cyan-400" : "border-gray-600"}`} style={{backgroundColor: color.toLowerCase()}}/>)}
+                </div>
+                <p className="text-sm text-gray-400 mt-1">Selected: {selectedColor}</p>
+              </div>
+              <button className="w-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:scale-105 transition-transform text-white font-medium py-3 rounded-full flex items-center justify-center gap-2">
+                <ShoppingBag className="h-5 w-5" /> Buy Now - €{product.price}
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
-                {/* Product Info */}
+//============================================================================
+// SHOP PAGE CONTENT
+//============================================================================
+const ShopContent = () => {
+    const [activeCategory, setActiveCategory] = useState("All");
+    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+    const containerVariants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+    const cardVariants = { hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50 } } };
+
+    const handleFilter = (category) => {
+        setActiveCategory(category);
+        if (category === "All") setFilteredProducts(products);
+        else setFilteredProducts(products.filter(p => p.category === category));
+    };
+
+    return(
+        <>
+            <section className="min-h-[80vh] flex items-center justify-center px-6 text-center">
                 <div className="space-y-6">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge variant="secondary">{selectedProduct.category}</Badge>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm">
-                          {selectedProduct.rating} ({selectedProduct.reviews} reviews)
-                        </span>
-                      </div>
-                    </div>
-                    <h3 className="text-3xl font-medium text-white mb-2">{selectedProduct.name}</h3>
-                    <div className="flex items-center gap-3">
-                      <span className="text-3xl font-light text-white">€{selectedProduct.price}</span>
-                      {selectedProduct.originalPrice && (
-                        <span className="text-xl text-gray-400 line-through">€{selectedProduct.originalPrice}</span>
-                      )}
-                      {selectedProduct.discount && (
-                        <Badge className="bg-red-500 text-white">-{selectedProduct.discount}%</Badge>
-                      )}
-                    </div>
-                  </div>
-
-                  <p className="text-gray-300 leading-relaxed">{selectedProduct.description}</p>
-
-                  {/* Size Selection */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProduct.sizes.map((size: string) => (
-                        <Button
-                          key={size}
-                          variant={selectedSize === size ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setSelectedSize(size)}
-                          className={
-                            selectedSize === size
-                              ? "bg-gradient-to-r from-cyan-500 to-pink-500 text-white"
-                              : "border-gray-600 text-gray-300 hover:bg-white hover:text-black"
-                          }
-                        >
-                          {size}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Color Selection */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Color</label>
-                    <div className="flex gap-3">
-                      {selectedProduct.colors.map((color: string) => (
-                        <button
-                          key={color}
-                          onClick={() => setSelectedColor(color)}
-                          className={`w-8 h-8 rounded-full border-2 ${
-                            selectedColor === color ? "border-cyan-400" : "border-gray-600"
-                          } ${
-                            color === "Black"
-                              ? "bg-black"
-                              : color === "White"
-                                ? "bg-white"
-                                : color === "Navy"
-                                  ? "bg-blue-900"
-                                  : color === "Gray"
-                                    ? "bg-gray-500"
-                                    : "bg-red-500"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-sm text-gray-400 mt-1">Selected: {selectedColor}</p>
-                  </div>
-
-                  {/* Features */}
-                  <div>
-                    <h4 className="text-lg font-medium text-white mb-3">Features</h4>
-                    <ul className="space-y-2">
-                      {selectedProduct.features.map((feature: string, index: number) => (
-                        <li key={index} className="flex items-center gap-2 text-gray-300">
-                          <Check className="h-4 w-4 text-green-400" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Buy Button */}
-                  <Button
-                    onClick={handleBuyProduct}
-                    size="lg"
-                    className="w-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium hover:scale-105 transition-all duration-300 rounded-full"
-                  >
-                    <ShoppingBag className="h-5 w-5 mr-2" />
-                    Buy Now - €{selectedProduct.price}
-                  </Button>
+                    <AnimatedTitle text="NXT Balkan" gradientText="Store" />
+                    <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4, ease: "easeOut" }} className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
+                        Discover our exclusive collection of premium merchandise that represents digital excellence and innovation.
+                    </motion.p>
                 </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
-
-      {/* Purchase Modal */}
-      {showPurchaseModal && selectedProduct && (
-        <div className="fixed inset-0 z-60 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="bg-gray-900 border border-gray-700 rounded-2xl max-w-md w-full"
-          >
-            <div className="p-6">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-medium bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                  Contact Us to Order
-                </h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowPurchaseModal(false)}
-                  className="text-gray-400 hover:text-white"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
-
-              {/* Order Summary */}
-              <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
-                <h3 className="font-medium text-white mb-2">Order Summary</h3>
-                <div className="space-y-1 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Product:</span>
-                    <span className="text-white">{selectedProduct.name}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Size:</span>
-                    <span className="text-white">{selectedSize}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Color:</span>
-                    <span className="text-white">{selectedColor}</span>
-                  </div>
-                  <div className="flex justify-between font-medium">
-                    <span className="text-gray-300">Price:</span>
-                    <span className="text-white">€{selectedProduct.price}</span>
-                  </div>
+            </section>
+            <section className="py-16 md:py-24 px-6">
+                <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                    {features.map((stat, index) => (
+                        <motion.div key={index} variants={cardVariants} className="text-center">
+                            <stat.icon className={`h-10 w-10 mx-auto mb-4 text-cyan-400`} />
+                            <h3 className="font-semibold text-white">{stat.title}</h3>
+                            <p className="text-sm text-gray-400">{stat.description}</p>
+                        </motion.div>
+                    ))}
+                </motion.div>
+            </section>
+            <section className="py-8 px-6 sticky top-0 z-20 bg-black/50 backdrop-blur-md">
+                <div className="max-w-7xl mx-auto">
+                    <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex flex-wrap justify-center gap-3">
+                        {categories.map((category, index) => (
+                        <button key={index} onClick={() => handleFilter(category.name)} className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${activeCategory === category.name ? "bg-gradient-to-r from-cyan-500 to-pink-500 text-white shadow-lg shadow-cyan-500/20" : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/80 hover:text-white"}`}>
+                            {category.name}
+                            <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${activeCategory === category.name ? 'bg-white/20' : 'bg-gray-700'}`}>{category.count}</span>
+                        </button>
+                        ))}
+                    </motion.div>
                 </div>
-              </div>
+            </section>
+            <section id="products" className="py-16 md:py-24 px-6">
+                <motion.div layout variants={containerVariants} initial="hidden" animate="show" className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                    <AnimatePresence>
+                        {filteredProducts.map((product) => (
+                            <motion.div key={product.id} layout variants={cardVariants} exit={{ opacity: 0, scale: 0.8 }} onClick={() => setSelectedProduct(product)} className="cursor-pointer">
+                                <TiltCard className="h-full">
+                                    <div className="flex flex-col h-full bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6">
+                                        <div className="relative mb-4"><img src={product.image} alt={product.name} className="w-full h-64 object-cover rounded-2xl" /><div className="absolute inset-0 bg-black/20 rounded-2xl" /></div>
+                                        <h3 className="text-lg font-semibold mb-1 text-white">{product.name}</h3>
+                                        <div className="flex items-center justify-between text-sm text-gray-400 mb-3"><span>{product.category}</span><div className="flex items-center gap-1"><Star className="h-4 w-4 text-yellow-400"/><span>{product.rating} ({product.reviews})</span></div></div>
+                                        <p className="text-gray-400 text-sm mb-4 flex-grow">{product.description}</p>
+                                        <div className="flex items-center justify-between mt-auto"><p className="text-xl font-bold text-white">€{product.price}</p><div className="p-2 rounded-full bg-cyan-500/20"><Eye className="w-5 h-5 text-cyan-300"/></div></div>
+                                    </div>
+                                </TiltCard>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </motion.div>
+            </section>
+             <AnimatePresence>
+                {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
+            </AnimatePresence>
+        </>
+    )
+}
 
-              {/* Contact Options */}
-              <div className="space-y-3">
-                <p className="text-gray-300 text-sm mb-4">
-                  Choose your preferred contact method to complete your order:
-                </p>
+// INTRO SCENE - IZBOLJŠANA VERZIJA Z REALNIMI VRATI
+const IntroScene = ({ onEnter }) => {
+    const [isZooming, setIsZooming] = useState(false);
+    
+    const handleClick = () => {
+        setIsZooming(true);
+        setTimeout(() => {
+            onEnter();
+        }, 1500);
+    };
 
-                <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full">
-                  <a
-                    href={`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${encodeURIComponent(generateWhatsAppMessage())}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <MessageCircle className="h-5 w-5 mr-2" />
-                    Order via WhatsApp
-                  </a>
-                </Button>
-
-                <Button
-                  asChild
-                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full"
-                >
-                  <a href="https://instagram.com/nxt.balkan" target="_blank" rel="noopener noreferrer">
-                    <Instagram className="h-5 w-5 mr-2" />
-                    Order via Instagram
-                  </a>
-                </Button>
-
-                <Button asChild className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full">
-                  <a href={`mailto:info@nxtbalkan.com?${generateEmailMessage()}`}>
-                    <Mail className="h-5 w-5 mr-2" />
-                    Order via Email
-                  </a>
-                </Button>
-              </div>
-
-              <p className="text-xs text-gray-400 mt-4 text-center">
-                Our team will contact you within 24 hours to confirm your order and arrange payment & shipping.
-              </p>
-            </div>
-          </motion.div>
+    return (
+        <div className="fixed inset-0 z-50 overflow-hidden" style={{ perspective: "800px" }}>
+            <motion.div 
+                className="absolute inset-0" 
+                style={{ transformStyle: "preserve-3d" }}
+                animate={isZooming ? {
+                    scale: 10,
+                    opacity: 0,
+                    transition: { duration: 1.5, ease: [0.6, 0.01, -0.05, 0.95] }
+                } : {}}
+            >
+                <StarrySky count={50} />
+                <motion.div 
+                    className="absolute inset-0"
+                    style={{
+                        transform: "translateY(50%) rotateX(80deg)",
+                        backgroundImage: `repeating-linear-gradient(to bottom, transparent, transparent 49.5%, rgba(0, 255, 255, 0.2) 50%, transparent 50.5%), repeating-linear-gradient(to right, transparent, transparent 49.5%, rgba(255, 105, 180, 0.2) 50%, transparent 50.5%)`,
+                        backgroundSize: "80px 80px",
+                    }}
+                    animate={{ backgroundPosition: "0px 160px" }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }} 
+                />
+                <div className="absolute inset-0" style={{ transform: "translateZ(-800px)" }}>
+                    <div className="absolute bottom-0 left-[10%] w-[10%] h-[100%] bg-gradient-to-t from-indigo-900 to-transparent" />
+                    <div className="absolute bottom-0 left-[25%] w-[8%] h-[120%] bg-gradient-to-t from-indigo-900 to-transparent" />
+                    <div className="absolute bottom-0 right-[15%] w-[12%] h-[110%] bg-gradient-to-t from-indigo-900 to-transparent" />
+                    <div className="absolute bottom-0 right-[30%] w-[7%] h-[130%] bg-gradient-to-t from-indigo-900 to-transparent" />
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center" style={{ transform: "translateZ(-100px)" }}>
+                    <motion.div 
+                        initial={{ opacity: 0, y: 50, scale: 0.8 }} 
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }} 
+                        className="relative z-10 flex flex-col items-center group cursor-pointer"
+                        onClick={handleClick}
+                        whileHover={{ scale: 1.05 }}
+                    >
+                        {/* Nova struktura za bolj realistična vrata */}
+                        <div className="relative w-64 h-96 md:w-80 md:h-[28rem]">
+                            {/* Okvir vrat */}
+                            <motion.div 
+                                className="w-full h-full border-8 border-gray-800 rounded-lg overflow-hidden shadow-2xl"
+                                style={{
+                                    boxShadow: '0 0 60px rgba(0, 255, 255, 0.6), inset 0 0 30px rgba(0, 255, 255, 0.4)',
+                                    backgroundColor: 'rgba(30, 27, 75, 0.7)'
+                                }}
+                            >
+                                {/* Notranjost trgovine - skozi vrata */}
+                                <div className="absolute inset-0 bg-black/30 backdrop-blur-sm overflow-hidden">
+                                    <motion.div 
+                                        className="absolute inset-0 bg-cover bg-center"
+                                        style={{
+                                            backgroundImage: "url('https://media.istockphoto.com/id/1311627464/photo/modern-facade-of-clothes-store-with-empty-signboard-3d-illustration.jpg?s=612x612&w=0&k=20&c=2prRy82LzSPRdvR9923CPwRwzia3gLGNPwVNNE85fIU=')",
+                                            transform: 'translateZ(20px)'
+                                        }}
+                                        animate={isZooming ? { 
+                                            scale: 1.2,
+                                            transition: { duration: 1.5 }
+                                        } : {
+                                            scale: 1,
+                                            transition: { duration: 10, repeat: Infinity, repeatType: "mirror" }
+                                        }}
+                                    />
+                                </div>
+                                
+                                {/* Detajli vrat - kljuka, okras */}
+                                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                                    <motion.div 
+                                        className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center border-2 border-gray-600 shadow-lg"
+                                        whileHover={{ scale: 1.1 }}
+                                    >
+                                        <HandMetal className="w-6 h-6 text-gray-300" />
+                                    </motion.div>
+                                </div>
+                                
+                                {/* Napis na vratih */}
+                                <div className="absolute bottom-8 left-0 right-0 text-center">
+                                    <motion.div 
+                                        className="inline-block px-4 py-2 bg-black/50 rounded-full backdrop-blur-sm"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 2 }}
+                                    >
+                                        <span className="text-white font-medium text-lg">Enter Store</span>
+                                    </motion.div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                </div>
+            </motion.div>
         </div>
-      )}
-    </div>
-  )
+    );
+};
+
+//============================================================================
+// MAIN WRAPPER COMPONENT
+//============================================================================
+export default function ShopPageWrapper() {
+    const [scene, setScene] = useState('intro');
+
+    return (
+        <div className="bg-black text-white font-sans overflow-x-hidden antialiased">
+             <div className="fixed inset-0 z-0 pointer-events-none">
+                <StarrySky />
+            </div>
+            
+            <AnimatePresence>
+                {scene === 'intro' && (
+                    <IntroScene onEnter={() => setScene('shop')} />
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {scene === 'shop' && (
+                    <motion.main 
+                        key="content"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        className="relative z-10"
+                    >
+                        <ShopContent/>
+                    </motion.main>
+                )}
+            </AnimatePresence>
+        </div>
+    );
 }
