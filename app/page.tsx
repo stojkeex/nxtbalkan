@@ -1,981 +1,662 @@
 "use client";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+
+// Since the request specified a single file, all components,
+// animations, and data are defined here. In a real-world project,
+// this would be split into multiple files for better organization.
+
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { 
-  Users, TrendingUp, Star, Globe, Activity, 
-  ShieldCheck, LayoutDashboard, Rocket, Flame, 
-  Lightbulb, Layers, Settings, Code, Database, 
-  Graph, PenTool, MessageSquare, ChevronDown, 
-  Mail, Phone, MapPin, Facebook, Twitter, 
-  Instagram, Linkedin, ArrowRight, Award
+  Users, TrendingUp, Star, Globe, Activity, ShieldCheck, LayoutDashboard, 
+  Rocket, Flame, Lightbulb, Layers, Settings, Code, Database, Search, 
+  PenTool, MessageSquare, ArrowRight, Award, Zap, GitBranch, Share2, 
+  Eye, Target, BarChart, ChevronDown, CheckCircle
 } from "lucide-react";
-import Image from "next/image";
 
-export default function Index() {
-  // Data
-  const services = [
-    { icon: Users, title: "Community Growth", description: "Tailored strategies to build and scale active digital communities." },
-    { icon: TrendingUp, title: "Performance Marketing", description: "ROI-focused marketing that converts browsers into buyers." },
-    { icon: Star, title: "Creative Direction", description: "Innovative campaigns with high-end visuals and storytelling." },
-    { icon: Globe, title: "Global Strategy", description: "Position your brand internationally with targeted messaging." },
-    { icon: Activity, title: "Data Intelligence", description: "Actionable insights that drive creative decisions." },
-    { icon: LayoutDashboard, title: "UI/UX Design", description: "Intuitive user experiences across all platforms." },
-    { icon: ShieldCheck, title: "Security", description: "Top-tier digital protection and compliance frameworks." },
-    { icon: Rocket, title: "Startup Acceleration", description: "From idea to MVP with our agile launch model." }
-  ];
+//============================================================================
+// DATA STRUCTURES (in English)
+// All data is centralized for easy editing.
+//============================================================================
 
-  const values = [
-    { icon: Lightbulb, title: "Innovation", description: "Cutting-edge solutions that push boundaries and set standards.", color: "cyan" },
-    { icon: Award, title: "Excellence", description: "Exceptionally high standards in every detail of our work.", color: "pink" },
-    { icon: Users, title: "Collaboration", description: "Collective intelligence to achieve shared goals.", color: "purple" }
-  ];
+const navLinks = [
+    { name: "Services", href: "#services" },
+    { name: "Process", href: "#process" },
+    { name: "About Us", href: "#about" },
+    { name: "Contact", href: "#contact" },
+];
 
-  const features = [
-    { icon: Lightbulb, title: "Future Vision", description: "We anticipate trends to keep your digital presence impactful.", color: "cyan" },
-    { icon: Layers, title: "Holistic Approach", description: "Seamless integration of all digital touchpoints.", color: "pink" },
-    { icon: Rocket, title: "Rapid Growth", description: "Agile methodologies for accelerated adaptation.", color: "purple" },
-    { icon: Settings, title: "Sustainability", description: "Solutions that evolve with your business needs.", color: "cyan" }
-  ];
-
-  const processSteps = [
-    { icon: Lightbulb, title: "Discovery", description: "Deep dive into your business and audience needs." },
-    { icon: LayoutDashboard, title: "Strategy", description: "Comprehensive plan aligned with your objectives." },
-    { icon: PenTool, title: "Design", description: "Stunning, user-centric interfaces that engage." },
-    { icon: Rocket, title: "Build", description: "Implementation with cutting-edge technology." }
-  ];
-
-  // Animation variants
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 30 },
-    show: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15
-      }
-    }
-  };
-
-  const cardItem = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
-    show: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 80,
-        damping: 15
-      }
+const coreServices = [
+    { 
+        icon: GitBranch, 
+        title: "Digital Strategy & Transformation", 
+        description: "We design digital ecosystems that foster growth, innovation, and long-term competitiveness for your brand.",
+        color: "cyan"
     },
-    hover: {
-      y: -5,
-      transition: { duration: 0.2 }
+    { 
+        icon: TrendingUp, 
+        title: "Performance Marketing & SEO", 
+        description: "With precisely targeted campaigns and technical optimization, we increase your visibility, traffic, and conversions.",
+        color: "pink"
+    },
+    { 
+        icon: Star, 
+        title: "Branding & Creative Direction", 
+        description: "We build strong and recognizable brands with visually stunning stories that resonate with your target audience.",
+        color: "cyan"
+    },
+    { 
+        icon: Code, 
+        title: "Web & Mobile App Development", 
+        description: "We create high-quality, scalable, and user-friendly digital products that solve real-world problems.",
+        color: "pink"
     }
-  };
+];
 
-  const floatingVariants = {
-    float: {
-      y: [0, -20, 0],
-      x: [0, 10, 0],
-      transition: {
-        duration: 8 + Math.random() * 5,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
+const whyNXT = [
+    {
+        icon: Lightbulb,
+        title: "Innovation in our DNA",
+        description: "We constantly explore new technologies and approaches to provide you with solutions that are a step ahead of the competition.",
+        color: "cyan",
+    },
+    {
+        icon: Target,
+        title: "Data-Driven Decisions",
+        description: "Every decision we make is based on in-depth data analysis, ensuring maximum return on your investment (ROI).",
+        color: "pink",
+    },
+    {
+        icon: Users,
+        title: "A True Partnership",
+        description: "We are not just contractors; we are your strategic partner. Your success is our success, so we are fully committed to your goals.",
+        color: "cyan",
+    },
+    {
+        icon: ShieldCheck,
+        title: "Quality Without Compromise",
+        description: "Our high standards of quality and attention to detail ensure that the final products are always top-notch and reliable.",
+        color: "pink",
     }
-  };
+];
 
-  const backgroundParticle = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: {
-      scale: [1, 1.5, 1],
-      opacity: [0.1, 0.3, 0.1],
-      x: `${Math.random() * 100 - 50}px`,
-      y: `${Math.random() * 100 - 50}px`,
-      transition: {
-        duration: 15 + Math.random() * 10,
-        repeat: Infinity,
-        delay: Math.random() * 5
-      }
+const processSteps = [
+    {
+        title: "1. Discovery & Analysis",
+        description: "We take a deep dive into your business, market, and target audience. We understand your challenges and opportunities.",
+        icon: Search
+    },
+    {
+        title: "2. Strategy & Planning",
+        description: "Based on our findings, we create a comprehensive digital strategy and a detailed execution roadmap.",
+        icon: Layers
+    },
+    {
+        title: "3. Design & Prototyping",
+        description: "We create intuitive and visually polished user interfaces (UI/UX) that we test with prototypes.",
+        icon: PenTool
+    },
+    {
+        title: "4. Development & Implementation",
+        description: "Our engineers use cutting-edge technologies to turn your vision into a functioning digital product.",
+        icon: Code
+    },
+    {
+        title: "5. Testing & Quality Assurance",
+        description: "Through rigorous testing, we ensure the solution is flawless, secure, and performs optimally on all devices.",
+        icon: CheckCircle
+    },
+    {
+        title: "6. Launch & Optimization",
+        description: "After a successful launch, we monitor performance, collect data, and continuously optimize for even better results.",
+        icon: Rocket
     }
-  };
+];
 
-  return (
-    <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden">
-      {/* Enhanced floating particles background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"
-            style={{
-              width: `${Math.random() * 100 + 50}px`,
-              height: `${Math.random() * 100 + 50}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
+const testimonials = [
+    {
+        quote: "Working with NXT Balkan exceeded all our expectations. Their strategic vision and technical execution brought our company a 300% increase in traffic in one year.",
+        author: "Mark Novak",
+        title: "CEO, TechSolutions Ltd.",
+        avatar: "/avatars/avatar1.jpg"
+    },
+    {
+        quote: "The NXT Balkan team not only developed our new mobile app but also became a key part of our team. Their proactivity and dedication are incredible.",
+        author: "Ana Kovač",
+        title: "Product Manager, Inovativ Co.",
+        avatar: "/avatars/avatar2.jpg"
+    },
+    {
+        quote: "Finally, an agency that understands data! Their approach to performance marketing resulted in a 50% lower CPA and a significant increase in ROI.",
+        author: "Luka Horvat",
+        title: "Marketing Director, E-commerce Ltd.",
+        avatar: "/avatars/avatar3.jpg"
+    }
+];
+
+const faqItems = [
+    {
+        question: "What is your ideal client?",
+        answer: "Our ideal client is an ambitious company that understands the importance of digital presence and is looking for a long-term partner for growth. We successfully collaborate with both growing startups and established companies seeking digital transformation."
+    },
+    {
+        question: "How do you measure the success of projects?",
+        answer: "We measure success with predefined Key Performance Indicators (KPIs) that are aligned with your business goals. These can include increased sales, number of leads, organic traffic, brand awareness, or user engagement."
+    },
+    {
+        question: "Do you offer maintenance after the project is completed?",
+        answer: "Yes. Our partnership doesn't end with the launch. We offer various maintenance, support, and continuous optimization packages to keep your digital investment secure, updated, and competitive."
+    },
+    {
+        question: "How long does an average project take?",
+        answer: "The project duration depends on its complexity and scope. Smaller projects (e.g., a landing page) can take a few weeks, while the development of a complex web application can take several months. We provide a detailed timeline after our initial meeting."
+    }
+];
+
+//============================================================================
+// HELPER COMPONENTS
+//============================================================================
+
+const SectionHeader = ({ title, subtitle, gradientText }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
+    >
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-4">
+            {title} <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">{gradientText}</span>
+        </h2>
+        <p className="text-base md:text-xl text-gray-400">{subtitle}</p>
+    </motion.div>
+);
+
+const AnimatedTextWord = ({ text, className }) => {
+    const words = text.split(" ");
+
+    const container = {
+        hidden: { opacity: 0 },
+        visible: (i = 1) => ({
+            opacity: 1,
+            transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+        }),
+    };
+
+    const child = {
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                damping: 12,
+                stiffness: 100,
+            },
+        },
+        hidden: {
+            opacity: 0,
+            y: 20,
+            transition: {
+                type: "spring",
+                damping: 12,
+                stiffness: 100,
+            },
+        },
+    };
+
+    return (
+        <motion.h1
+            variants={container}
             initial="hidden"
             animate="visible"
-            variants={backgroundParticle}
-          />
-        ))}
-        
-        {/* Subtle grid overlay */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-[0.02]"></div>
-        
-        {/* Animated gradient blobs */}
-        <motion.div 
-          className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-cyan-500/5 to-pink-500/10 blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-            opacity: [0.1, 0.15, 0.1]
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-pink-500/5 to-cyan-500/10 blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, -50, 0],
-            opacity: [0.1, 0.15, 0.1]
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      </div>
-
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 sm:px-12 bg-black z-10">
-        <div className="max-w-7xl mx-auto w-full text-center space-y-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, type: "spring" }}
-            className="mb-8 flex justify-center"
-          >
-            <div className="w-[380px] h-[200px] sm:w-[530px] sm:h-[250px] relative">
-              <Image
-                src="/nxtbalkancolored2.png"
-                alt="NXT Balkan Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6, type: "spring" }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight"
-          >
-            Next-Gen <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Digital</span> Innovation
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9, type: "spring" }}
-            className="text-gray-400 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl"
-          >
-            We craft digital experiences that blend innovation, performance, and connection to transform your business.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2, type: "spring" }}
-            className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-6"
-          >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium px-8 py-5 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-cyan-500/20">
-                Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 font-medium px-8 py-5 rounded-full text-lg transition-all duration-300">
-                Explore More
-              </Button>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black z-0"></div>
-      </section>
-
-      {/* Values Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Core <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Values</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              The principles that drive our work and define our relationships.
-            </p>
-          </motion.div>
-
-          <motion.div 
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {values.map((value, i) => (
-              <motion.div
-                key={i}
-                variants={item}
-                whileHover="hover"
-                className="text-center"
-              >
-                <motion.div 
-                  className={`w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-${value.color}-500/10 to-${value.color}-500/20 flex items-center justify-center`}
-                  variants={floatingVariants}
-                  animate="float"
-                >
-                  <value.icon className={`w-8 h-8 text-${value.color}-400`} />
-                </motion.div>
-                <h3 className="text-xl font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400">
-                  {value.title}
-                </h3>
-                <p className="text-gray-400">
-                  {value.description}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900/50 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Expertise</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              Specialized services designed for digital transformation.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {services.map((service, i) => (
-              <motion.div
-                key={i}
-                variants={cardItem}
-                whileHover="hover"
-              >
-                <Card className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-cyan-400/30 transition-all duration-300 rounded-xl h-full group hover:shadow-lg hover:shadow-cyan-500/10">
-                  <CardContent className="p-6">
-                    <motion.div 
-                      className="mb-4 w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/10 to-pink-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors"
-                      whileHover={{ rotate: 10, scale: 1.1 }}
-                    >
-                      <service.icon className="w-6 h-6 text-cyan-400 group-hover:text-pink-400 transition-colors" />
-                    </motion.div>
-                    <h3 className="text-lg font-semibold mb-3 text-white">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-400 text-sm">
-                      {service.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-12"
-          >
-            <motion.div
-              animate={{ 
-                rotate: [0, 10, -10, 0],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }}
-            >
-              <Flame className="w-10 h-10 text-pink-500 mx-auto mb-4" />
-            </motion.div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Why <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400 font-medium">Choose Us</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto">
-              We combine strategy, creativity, and technology to deliver exceptional results.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          >
-            {features.map((item, i) => (
-              <motion.div
-                key={i}
-                variants={cardItem}
-                whileHover="hover"
-                className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 hover:border-cyan-400/30 transition-all duration-300 relative overflow-hidden"
-              >
-                {/* Animated background element */}
-                <motion.div 
-                  className={`absolute -right-10 -top-10 w-32 h-32 rounded-full bg-gradient-to-br from-${item.color}-500/5 to-${item.color}-500/10 blur-xl`}
-                  animate={{
-                    x: [0, 10, 0],
-                    y: [0, 10, 0],
-                    opacity: [0.05, 0.1, 0.05]
-                  }}
-                  transition={{
-                    duration: 8 + Math.random() * 5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
-                <div className="flex items-start gap-4 relative z-10">
-                  <motion.div 
-                    className={`w-12 h-12 rounded-lg bg-gradient-to-br from-${item.color}-500/10 to-${item.color}-500/20 flex items-center justify-center flex-shrink-0`}
-                    whileHover={{ rotate: 10 }}
-                  >
-                    <item.icon className={`w-6 h-6 text-${item.color}-400`} />
-                  </motion.div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-3 text-white">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-400">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, type: "spring" }}
-          className="max-w-4xl mx-auto"
+            className={className}
         >
-          <Card className="bg-gradient-to-br from-gray-900 to-black backdrop-blur-sm border border-gray-800 rounded-2xl p-8 sm:p-12 relative overflow-hidden">
-            {/* Enhanced animated background elements */}
-            <motion.div 
-              className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.1, 0.2, 0.1],
-                x: [-20, 0, -20],
-                y: [-20, 0, -20]
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-            <motion.div 
-              className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500/10 to-cyan-500/10"
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.1, 0.2, 0.1],
-                x: [20, 0, 20],
-                y: [20, 0, 20]
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2
-              }}
-            />
+            {words.map((word, index) => (
+                <motion.span
+                    variants={child}
+                    style={{ marginRight: "0.25em" }}
+                    key={index}
+                >
+                    {word}
+                </motion.span>
+            ))}
+        </motion.h1>
+    );
+};
+
+//============================================================================
+// MAIN PAGE COMPONENT
+//============================================================================
+
+export default function HomePage() {
+
+    const heroRef = useRef(null);
+    const { scrollYProgress: heroScrollYProgress } = useScroll({
+        target: heroRef,
+        offset: ["start start", "end start"],
+    });
+
+    const logoY = useTransform(heroScrollYProgress, [0, 1], ["0%", "50%"]);
+    const textY = useTransform(heroScrollYProgress, [0, 1], ["0%", "100%"]);
+    const textOpacity = useTransform(heroScrollYProgress, [0, 0.8], [1, 0]);
+    const backgroundOpacity = useTransform(heroScrollYProgress, [0, 0.5], [1, 0]);
+
+    const [activeTestimonial, setActiveTestimonial] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+        }, 7000); 
+        return () => clearInterval(timer);
+    }, []);
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30, scale: 0.98 },
+        show: { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1,
+            transition: { type: "spring", stiffness: 100, damping: 12 }
+        }
+    };
+    
+    return (
+        <div className="bg-black text-white font-sans overflow-x-hidden antialiased">
             
-            <div className="relative z-10 text-center">
-              <motion.div 
-                className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-cyan-500/10 to-pink-500/10 flex items-center justify-center"
-                animate={{
-                  rotate: [0, 360],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              >
-                <Rocket className="w-8 h-8 text-cyan-400" />
-              </motion.div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-                Ready to <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Elevate</span> Your Brand?
-              </h2>
-              <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-                Let's create something extraordinary together. Our team is ready to bring your vision to life.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg hover:shadow-cyan-500/20">
-                    Get Started <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 font-medium px-8 py-4 rounded-full text-lg transition-all duration-300">
-                    Learn More
-                  </Button>
-                </motion.div>
-              </div>
-            </div>
-          </Card>
-        </motion.div>
-      </section>
-
-      {/* Process Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Process</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              A clear, structured approach to deliver exceptional results.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {processSteps.map((step, i) => (
-              <motion.div
-                key={i}
-                variants={cardItem}
-                whileHover="hover"
-                className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 hover:border-pink-400/30 transition-all duration-300 group relative overflow-hidden"
-              >
-                {/* Animated connector lines */}
-                {i < processSteps.length - 1 && (
-                  <motion.div 
-                    className="hidden lg:block absolute -right-6 top-1/2 h-[2px] w-12 bg-gradient-to-r from-pink-500/20 to-cyan-500/20"
-                    initial={{ width: 0 }}
-                    whileInView={{ width: 48 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: i * 0.1 + 0.3 }}
-                  />
-                )}
-                
-                <div className="flex items-center gap-3 mb-4">
-                  <motion.div 
-                    className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/10 to-pink-500/10 flex items-center justify-center group-hover:bg-pink-500/20 transition-colors"
-                    whileHover={{ rotate: 15, scale: 1.1 }}
-                  >
-                    <step.icon className="w-5 h-5 text-pink-400 group-hover:text-cyan-400 transition-colors" />
-                  </motion.div>
-                  <h3 className="text-lg font-semibold text-white">
-                    {step.title}
-                  </h3>
-                </div>
-                <p className="text-gray-400 text-sm">
-                  {step.description}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="py-24 px-6 sm:px-12 bg-gradient-to-b from-black to-gray-900 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Let's <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Connect</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              Get in touch to discuss your project or learn more about our services.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
-              className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-8 relative overflow-hidden"
-            >
-              {/* Animated background elements */}
-              <motion.div 
-                className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-gradient-to-br from-cyan-500/5 to-cyan-500/10 blur-xl"
-                animate={{
-                  x: [0, 10, 0],
-                  y: [0, 10, 0],
-                  opacity: [0.05, 0.1, 0.05]
-                }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              <div className="relative z-10">
-                <h3 className="text-2xl font-semibold mb-6 text-white">Contact Info</h3>
-                
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <motion.div 
-                      className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/10 to-cyan-500/20 flex items-center justify-center"
-                      whileHover={{ rotate: 10 }}
-                    >
-                      <MapPin className="w-6 h-6 text-cyan-400" />
-                    </motion.div>
-                    <div>
-                      <h4 className="text-white font-medium mb-1">Location</h4>
-                      <p className="text-gray-400">123 Digital Avenue, Tech District, NY 10001</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    <motion.div 
-                      className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500/10 to-pink-500/20 flex items-center justify-center"
-                      whileHover={{ rotate: 10 }}
-                    >
-                      <Mail className="w-6 h-6 text-pink-400" />
-                    </motion.div>
-                    <div>
-                      <h4 className="text-white font-medium mb-1">Email</h4>
-                      <p className="text-gray-400">contact@nxtbalkan.com</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    <motion.div 
-                      className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500/10 to-cyan-500/20 flex items-center justify-center"
-                      whileHover={{ rotate: 10 }}
-                    >
-                      <Phone className="w-6 h-6 text-cyan-400" />
-                    </motion.div>
-                    <div>
-                      <h4 className="text-white font-medium mb-1">Phone</h4>
-                      <p className="text-gray-400">+1 (555) 123-4567</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4, type: "spring" }}
-              className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-8 relative overflow-hidden"
-            >
-              {/* Animated background elements */}
-              <motion.div 
-                className="absolute -left-10 -bottom-10 w-32 h-32 rounded-full bg-gradient-to-br from-pink-500/5 to-pink-500/10 blur-xl"
-                animate={{
-                  x: [0, -10, 0],
-                  y: [0, -10, 0],
-                  opacity: [0.05, 0.1, 0.05]
-                }}
-                transition={{
-                  duration: 12,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              <div className="relative z-10">
-                <h3 className="text-2xl font-semibold mb-6 text-white">Send a Message</h3>
-                <form className="space-y-4">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                    <label htmlFor="name" className="block text-gray-400 mb-2">Name</label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all duration-300"
-                      placeholder="Your name"
-                    />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                  >
-                    <label htmlFor="email" className="block text-gray-400 mb-2">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all duration-300"
-                      placeholder="Your email"
-                    />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                  >
-                    <label htmlFor="message" className="block text-gray-400 mb-2">Message</label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all duration-300"
-                      placeholder="Tell us about your project"
-                    />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
-                  >
-                    <Button className="w-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-medium py-3 rounded-lg transition-all duration-300">
-                      Send Message <ArrowRight className="ml-2 w-5 h-5" />
-                    </Button>
-                  </motion.div>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              What Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Clients Say</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              Hear from businesses that have transformed with our solutions.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {[
-              { 
-                quote: "Their creativity and strategic vision helped us double our revenue in 6 months.",
-                author: "Elena D., TechFounder",
-                color: "cyan"
-              },
-              { 
-                quote: "The UX overhaul was a game changer. Engagement went through the roof.",
-                author: "Mark T., Product Manager",
-                color: "pink"
-              },
-              { 
-                quote: "Best digital agency we've ever worked with. Period.",
-                author: "Amina R., COO",
-                color: "cyan"
-              }
-            ].map((testimonial, i) => (
-              <motion.div
-                key={i}
-                variants={cardItem}
-                whileHover="hover"
-                className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 relative overflow-hidden"
-              >
-                {/* Animated quote mark */}
-                <motion.div 
-                  className={`absolute -top-4 -left-4 text-${testimonial.color}-500/10 text-7xl font-serif`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                >
-                  "
-                </motion.div>
-                <p className="text-gray-400 relative z-10">{testimonial.quote}</p>
-                <p className={`mt-4 text-${testimonial.color}-400 font-medium relative z-10`}>— {testimonial.author}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Partners Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Trusted <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-cyan-400 font-medium">By</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              We partner with industry leaders and innovative startups.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex flex-wrap items-center justify-center gap-12"
-          >
-            {[1, 2, 3, 4].map((partner, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.1, rotate: [0, 5, -5, 0] }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <Image 
-                  src={`/partner${partner}.png`} 
-                  alt={`Partner ${partner}`} 
-                  width={160} 
-                  height={60} 
-                  className="h-12 w-auto grayscale hover:grayscale-0 transition duration-300"
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div 
+                    className="absolute inset-0" 
+                    style={{
+                        backgroundImage: `radial-gradient(circle at center, rgba(128, 128, 128, 0.1) 1px, transparent 1px)`,
+                        backgroundSize: '30px 30px'
+                    }}
                 />
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Awards Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Industry <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Recognition</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              Our work has been recognized by leading industry organizations.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"
-          >
-            {[
-              { title: "🏆 Best UX Design 2024", description: "European Design Conference", color: "pink" },
-              { title: "🏆 Digital Agency of the Year", description: "Startup World Awards", color: "cyan" },
-              { title: "🏆 Innovation in Tech", description: "Balkan Tech Summit", color: "pink" },
-              { title: "🏆 Creative Excellence", description: "Global Digital Awards", color: "cyan" }
-            ].map((award, i) => (
-              <motion.div
-                key={i}
-                variants={cardItem}
-                whileHover="hover"
-                className="p-6 bg-gray-900/50 border border-gray-800 rounded-xl relative overflow-hidden"
-              >
-                {/* Animated trophy */}
                 <motion.div
-                  className="absolute -top-4 -right-4 text-5xl opacity-10"
-                  animate={{
-                    rotate: [0, 15, -15, 0],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    repeatType: "reverse"
-                  }}
-                >
-                  🏆
-                </motion.div>
-                <p className={`text-${award.color}-400 font-bold text-xl mb-2 relative z-10`}>{award.title}</p>
-                <p className="text-gray-400 text-sm relative z-10">{award.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+                    className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-[150px] opacity-30"
+                    animate={{
+                        x: [0, 100, -50, 0],
+                        y: [0, -50, 100, 0],
+                        scale: [1, 1.1, 0.9, 1],
+                        rotate: [0, 10, -5, 0]
+                    }}
+                    transition={{
+                        duration: 30,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                />
+                <motion.div
+                    className="absolute bottom-[-20%] right-[-20%] w-[700px] h-[700px] bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full blur-[150px] opacity-30"
+                    animate={{
+                        x: [0, -100, 50, 0],
+                        y: [0, 50, -100, 0],
+                        scale: [1, 0.9, 1.1, 1],
+                        rotate: [0, -10, 5, 0]
+                    }}
+                    transition={{
+                        duration: 35,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 5
+                    }}
+                />
+            </div>
 
-      {/* FAQ Section */}
-      <section className="py-24 px-6 sm:px-12 bg-black relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
-              Frequently <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 font-medium">Asked Questions</span>
-            </h2>
-            <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto">
-              Answers to common questions about our services and process.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto space-y-8"
-          >
-            {[
-              { 
-                question: "How long does a typical project take?", 
-                answer: "Most projects take between 4 to 12 weeks depending on the scope and complexity.",
-                color: "pink"
-              },
-              { 
-                question: "What industries do you specialize in?", 
-                answer: "We work with tech startups, e-commerce brands, fintech, education, and more.",
-                color: "cyan"
-              },
-              { 
-                question: "Do you offer post-launch support?", 
-                answer: "Yes, we offer ongoing maintenance, performance optimization, and growth strategy.",
-                color: "pink"
-              }
-            ].map((faq, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="border-b border-gray-800 pb-6"
-              >
+            <motion.section
+                ref={heroRef}
+                id="home"
+                className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 z-10 overflow-hidden"
+                style={{ opacity: backgroundOpacity }}
+            >
+                <div className="absolute inset-0 bg-black/50 z-0"/>
+                
                 <motion.div 
-                  whileHover={{ x: 5 }}
-                  className="cursor-pointer"
+                    style={{ y: logoY }}
+                    className="relative z-10 flex justify-center items-center w-[280px] h-[140px] sm:w-[450px] sm:h-[225px] md:w-[550px] md:h-[275px] mb-8"
                 >
-                  <h3 className={`text-xl font-medium text-${faq.color}-400`}>{faq.question}</h3>
-                  <motion.p 
-                    className="text-gray-400 mt-2"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {faq.answer}
-                  </motion.p>
+                    <img
+                        src="/D23C1779-DD4E-427A-82C3-1558F3198EAE.webp"
+                        alt="NXT Balkan Logo"
+                        className="w-full h-full object-contain"
+                    />
                 </motion.div>
-              </motion.div>
-            ))}
-          </motion.div>
+                
+                <motion.div style={{ y: textY, opacity: textOpacity }} className="relative z-10 text-center">
+                    <AnimatedTextWord 
+                        text="Scalable Digital Solutions for the Leaders of Tomorrow"
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter max-w-5xl mx-auto"
+                    />
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 1.5, type: "spring" }}
+                        className="text-gray-300 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl mt-8"
+                    >
+                        We build bridges between your vision and digital reality. Driving your growth with innovative strategies and cutting-edge technology.
+                    </motion.p>
+                    
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 1.8, type: "spring" }}
+                        className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 pt-10"
+                    >
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: '0px 0px 20px rgba(45, 212, 191, 0.5)' }}
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center"
+                        >
+                            Start Your Project <ArrowRight className="w-5 h-5" />
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                            whileTap={{ scale: 0.95 }}
+                            className="border border-white/30 bg-white/5 text-white font-medium px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 flex items-center gap-2 backdrop-blur-sm w-full sm:w-auto justify-center"
+                        >
+                            Our Services
+                        </motion.button>
+                    </motion.div>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 2.2, type: "spring" }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2"
+                >
+                    <div className="w-6 h-10 border-2 border-gray-500 rounded-full flex justify-center items-start p-1">
+                        <motion.div
+                            className="w-1.5 h-3 bg-gray-400 rounded-full"
+                            animate={{ y: [0, 10, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                    </div>
+                </motion.div>
+            </motion.section>
+
+
+            <main className="relative z-10 bg-black">
+                <section id="services" className="py-24 sm:py-32 px-6 sm:px-12">
+                    <SectionHeader 
+                        title="Our Core" 
+                        gradientText="Expertise"
+                        subtitle="A comprehensive suite of services designed for the digital age. From strategy to execution, we've got you covered."
+                    />
+                    
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true, amount: 0.2 }}
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto"
+                    >
+                        {coreServices.map((service, i) => (
+                            <motion.div
+                                key={i}
+                                variants={itemVariants}
+                                className="group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 h-full transition-all duration-300 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2"
+                            >
+                                <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br from-${service.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}/>
+                                
+                                <div className="relative z-10">
+                                    <div className="mb-6 w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                                        <service.icon className={`w-7 h-7 text-${service.color}-400`} />
+                                    </div>
+                                    <h3 className="text-xl font-semibold mb-3 text-white">
+                                        {service.title}
+                                    </h3>
+                                    <p className="text-gray-400 text-sm">
+                                        {service.description}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </section>
+
+                <section id="about" className="py-24 sm:py-32 px-6 sm:px-12 bg-gray-900/30">
+                    <SectionHeader
+                        title="Your Strategic"
+                        gradientText="Partner"
+                        subtitle="We don't just build products. We build partnerships based on trust, transparency, and shared success."
+                    />
+                    
+                    <motion.div 
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true, amount: 0.2 }}
+                        className="grid grid-cols-1 lg:grid-cols-3 grid-rows-auto gap-6 max-w-7xl mx-auto"
+                    >
+                        <motion.div 
+                            variants={itemVariants}
+                            className="lg:col-span-3 bg-gray-900/50 border border-gray-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8"
+                        >
+                            <motion.div
+                                whileHover={{ scale: 1.05, rotate: 2 }}
+                                className="w-full md:w-1/3"
+                            >
+                                <div className="aspect-square bg-gradient-to-br from-cyan-500/10 to-pink-500/10 rounded-2xl flex items-center justify-center p-8">
+                                    <Flame className="w-16 h-16 md:w-24 md:h-24 text-pink-400"/>
+                                </div>
+                            </motion.div>
+                            <div className="w-full md:w-2/3">
+                                <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-white">We Are NXT Balkan</h3>
+                                <p className="text-gray-300 text-base md:text-lg mb-4">
+                                    We are a collective of strategists, designers, and engineers, united by one mission: to create digital experiences that make an impact. We believe in the power of technology to solve complex challenges and generate measurable results.
+                                </p>
+                                <p className="text-gray-400 text-sm md:text-base">
+                                    Our agility allows us to adapt quickly, and our passion drives us to constantly improve. We are your partners on the journey to digital excellence.
+                                </p>
+                            </div>
+                        </motion.div>
+                        
+                        {whyNXT.map((item, i) => (
+                           <motion.div 
+                                key={i}
+                                variants={itemVariants}
+                                className={`group relative bg-gray-900/50 border border-gray-800 rounded-2xl p-6 md:p-8 transition-all duration-300 hover:border-${item.color}-400/50 hover:shadow-2xl hover:shadow-${item.color}-500/10 hover:-translate-y-2`}
+                            >
+                               <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br from-${item.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}/>
+                               
+                               <div className="relative z-10">
+                                   <div className="mb-5 w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center">
+                                       <item.icon className={`w-6 h-6 text-${item.color}-400`} />
+                                   </div>
+                                   <h4 className="text-xl font-semibold mb-2 text-white">{item.title}</h4>
+                                   <p className="text-gray-400 text-sm">{item.description}</p>
+                               </div>
+                           </motion.div>
+                        ))}
+                    </motion.div>
+                </section>
+
+                {/* ======================= PROCESS SECTION (FIXED) ======================= */}
+                <section id="process" className="py-24 sm:py-32 px-6 sm:px-12">
+                     <SectionHeader
+                        title="Our Proven"
+                        gradientText="Process"
+                        subtitle="A structured and transparent approach that ensures predictability, quality, and the success of every project."
+                    />
+                    <div className="max-w-7xl mx-auto">
+                        <div className="relative">
+                            {/* The vertical timeline bar */}
+                            <div className="absolute left-4 md:left-1/2 top-0 w-px h-full -translate-x-1/2 bg-gradient-to-b from-cyan-500/20 via-pink-500/20 to-transparent" />
+
+                            {processSteps.map((step, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true, amount: 0.5 }}
+                                    className="relative mb-12"
+                                >
+                                    {/* The dot on the timeline */}
+                                    <div className="absolute left-4 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 rounded-full bg-black border-2 border-pink-500 z-10">
+                                        <div className="w-3 h-3 rounded-full bg-pink-500"/>
+                                    </div>
+                                    
+                                    {/* Flex container to position the card left or right on desktop */}
+                                    <div className={`md:flex ${index % 2 !== 0 ? 'md:justify-end' : 'md:justify-start'}`}>
+                                        <div className="ml-12 md:ml-0 md:w-5/12">
+                                            <motion.div 
+                                                variants={{
+                                                    hidden: { opacity: 0, x: index % 2 !== 0 ? 100 : -100 },
+                                                    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                                                }}
+                                                className="p-6 bg-gray-900/50 border border-gray-800 rounded-2xl shadow-lg w-full"
+                                            >
+                                                <div className="flex items-center gap-4 mb-3">
+                                                    <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-cyan-500/10 to-pink-500/10 rounded-lg flex items-center justify-center">
+                                                        <step.icon className="w-5 h-5 text-cyan-400" />
+                                                    </div>
+                                                    <h3 className="text-lg md:text-xl font-semibold text-white">{step.title}</h3>
+                                                </div>
+                                                <p className="text-gray-400 text-sm">{step.description}</p>
+                                            </motion.div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+                
+                <section className="py-24 sm:py-32 px-6 sm:px-12 bg-gray-900/30">
+                    <SectionHeader
+                        title="What Our"
+                        gradientText="Clients Say"
+                        subtitle="We are proud of the trust our partners have placed in us. Their stories are our greatest recognition."
+                    />
+                    <div className="max-w-4xl mx-auto relative h-[380px] sm:h-[300px]">
+                        <AnimatePresence>
+                            {testimonials.map((testimonial, index) =>
+                                index === activeTestimonial && (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: -50, scale: 0.9 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        className="absolute inset-0 bg-gray-900/50 border border-gray-800 rounded-2xl p-8 flex flex-col justify-center items-center text-center"
+                                    >
+                                        <div className="w-16 h-16 rounded-full mb-4 overflow-hidden border-2 border-cyan-400">
+                                             <div className="w-full h-full bg-pink-500/20 flex items-center justify-center">
+                                                <Users className="w-8 h-8 text-pink-400"/>
+                                            </div>
+                                        </div>
+                                        <p className="text-base md:text-xl text-gray-300 italic mb-6">"{testimonial.quote}"</p>
+                                        <div>
+                                            <p className="font-semibold text-white">{testimonial.author}</p>
+                                            <p className="text-cyan-400 text-sm">{testimonial.title}</p>
+                                        </div>
+                                    </motion.div>
+                                )
+                            )}
+                        </AnimatePresence>
+
+                        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex gap-3">
+                            {testimonials.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setActiveTestimonial(index)}
+                                    className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                                        index === activeTestimonial ? 'bg-pink-500' : 'bg-gray-700 hover:bg-gray-500'
+                                    }`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section className="py-24 sm:py-32 px-6 sm:px-12">
+                    <SectionHeader
+                        title="Frequently"
+                        gradientText="Asked Questions"
+                        subtitle="Have a question? You're probably not the first. Here are the answers to the most common questions."
+                    />
+                    <div className="max-w-3xl mx-auto space-y-4">
+                        {faqItems.map((item, index) => (
+                            <FAQItem key={index} item={item} />
+                        ))}
+                    </div>
+                </section>
+
+                <section id="contact" className="py-24 sm:py-32 px-6 sm:px-12">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.8, type: "spring" }}
+                        className="max-w-5xl mx-auto bg-gradient-to-br from-cyan-500/10 via-black to-pink-500/10 border border-gray-800 rounded-3xl p-8 sm:p-16 text-center relative overflow-hidden"
+                    >
+                        <div className="absolute -top-20 -left-20 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl" />
+                        <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-pink-500/10 rounded-full blur-3xl" />
+
+                        <div className="relative z-10">
+                            <h2 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-tighter mb-6">
+                                Ready for the <span className="font-medium bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">next step?</span>
+                            </h2>
+                            <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+                                Don't postpone your digital future. Get in touch with us, and together we will create something extraordinary.
+                            </p>
+                            <motion.button
+                                whileHover={{ scale: 1.05, boxShadow: '0px 0px 30px rgba(217, 70, 239, 0.5)' }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-gradient-to-r from-pink-500 to-cyan-500 text-white font-semibold px-10 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl transition-all duration-300 shadow-lg"
+                            >
+                                Schedule a Consultation
+                            </motion.button>
+                        </div>
+                    </motion.div>
+                </section>
+            </main>
         </div>
-      </section>
-    </div>
-  );
+    );
 }
+
+// Separate component for FAQ items for better state management
+const FAQItem = ({ item }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <motion.div 
+            className="border border-gray-800 rounded-2xl overflow-hidden"
+            animate={{ borderColor: isOpen ? "rgba(45, 212, 191, 0.5)" : "rgb(31 41 55)" }}
+        >
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex justify-between items-center text-left p-4 sm:p-6"
+            >
+                <span className="text-base md:text-lg font-medium text-white">{item.question}</span>
+                <motion.div
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <ChevronDown className="w-6 h-6 text-gray-400" />
+                </motion.div>
+            </button>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="px-4 sm:px-6"
+                    >
+                        <p className="text-gray-400 pb-6 text-sm md:text-base">{item.answer}</p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+};
