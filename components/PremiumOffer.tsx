@@ -78,10 +78,10 @@ const ShootingStar = () => {
 
 //============================================================================
 // MAIN COMPONENT: PremiumOffer
-// FIX: Using `export default` to fix the import/export error.
+// FIX: Reverted to a named `export function` to match the import statement.
 //============================================================================
 
-export default function PremiumOffer() {
+export function PremiumOffer() {
   const [isVisible, setIsVisible] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
 
