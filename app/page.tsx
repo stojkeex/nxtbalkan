@@ -1,16 +1,14 @@
 "use client";
 
-// Since the request specified a single file, all components,
-// animations, and data are defined here. In a real-world project,
-// this would be split into multiple files for better organization.
-
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { 
   Users, TrendingUp, Star, Globe, Activity, ShieldCheck, LayoutDashboard, 
   Rocket, Flame, Lightbulb, Layers, Settings, Code, Database, Search, 
   PenTool, MessageSquare, ArrowRight, Award, Zap, GitBranch, Share2, 
-  Eye, Target, BarChart, ChevronDown, CheckCircle
+  Eye, Target, BarChart, ChevronDown, CheckCircle,
+  Cloud, CloudRain, CloudSun, CloudLightning, CloudSnow, Sun, Moon, 
+  Droplets, Thermometer, Navigation, MapPin
 } from "lucide-react";
 
 //============================================================================
@@ -153,10 +151,300 @@ const faqItems = [
 ];
 
 //============================================================================
+// WEATHER COMPONENT
+//============================================================================
+
+const WeatherBackground = () => {
+    const [weatherData, setWeatherData] = useState(null);
+    const [isDaytime, setIsDaytime] = useState(true);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchWeather = async () => {
+            try {
+                // Using OpenWeatherMap API for Ljubljana
+                const response = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?q=Ljubljana&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`
+                );
+                const data = await response.json();
+                
+                setWeatherData({
+                    temp: Math.round(data.main.temp),
+                    condition: data.weather[0].main.toLowerCase(),
+                    description: data.weather[0].description,
+                    feelsLike: Math.round(data.main.feels_like),
+                    humidity: data.main.humidity,
+                    windSpeed: data.wind.speed,
+                    sunrise: new Date(data.sys.sunrise * 1000),
+                    sunset: new Date(data.sys.sunset * 1000),
+                });
+
+                // Check if it's daytime
+                const now = new Date();
+                setIsDaytime(now > new Date(data.sys.sunrise * 1000) && now < new Date(data.sys.sunset * 1000));
+                
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchWeather();
+        // Refresh every 30 minutes
+        const interval = setInterval(fetchWeather, 1800000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const getWeatherCondition = () => {
+        if (!weatherData) return "clear";
+        const condition = weatherData.condition;
+        
+        if (condition.includes("rain")) return "rain";
+        if (condition.includes("thunderstorm")) return "thunder";
+        if (condition.includes("snow")) return "snow";
+        if (condition.includes("cloud")) return "cloudy";
+        return "clear";
+    };
+
+    const weatherCondition = getWeatherCondition();
+
+    // Apple Weather-style background gradients
+    const backgroundGradients = {
+        day: {
+            clear: "bg-gradient-to-b from-blue-400 to-blue-600",
+            cloudy: "bg-gradient-to-b from-gray-300 to-gray-500",
+            rain: "bg-gradient-to-b from-gray-400 to-gray-700",
+            thunder: "bg-gradient-to-b from-gray-600 to-gray-900",
+            snow: "bg-gradient-to-b from-blue-100 to-blue-300",
+        },
+        night: {
+            clear: "bg-gradient-to-b from-blue-900 to-gray-900",
+            cloudy: "bg-gradient-to-b from-gray-700 to-gray-900",
+            rain: "bg-gradient-to-b from-gray-800 to-black",
+            thunder: "bg-gradient-to-b from-gray-900 to-black",
+            snow: "bg-gradient-to-b from-blue-900 to-blue-700",
+        },
+    };
+
+    const currentBackground = isDaytime 
+        ? backgroundGradients.day[weatherCondition]
+        : backgroundGradients.night[weatherCondition];
+
+    // Weather condition animations
+    const renderWeatherAnimation = () => {
+        if (loading) return null;
+
+        const commonProps = {
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+            exit: { opacity: 0 },
+            transition: { duration: 1 },
+            className: "absolute inset-0 pointer-events-none",
+        };
+
+        switch (weatherCondition) {
+            case "clear":
+                return (
+                    <motion.div {...commonProps}>
+                        <motion.div
+                            animate={{
+                                scale: [1, 1.05, 1],
+                                opacity: [0.8, 1, 0.8],
+                            }}
+                            transition={{
+                                duration: 8,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                            className="absolute top-1/4 left-1/2 w-32 h-32 rounded-full bg-yellow-300 blur-xl"
+                        />
+                        {!isDaytime && (
+                            <>
+                                <motion.div
+                                    animate={{
+                                        rotate: 360,
+                                    }}
+                                    transition={{
+                                        duration: 120,
+                                        repeat: Infinity,
+                                        ease: "linear",
+                                    }}
+                                    className="absolute top-1/3 left-1/3 w-2 h-2 rounded-full bg-white"
+                                />
+                                <motion.div
+                                    animate={{
+                                        rotate: 360,
+                                    }}
+                                    transition={{
+                                        duration: 180,
+                                        repeat: Infinity,
+                                        ease: "linear",
+                                    }}
+                                    className="absolute top-1/4 left-2/3 w-1 h-1 rounded-full bg-white"
+                                />
+                            </>
+                        )}
+                    </motion.div>
+                );
+            case "cloudy":
+                return (
+                    <motion.div {...commonProps}>
+                        <motion.div
+                            animate={{
+                                x: ["-10%", "10%", "-10%"],
+                            }}
+                            transition={{
+                                duration: 30,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                            className="absolute top-1/3 left-1/4 w-48 h-16 bg-gray-200/70 rounded-full blur-xl"
+                        />
+                        <motion.div
+                            animate={{
+                                x: ["10%", "-10%", "10%"],
+                            }}
+                            transition={{
+                                duration: 40,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: 5,
+                            }}
+                            className="absolute top-1/4 left-1/2 w-64 h-20 bg-gray-300/70 rounded-full blur-xl"
+                        />
+                    </motion.div>
+                );
+            case "rain":
+                return (
+                    <motion.div {...commonProps}>
+                        <motion.div
+                            animate={{
+                                x: ["-10%", "10%", "-10%"],
+                            }}
+                            transition={{
+                                duration: 30,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                            className="absolute top-1/3 left-1/4 w-48 h-16 bg-gray-400/80 rounded-full blur-xl"
+                        />
+                        {Array.from({ length: 20 }).map((_, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ y: -100, x: Math.random() * 100 + "%" }}
+                                animate={{ y: "100vh" }}
+                                transition={{
+                                    duration: Math.random() * 1 + 0.5,
+                                    repeat: Infinity,
+                                    delay: Math.random() * 2,
+                                }}
+                                className="absolute w-0.5 h-8 bg-blue-300/50"
+                                style={{ left: `${Math.random() * 100}%` }}
+                            />
+                        ))}
+                    </motion.div>
+                );
+            case "thunder":
+                return (
+                    <motion.div {...commonProps}>
+                        <motion.div
+                            animate={{
+                                x: ["-5%", "5%", "-5%"],
+                                opacity: [0.7, 0.9, 0.7],
+                            }}
+                            transition={{
+                                duration: 5,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                            className="absolute top-1/3 left-1/4 w-64 h-24 bg-gray-700/90 rounded-full blur-xl"
+                        />
+                        <AnimatePresence>
+                            {Array.from({ length: 3 }).map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: [0, 1, 0] }}
+                                    transition={{
+                                        duration: 0.5,
+                                        repeat: Infinity,
+                                        delay: i * 2 + Math.random(),
+                                    }}
+                                    className="absolute w-full h-full bg-yellow-200/30"
+                                />
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
+                );
+            case "snow":
+                return (
+                    <motion.div {...commonProps}>
+                        <motion.div
+                            animate={{
+                                x: ["-10%", "10%", "-10%"],
+                            }}
+                            transition={{
+                                duration: 40,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                            className="absolute top-1/3 left-1/4 w-48 h-16 bg-gray-300/70 rounded-full blur-xl"
+                        />
+                        {Array.from({ length: 30 }).map((_, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ y: -100, x: Math.random() * 100 + "%", rotate: 0 }}
+                                animate={{ y: "100vh", rotate: 360 }}
+                                transition={{
+                                    duration: Math.random() * 5 + 5,
+                                    repeat: Infinity,
+                                    delay: Math.random() * 5,
+                                }}
+                                className="absolute w-2 h-2 bg-white/80 rounded-full"
+                                style={{ left: `${Math.random() * 100}%` }}
+                            />
+                        ))}
+                    </motion.div>
+                );
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <div className={`fixed inset-0 z-0 transition-colors duration-1000 ${currentBackground}`}>
+            {renderWeatherAnimation()}
+            
+            {/* Weather info overlay (optional) */}
+            {weatherData && (
+                <div className="absolute bottom-8 left-8 text-white opacity-70 text-sm">
+                    <div className="flex items-center gap-2">
+                        <MapPin size={16} />
+                        <span>Ljubljana</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                        <Thermometer size={16} />
+                        <span>{weatherData.temp}°C ({weatherData.feelsLike}°C)</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                        <Droplets size={16} />
+                        <span>{weatherData.humidity}% humidity</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                        <Navigation size={16} />
+                        <span>{weatherData.windSpeed} m/s</span>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+//============================================================================
 // HELPER COMPONENTS
 //============================================================================
 
-// NEW: Celestial Bodies Component
 const CelestialBodies = () => {
     const bodies = useMemo(() => [
         // Subtle Galaxy
@@ -393,7 +681,6 @@ const useIsMobile = () => {
 //============================================================================
 
 export default function HomePage() {
-
     const isMobile = useIsMobile();
     const heroRef = useRef(null);
 
@@ -436,111 +723,79 @@ export default function HomePage() {
     
     return (
         <div className="bg-black text-white font-sans overflow-x-hidden antialiased">
+            {/* Weather Background */}
+            <WeatherBackground />
             
-            <div className="fixed inset-0 z-0 pointer-events-none">
-                <StarrySky />
-                <CelestialBodies />
-                <motion.div
-                    className="absolute top-[-20%] left-[-20%] w-[800px] h-[800px] bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
-                    animate={{
-                        x: [0, 100, -50, 0],
-                        y: [0, -50, 100, 0],
-                        scale: [1, 1.1, 0.9, 1],
-                        rotate: [0, 10, -5, 0]
-                    }}
-                    transition={{
-                        duration: 30,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
-                <motion.div
-                    className="absolute bottom-[-20%] right-[-20%] w-[700px] h-[700px] bg-gradient-to-tl from-pink-500/20 to-transparent rounded-full blur-3xl md:blur-[150px] opacity-20 md:opacity-30"
-                    animate={{
-                        x: [0, -100, 50, 0],
-                        y: [0, 50, -100, 0],
-                        scale: [1, 0.9, 1.1, 1],
-                        rotate: [0, -10, 5, 0]
-                    }}
-                    transition={{
-                        duration: 35,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 5
-                    }}
-                />
-            </div>
-
-            <motion.section
-                ref={heroRef}
-                id="home"
-                className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 z-10 overflow-hidden"
-                style={!isMobile ? { opacity: backgroundOpacity } : {}}
-            >
-                <div className="absolute inset-0 bg-black/50 z-0"/>
-                
-                <motion.div 
-                    style={!isMobile ? { y: logoY } : {}}
-                    className="relative z-10 flex justify-center items-center w-[280px] h-[140px] sm:w-[450px] sm:h-[225px] md:w-[550px] md:h-[275px] mb-8"
-                >
-                    <img
-                        src="/nxtbalkancolored2.png"
-                        alt="NXT Balkan Logo"
-                        className="w-full h-full object-contain"
-                    />
-                </motion.div>
-                
-                <motion.div style={!isMobile ? { y: textY, opacity: textOpacity } : {}} className="relative z-10 text-center">
-                    <AnimatedTextWord 
-                        text="Balkan Future"
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter max-w-5xl mx-auto"
-                    />
-
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.5 }}
-                        className="text-gray-300 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl mt-8"
-                    >
-                        We build bridges between your vision and digital reality. Driving your growth with innovative strategies and cutting-edge technology.
-                    </motion.p>
-                    
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.8 }}
-                        className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 pt-10"
-                    >
-                        <motion.button
-                            whileHover={{ scale: 1.05, boxShadow: '0px 0px 20px rgba(45, 212, 191, 0.5)' }}
-                            whileTap={{ scale: 0.95 }}
-                            className="bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center"
-                        >
-                            Start Your Project <ArrowRight className="w-5 h-5" />
-                        </motion.button>
-                        <motion.button
-                            whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-                            whileTap={{ scale: 0.95 }}
-                            className="border border-white/30 bg-white/5 text-white font-medium px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 flex items-center gap-2 backdrop-blur-sm w-full sm:w-auto justify-center"
-                        >
-                            Our Services
-                        </motion.button>
-                    </motion.div>
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 2.5 }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2"
-                >
-                    <div className="w-6 h-10 border-2 border-gray-500 rounded-full flex justify-center items-start p-1">
-                        <div className="w-1.5 h-3 bg-gray-400 rounded-full" />
-                    </div>
-                </motion.div>
-            </motion.section>
-
             <main className="relative z-10">
+                <motion.section
+                    ref={heroRef}
+                    id="home"
+                    className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 z-10 overflow-hidden"
+                    style={!isMobile ? { opacity: backgroundOpacity } : {}}
+                >
+                    <div className="absolute inset-0 bg-black/50 z-0"/>
+                    
+                    <motion.div 
+                        style={!isMobile ? { y: logoY } : {}}
+                        className="relative z-10 flex justify-center items-center w-[280px] h-[140px] sm:w-[450px] sm:h-[225px] md:w-[550px] md:h-[275px] mb-8"
+                    >
+                        <img
+                            src="/nxtbalkancolored2.png"
+                            alt="NXT Balkan Logo"
+                            className="w-full h-full object-contain"
+                        />
+                    </motion.div>
+                    
+                    <motion.div style={!isMobile ? { y: textY, opacity: textOpacity } : {}} className="relative z-10 text-center">
+                        <AnimatedTextWord 
+                            text="Balkan Future"
+                            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tighter max-w-5xl mx-auto"
+                        />
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.5 }}
+                            className="text-gray-300 max-w-3xl mx-auto text-lg sm:text-xl md:text-2xl mt-8"
+                        >
+                            We build bridges between your vision and digital reality. Driving your growth with innovative strategies and cutting-edge technology.
+                        </motion.p>
+                        
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.8 }}
+                            className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 pt-10"
+                        >
+                            <motion.button
+                                whileHover={{ scale: 1.05, boxShadow: '0px 0px 20px rgba(45, 212, 191, 0.5)' }}
+                                whileTap={{ scale: 0.95 }}
+                                className="bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-semibold px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center"
+                            >
+                                Start Your Project <ArrowRight className="w-5 h-5" />
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                                whileTap={{ scale: 0.95 }}
+                                className="border border-white/30 bg-white/5 text-white font-medium px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg transition-all duration-300 flex items-center gap-2 backdrop-blur-sm w-full sm:w-auto justify-center"
+                            >
+                                Our Services
+                            </motion.button>
+                        </motion.div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.5, delay: 2.5 }}
+                        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+                    >
+                        <div className="w-6 h-10 border-2 border-gray-500 rounded-full flex justify-center items-start p-1">
+                            <div className="w-1.5 h-3 bg-gray-400 rounded-full" />
+                        </div>
+                    </motion.div>
+                </motion.section>
+
                 <section id="services" className="py-24 sm:py-32 px-6 sm:px-12">
                     <SectionHeader 
                         title="Our Core" 
