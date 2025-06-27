@@ -9,15 +9,13 @@ import {
   Cloud, CloudRain, CloudSun, CloudLightning, CloudSnow, Sun, Moon, 
   Droplets, Thermometer, Navigation, MapPin
 } from "lucide-react";
-
-// ===================== DATA =====================
+// ===================== PODATKI =====================
 const navLinks = [
   { name: "Services", href: "#services" },
   { name: "Process", href: "#process" },
   { name: "About Us", href: "#about" },
   { name: "Contact", href: "#contact" },
 ];
-
 const coreServices = [
   { 
     icon: GitBranch, 
@@ -44,7 +42,6 @@ const coreServices = [
     color: "pink"
   }
 ];
-
 const whyNXT = [
   {
     icon: Lightbulb,
@@ -71,7 +68,6 @@ const whyNXT = [
     color: "pink",
   }
 ];
-
 const processSteps = [
   {
     title: "1. Discovery & Analysis",
@@ -145,7 +141,7 @@ const faqItems = [
   }
 ];
 
-// ===================== IMPROVED WEATHER COMPONENT =====================
+// ===================== WEATHER COMPONENT (IMPROVED) =====================
 const WeatherBackground = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [isDaytime, setIsDaytime] = useState(true);
@@ -153,6 +149,7 @@ const WeatherBackground = () => {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
+        // This is a sample, you can replace 'Ljubljana' or use geolocation
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?q=Ljubljana&units=metric&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`
         );
@@ -165,14 +162,16 @@ const WeatherBackground = () => {
         setIsDaytime(now > sunrise && now < sunset);
       } catch (error) {
         console.error("Error fetching weather:", error);
+        // Set a default state in case of API error
+        setWeatherData({ weather: [{ main: 'Clear', description: 'clear sky' }] });
+        setIsDaytime(true);
       }
     };
     fetchWeather();
-    const interval = setInterval(fetchWeather, 1800000);
+    const interval = setInterval(fetchWeather, 1800000); // Refresh every 30 minutes
     return () => clearInterval(interval);
   }, []);
-
-  const getWeatherCondition = () => {
+const getWeatherCondition = () => {
     if (!weatherData?.weather?.[0]) return 'clear';
     const condition = weatherData.weather[0].main.toLowerCase();
     const description = weatherData.weather[0].description.toLowerCase();
@@ -189,23 +188,23 @@ const WeatherBackground = () => {
 
   const weatherCondition = getWeatherCondition();
 
-  // Apple Weather App-inspired backgrounds
+  // Improved gradients for a more realistic look
   const backgrounds = {
     day: {
-      'clear': 'bg-gradient-to-b from-sky-400 to-blue-500',
-      'partly-cloudy': 'bg-gradient-to-b from-blue-300 to-blue-400',
-      'cloudy': 'bg-gradient-to-b from-gray-300 to-gray-400',
-      'rain': 'bg-gradient-to-b from-gray-400 to-blue-600',
-      'thunder': 'bg-gradient-to-b from-gray-600 to-blue-800',
-      'snow': 'bg-gradient-to-b from-blue-100 to-blue-200'
+      'clear': 'bg-gradient-to-b from-sky-300 via-sky-400 to-blue-500',
+      'partly-cloudy': 'bg-gradient-to-b from-sky-400 to-blue-600',
+      'cloudy': 'bg-gradient-to-b from-gray-400 to-gray-600',
+      'rain': 'bg-gradient-to-b from-gray-500 to-gray-800',
+      'thunder': 'bg-gradient-to-b from-gray-700 to-gray-900',
+      'snow': 'bg-gradient-to-b from-blue-200 to-blue-400'
     },
     night: {
-      'clear': 'bg-gradient-to-b from-blue-900 to-indigo-900',
-      'partly-cloudy': 'bg-gradient-to-b from-blue-800 to-indigo-800',
-      'cloudy': 'bg-gradient-to-b from-gray-700 to-blue-900',
-      'rain': 'bg-gradient-to-b from-gray-800 to-blue-900',
-      'thunder': 'bg-gradient-to-b from-gray-900 to-blue-900',
-      'snow': 'bg-gradient-to-b from-blue-800 to-indigo-800'
+      'clear': 'bg-gradient-to-b from-blue-900 to-gray-900',
+      'partly-cloudy': 'bg-gradient-to-b from-blue-800 to-gray-800',
+      'cloudy': 'bg-gradient-to-b from-gray-700 to-gray-900',
+      'rain': 'bg-gradient-to-b from-gray-800 to-black',
+      'thunder': 'bg-gradient-to-b from-gray-900 to-black',
+      'snow': 'bg-gradient-to-b from-blue-900 to-blue-700'
     }
   };
 
@@ -215,137 +214,111 @@ const WeatherBackground = () => {
 
   return (
     <div className={`fixed inset-0 z-0 transition-all duration-1000 ${currentBg}`}>
-      {/* Sun/Moon */}
-      {(weatherCondition !== 'cloudy' && weatherCondition !== 'thunder') && (
-        <motion.div
-          animate={{
-            scale: [1, 1.05, 1],
-            opacity: weatherCondition === 'partly-cloudy' ? [0.8, 1, 0.8] : 1
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute top-1/4 left-1/2 w-32 h-32 rounded-full ${isDaytime ? 'bg-yellow-300' : 'bg-gray-200'}`}
-          style={{
-            boxShadow: isDaytime 
-              ? '0 0 60px 30px rgba(255, 220, 0, 0.5), 0 0 100px 60px rgba(255, 232, 120, 0.3)'
-              : '0 0 40px 20px rgba(200, 200, 255, 0.2), 0 0 80px 40px rgba(200, 200, 255, 0.1)'
-          }}
-        />
+      {/* Improved Sun/Moon effect */}
+      {(weatherCondition === 'clear' || weatherCondition === 'partly-cloudy') && (
+        <div className="absolute top-0 left-0 w-full h-2/3 overflow-hidden">
+            <motion.div
+              className="absolute -top-[20vh] left-1/2 -translate-x-1/2"
+              animate={{ scale: [1, 1.03, 1] }}
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            >
+              {/* Sun Halo / Glare */}
+              <div className={`w-[120vw] h-[120vw] rounded-full ${isDaytime ? 'bg-yellow-200/30' : 'bg-gray-200/20'} blur-3xl`} />
+              {/* Sun Core */}
+              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] rounded-full ${isDaytime ? 'bg-yellow-100/40' : 'bg-gray-100/30'} blur-3xl`} />
+            </motion.div>
+        </div>
       )}
 
-      {/* Clouds - More realistic Apple-style */}
+      {/* Improved Cloud animation */}
       {weatherCondition.includes('cloud') && (
         <>
           <motion.div
-            animate={{ x: ["-20%", "10%", "-20%"], opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-            className={`absolute top-1/3 left-1/4 w-64 h-24 rounded-full ${isDaytime ? 'bg-white/90' : 'bg-gray-300/70'}`}
-            style={{
-              filter: 'blur(30px)',
-              clipPath: 'ellipse(50% 30% at 50% 50%)'
-            }}
+            animate={{ x: ["-150%", "150%"], opacity: weatherCondition === 'partly-cloudy' ? 0.3 : 0.6 }}
+            transition={{ duration: 45, repeat: Infinity, ease: "linear", delay: 0 }}
+            className={`absolute top-[15%] -left-[50%] w-[100vw] h-32 rounded-[60%] blur-2xl ${
+              isDaytime ? 'bg-white/40' : 'bg-gray-300/30'
+            }`}
           />
-          
           <motion.div
-            animate={{ x: ["10%", "-10%", "10%"], opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 50, repeat: Infinity, ease: "linear", delay: 10 }}
-            className={`absolute top-1/4 right-1/4 w-80 h-20 rounded-full ${isDaytime ? 'bg-white/80' : 'bg-gray-300/60'}`}
-            style={{
-              filter: 'blur(40px)',
-              clipPath: 'ellipse(50% 25% at 50% 50%)'
-            }}
+            animate={{ x: ["150%", "-150%"], opacity: weatherCondition === 'partly-cloudy' ? 0.4 : 0.7 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear", delay: 5 }}
+            className={`absolute top-[25%] -right-[50%] w-[120vw] h-40 rounded-[70%] blur-3xl ${
+              isDaytime ? 'bg-white/50' : 'bg-gray-400/40'
+            }`}
           />
-
           {weatherCondition === 'cloudy' && (
             <motion.div
-              animate={{ x: ["-15%", "15%", "-15%"], opacity: [0.6, 0.9, 0.6] }}
-              transition={{ duration: 60, repeat: Infinity, ease: "linear", delay: 20 }}
-              className={`absolute top-1/5 left-1/2 w-96 h-32 rounded-full ${isDaytime ? 'bg-white/70' : 'bg-gray-400/50'}`}
-              style={{
-                filter: 'blur(50px)',
-                clipPath: 'ellipse(50% 20% at 50% 50%)'
-              }}
+              animate={{ x: ["-120%", "120%"] }}
+              transition={{ duration: 75, repeat: Infinity, ease: "linear", delay: 2 }}
+              className={`absolute top-[10%] -left-[50%] w-[80vw] h-24 rounded-[50%] blur-xl ${
+                isDaytime ? 'bg-white/60' : 'bg-gray-400/50'
+              }`}
             />
           )}
         </>
       )}
 
-      {/* Rain - More subtle and realistic */}
       {weatherCondition === 'rain' && (
-        <div className="absolute inset-0 overflow-hidden">
-          {Array.from({ length: 80 }).map((_, i) => (
+        <>
+          {Array.from({ length: 40 }).map((_, i) => (
             <motion.div
               key={i}
-              initial={{ y: -20, x: `${Math.random() * 100}%` }}
+              initial={{ y: -100, x: `${Math.random() * 100}%` }}
               animate={{ y: "100vh" }}
               transition={{
-                duration: Math.random() * 0.5 + 0.3,
+                duration: Math.random() * 1 + 0.5,
                 repeat: Infinity,
-                delay: Math.random() * 0.5,
+                delay: Math.random() * 2,
               }}
-              className="absolute w-0.5 h-6 bg-blue-400/40"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                transform: `rotate(${Math.random() * 15 + 5}deg)`
-              }}
+              className="absolute w-0.5 h-8 bg-blue-300/50"
             />
           ))}
-        </div>
+        </>
       )}
 
-      {/* Thunder - More dramatic flashes */}
       {weatherCondition === 'thunder' && (
         <>
           <motion.div
-            animate={{ opacity: [0.3, 0.7, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity }}
-            className="absolute top-1/3 left-1/4 w-64 h-24 bg-gray-700/30 rounded-full blur-3xl"
+            animate={{ opacity: [0.7, 0.9, 0.7] }}
+            transition={{ duration: 5, repeat: Infinity }}
+            className="absolute top-1/3 left-1/4 w-64 h-24 bg-gray-700/90 rounded-full blur-xl"
           />
           <AnimatePresence>
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 0.8, 0] }}
-                transition={{ duration: 0.3, repeat: Infinity, delay: i * 3 + Math.random() }}
-                className="absolute inset-0 bg-yellow-200/20"
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity, delay: i * 2 + Math.random() }}
+                className="absolute w-full h-full bg-yellow-200/30"
               />
             ))}
           </AnimatePresence>
         </>
       )}
 
-      {/* Snow - More delicate flakes */}
       {weatherCondition === 'snow' && (
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(60)].map((_, i) => (
+        <>
+          {[...Array(30)].map((_, i) => (
             <motion.div
               key={i}
-              initial={{ y: -20, x: `${Math.random() * 100}%`, rotate: 0 }}
+              initial={{ y: -100, x: `${Math.random() * 100}%`, rotate: 0 }}
               animate={{ y: "100vh", rotate: 360 }}
               transition={{
                 duration: Math.random() * 5 + 5,
                 repeat: Infinity,
                 delay: Math.random() * 5,
               }}
-              className="absolute bg-white rounded-full"
-              style={{
-                width: `${Math.random() * 4 + 2}px`,
-                height: `${Math.random() * 4 + 2}px`,
-                opacity: Math.random() * 0.6 + 0.4,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                filter: 'blur(0.5px)'
-              }}
+              className="absolute w-2 h-2 bg-white/80 rounded-full"
             />
           ))}
-        </div>
+        </>
       )}
     </div>
   );
 };
-
-// ===================== OTHER COMPONENTS =====================
+// ===================== OSTALE KOMPONENTE =====================
 const CelestialBodies = () => {
   const bodies = useMemo(() => [
     { 
@@ -387,8 +360,7 @@ const CelestialBodies = () => {
       )
     }
   ], []);
-
-  return (
+return (
     <>
       {bodies.map(body => (
         <motion.div
@@ -404,7 +376,6 @@ const CelestialBodies = () => {
     </>
   );
 };
-
 const StarrySky = () => {
   const stars = useMemo(() => {
     return Array.from({ length: 150 }).map((_, i) => ({
@@ -416,8 +387,7 @@ const StarrySky = () => {
       delay: Math.random() * 3,
     }));
   }, []);
-
-  return (
+return (
     <div className="absolute inset-0 z-0">
       {stars.map(star => (
         <motion.div
@@ -443,27 +413,23 @@ const StarrySky = () => {
     </div>
   );
 };
-
 const ShootingStar = () => {
   const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
+useEffect(() => {
     const interval = setInterval(() => {
       setIsAnimating(true);
       setTimeout(() => setIsAnimating(false), 4500);
     }, 15000); 
     return () => clearInterval(interval);
   }, []);
-  
-  const path = useMemo(() => {
+const path = useMemo(() => {
     const startX = Math.random() * 100;
     const startY = -10;
     const endX = startX - (Math.random() * 40 + 20);
     const endY = 110;
     return { startX, startY, endX, endY };
   }, [isAnimating]);
-
-  return (
+return (
     <AnimatePresence>
       {isAnimating && (
         <motion.div
@@ -503,19 +469,16 @@ const SectionHeader = ({ title, subtitle, gradientText }) => (
     <p className="text-base md:text-xl text-gray-400">{subtitle}</p>
   </motion.div>
 );
-
 const AnimatedTextWord = ({ text, className }) => {
   const words = text.split(" ");
-
-  const container = {
+const container = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
       transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
     }),
   };
-
-  const child = {
+const child = {
     visible: {
       opacity: 1,
       y: 0,
@@ -535,8 +498,7 @@ const AnimatedTextWord = ({ text, className }) => {
       },
     },
   };
-
-  return (
+return (
     <motion.h1
       variants={container}
       initial="hidden"
@@ -555,10 +517,9 @@ const AnimatedTextWord = ({ text, className }) => {
     </motion.h1>
   );
 };
-
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
+useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -566,13 +527,12 @@ const useIsMobile = () => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
-  return isMobile;
+return isMobile;
 };
 
 const FAQItem = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  return (
+return (
     <motion.div 
       className="border border-gray-800 rounded-2xl overflow-hidden will-change-transform"
       animate={{ borderColor: isOpen ? "rgba(45, 212, 191, 0.5)" : "rgb(31 41 55)" }}
@@ -606,23 +566,20 @@ const FAQItem = ({ item }) => {
   );
 };
 
-// ===================== MAIN PAGE =====================
+// ===================== GLAVNA STRAN =====================
 export default function HomePage() {
   const isMobile = useIsMobile();
   const heroRef = useRef(null);
-
-  const { scrollYProgress: heroScrollYProgress } = useScroll({
+const { scrollYProgress: heroScrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
     enabled: !isMobile
   });
-
-  const logoY = useTransform(heroScrollYProgress, [0, 1], ["0%", "50%"]);
+const logoY = useTransform(heroScrollYProgress, [0, 1], ["0%", "50%"]);
   const textY = useTransform(heroScrollYProgress, [0, 1], ["0%", "100%"]);
-  const textOpacity = useTransform(heroScrollYProgress, [0, 0.8], [1, 0]);
+const textOpacity = useTransform(heroScrollYProgress, [0, 0.8], [1, 0]);
   const backgroundOpacity = useTransform(heroScrollYProgress, [0, 0.5], [1, 0]);
-
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
+const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -630,16 +587,14 @@ export default function HomePage() {
     }, 7000); 
     return () => clearInterval(timer);
   }, []);
-
-  const containerVariants = {
+const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: { staggerChildren: 0.1 } 
     }
   };
-
-  const itemVariants = {
+const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     show: { 
       opacity: 1, 
@@ -647,8 +602,7 @@ export default function HomePage() {
       transition: { duration: 0.6, ease: "easeOut" }
     }
   };
-  
-  return (
+return (
     <div className="bg-black text-white font-sans overflow-x-hidden antialiased">
       <WeatherBackground />
       
@@ -659,7 +613,7 @@ export default function HomePage() {
           className="relative min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 z-10 overflow-hidden"
           style={!isMobile ? { opacity: backgroundOpacity } : {}}
         >
-          {/* Removed the dark overlay */}
+          {/* REMOVED the dark overlay div that was here */}
           
           <motion.div 
             style={!isMobile ? { y: logoY } : {}}
@@ -805,11 +759,11 @@ export default function HomePage() {
                 >
                  <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br from-${item.color}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}/>
                  
-                 <div className="relative z-10">
+                  <div className="relative z-10">
                      <div className="mb-5 w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center">
                          <item.icon className={`w-6 h-6 text-${item.color}-400`} />
                      </div>
-                     <h4 className="text-xl font-semibold mb-2 text-white">{item.title}</h4>
+                    <h4 className="text-xl font-semibold mb-2 text-white">{item.title}</h4>
                      <p className="text-gray-400 text-sm">{item.description}</p>
                  </div>
               </motion.div>
@@ -821,8 +775,7 @@ export default function HomePage() {
            <SectionHeader
               title="Our Proven"
               gradientText="Process"
-              subtitle="A structured and transparent approach that ensures predictability, quality, and the success of every project."
-          />
+              subtitle="A structured and transparent approach that ensures predictability, quality, and the success of every project."/>
           <div className="max-w-7xl mx-auto">
               <div className="relative">
                   <div className="absolute left-4 md:left-1/2 top-0 w-px h-full -translate-x-1/2 bg-gradient-to-b from-cyan-500/20 via-pink-500/20 to-transparent" />
@@ -849,7 +802,7 @@ export default function HomePage() {
                                   >
                                       <div className="flex items-center gap-4 mb-3">
                                           <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-cyan-500/10 to-pink-500/10 rounded-lg flex items-center justify-center">
-                                              <step.icon className="w-5 h-5 text-cyan-400" />
+                                            <step.icon className="w-5 h-5 text-cyan-400" />
                                           </div>
                                           <h3 className="text-lg md:text-xl font-semibold text-white">{step.title}</h3>
                                       </div>
@@ -914,8 +867,7 @@ export default function HomePage() {
           <SectionHeader
               title="Frequently"
               gradientText="Asked Questions"
-              subtitle="Have a question? You're probably not the first. Here are the answers to the most common questions."
-          />
+              subtitle="Have a question? You're probably not the first. Here are the answers to the most common questions."/>
           <div className="max-w-3xl mx-auto space-y-4">
               {faqItems.map((item, index) => (
                   <FAQItem key={index} item={item} />
